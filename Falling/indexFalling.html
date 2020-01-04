@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Making your first Phaser 3 Game - Part 4</title>
+    <title>Forever Falling</title>
    <script src="https://cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
     <style type="text/css">
         body {
@@ -32,33 +32,84 @@
         }
     };
 
-    var player;
 
+
+    var player;
+    var platforms;
+    var timedBackground;
+    var timedSpawn;
+    var meteors;
+    var keys;
+    var spaceBackground;
+    var music;
+    var children; // dont know why this has to be here
     var game = new Phaser.Game(config);
 
     function preload ()
     {
-        this.load.image('sky', 'assets/sky.png');
-        this.load.image('ground', 'assets/platform.png');
-        this.load.image('star', 'assets/star.png');
-        this.load.image('bomb', 'assets/bomb.png');
+        this.load.image('space', 'assets/space.png');
+        this.load.image('meteor', 'assets/meteor.gif')
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+        this.load.audio('spaceTheme', 'assets/spaceMusic.mp3');
     }
-
-    var platforms;
 
     function create ()
     {
       //Background image
-        this.add.image(400, 300, 'sky');
+        spaceBackground = this.add.image(400, 500, 'space');
+        timedBackground = this.time.addEvent({ delay: 10, callback: moveBackground, callbackScope: this, loop: true });
+        //meteors
+        meteors = this.physics.add.group();
         //player
         player = this.physics.add.sprite(250, 300, 'dude');
+        //keyboard input
+        keys = this.input.keyboard.addKeys('W,S,A,D,');
+        //spawns
+        timedSpawn = this.time.addEvent({ delay: 2500, callback: placeMeteor, callbackScope: this, loop: true });
+        //colliders
+        this.physics.add.collider(player, meteors);
+        //music
+        music = this.sound.add('spaceTheme');
+        music.play();
 
     }
 
     function update ()
     {
+      //Player movement
+      if (keys.A.isDown)  {
+        player.setVelocityX(-200);
+      }
+      else if (keys.D.isDown) {
+        player.setVelocityX(200);
+      } else {
+        player.setVelocityX(0);
+      }
+
     }
+
+
+    function moveBackground() {
+      spaceBackground.y += -.05;
+    }
+
+    function placeMeteor()  {
+      //Meteor movement
+      var nextMeteor;
+      nextMeteor = meteors.create(Phaser.Math.FloatBetween(0, 800), 650, 'meteor');
+      nextMeteor.setVelocityX(Phaser.Math.FloatBetween(-50, 50));
+      nextMeteor.setVelocityY(-100);
+      //used to destroy old meteors.. ? need to add other bounds other than -x
+      meteors.children.iterate(function (child) {
+
+        if (child == undefined)
+            return;
+        if (child.x < -50)
+            child.destroy();
+      })
+
+    }
+
 
 </script>
 
