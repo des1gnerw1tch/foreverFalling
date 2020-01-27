@@ -13,14 +13,22 @@ class LoadScene extends Phaser.Scene{
     this.load.image('menu', 'assets/menu.jpg');
     this.load.image('title', 'assets/title.png');
     this.load.image('playButton', 'assets/playButton.png');
+    //blocks
+    this.load.image('block1', 'assets/block1.png');
+    this.load.image('block2', 'assets/block2.png');
+    this.load.image('block3', 'assets/block3.png');
+    this.load.image('block4', 'assets/block4.png');
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-
-      //simulate large load
-    for (var i = 0; i < 1000; i++)  {
+    this.load.spritesheet('astronaut', 'assets/astronaut.png', { frameWidth: 128.25, frameHeight: 180 });
+        //theme music
       this.load.audio('spaceTheme', 'assets/spaceMusic.mp3');
-    }
+      //sound effects
+    this.load.audio('yeet', 'assets/maxyeet.m4a');
+    this.load.audio('datBei', 'assets/maxdatbei.m4a');
+
       //loading text
     this.add.text(20, 20, "Loading Game...");
+
       //loading bar
     let loadingBar = this.add.graphics({
       fillStyle: {

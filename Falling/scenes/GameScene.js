@@ -22,9 +22,6 @@ class GameScene extends Phaser.Scene{
 
   create()  {
 
-    console.log(gameOver);
-
-
     //Background image
     spaceBackground = this.add.image(400, 500, 'space');
     timedBackground = this.time.addEvent({ delay: 10, callback: this.moveBackground, callbackScope: this, loop: true });
@@ -82,6 +79,7 @@ class GameScene extends Phaser.Scene{
   hitObject() {
     player.setTint(0xff0000);
   //  gameOver = true;
+    music.pause();
     this.scene.start("startMenu");
   }
 
