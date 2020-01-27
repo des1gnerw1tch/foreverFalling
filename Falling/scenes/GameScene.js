@@ -1,6 +1,6 @@
 /* TO DO:
 Fix game over mechanic
-REAL GAME MECHANICS, 
+REAL GAME MECHANICS,
 */
 var player;
 var platforms;
@@ -30,6 +30,7 @@ class GameScene extends Phaser.Scene{
     meteors = this.physics.add.group();
       //player
     player = this.physics.add.sprite(250, 300, 'dude');
+    player.anims.play('turn', true);
       //keyboard input
     keys = this.input.keyboard.addKeys('W,S,A,D,');
       //spawns
@@ -80,12 +81,12 @@ class GameScene extends Phaser.Scene{
   hitObject() {
     player.setTint(0xff0000);
   //  gameOver = true;
-    music.pause();
     this.scene.start("startMenu");
   }
 
   moveBackground() {
     spaceBackground.y += -.05;
+    player.angle += 1;
   }
 
 }
