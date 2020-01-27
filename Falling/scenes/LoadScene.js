@@ -8,8 +8,12 @@ class LoadScene extends Phaser.Scene{
   }
 
   preload() {
+
     this.load.image('space', 'assets/space.png');
+      //loading hitobjects
     this.load.image('meteor', 'assets/meteor.gif');
+    this.load.image('satellite', 'assets/satellite.png');
+    this.load.image('stone', 'assets/stone.png');
     this.load.image('menu', 'assets/menu.jpg');
     this.load.image('title', 'assets/title.png');
     this.load.image('playButton', 'assets/playButton.png');
