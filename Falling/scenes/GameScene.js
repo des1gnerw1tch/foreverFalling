@@ -1,5 +1,6 @@
 /* TO DO:
 Fix game over mechanic
+REAL GAME MECHANICS, 
 */
 var player;
 var platforms;
