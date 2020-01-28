@@ -90,6 +90,7 @@ class GameScene extends Phaser.Scene{
     nextMeteor.setVelocityX(Phaser.Math.FloatBetween(-50, 50));
     nextMeteor.setVelocityY(-100);
     nextMeteor.setAngularVelocity(Phaser.Math.FloatBetween(0,100));
+    console.log("Meteor spawned");
     //used to destroy old meteors.. ? need to add other bounds other than -x
     flyingObject.children.iterate(function (child) {
         //bit found in code that works, no idea what it does. ..
