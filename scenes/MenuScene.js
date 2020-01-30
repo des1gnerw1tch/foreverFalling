@@ -31,11 +31,15 @@ class MenuScene extends Phaser.Scene{
     playButton.on("pointerup", ()=>  {
       music.pause();
       this.scene.start("enterIntro");
-      //this.scene.start("enterGame");
     })
+
       //menu music
       music = this.sound.add('spaceTheme');
       music.play();
+        //particles test
+      
+      //emitter.setBlendMode(Phaser.BlendModes.ADD);
 
   }
+
 }

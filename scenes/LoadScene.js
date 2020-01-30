@@ -29,7 +29,9 @@ class LoadScene extends Phaser.Scene{
       //sound effects
     this.load.audio('yeet', 'assets/maxyeet.m4a');
     this.load.audio('datBei', 'assets/maxdatbei.m4a');
-
+    //particles
+    this.load.image('starParticle', 'assets/blue.png');
+    this.load.atlas('flares', 'assets/flares.png', 'assets/flares.json');
       //loading text
     this.add.text(20, 20, "Loading Game...");
 
