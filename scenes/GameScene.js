@@ -66,7 +66,8 @@ class GameScene extends Phaser.Scene{
         blendMode: 'ADD'
     });*/
 
-    var p = this.add.particles('starParticle');
+//STAR PARTICLES TEST
+  /*  var p = this.add.particles('starParticle');
     var emitter1 = p.createEmitter();
     var emitter2 = p.createEmitter();
     var emitter3 = p.createEmitter();
@@ -78,10 +79,10 @@ class GameScene extends Phaser.Scene{
     emitter2.setSpeed(600);
     emitter3.setScale(.1)
     emitter3.setPosition(800, 600);
-    emitter3.setSpeed(600);
+    emitter3.setSpeed(600);*/
 
       //player
-    player = this.physics.add.sprite(250, 300, 'dude');
+    player = this.physics.add.sprite(400, 0, 'dude');
     player.anims.play('turn', true);
       //colliders
     this.physics.add.collider(player, flyingObject, this.hitObject, null, this);
@@ -101,6 +102,7 @@ class GameScene extends Phaser.Scene{
 
     text.setText('timedSwitch Progress: ' + timedSwitch.getProgress().toString().substr(0, 4) + '\nEvent.repeatCount: ' +
     timedSwitch.repeatCount + '\nPaused?: ' + timedSwitch.paused + '\n Level: ' + level);
+    //console.log(player.y);
 
     //Player movement
     if (keys.A.isDown)  {
@@ -115,6 +117,14 @@ class GameScene extends Phaser.Scene{
       this.physics.pause();
     }
 
+    //Beginning falling
+    if (player.y > 300) {
+      player.body.allowGravity = false;
+      player.setVelocityY(0);
+      //alert("hello?");
+    } else if (player.y < 300) {
+        player.body.gravity.y = 800;
+    }
     //emitter.setPosition(player.x, player.y);
   }
 
@@ -122,7 +132,8 @@ class GameScene extends Phaser.Scene{
     //Meteor movement
     var nextMeteor;
     nextMeteor = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'meteor');
-    nextMeteor.setVelocityX(Phaser.Math.FloatBetween(-50, 50));
+    nextMeteor.setScale(.5);
+    nextMeteor.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
     nextMeteor.setVelocityY(-100);
     nextMeteor.setAngularVelocity(Phaser.Math.FloatBetween(0,100));
     //used to destroy old meteors.. ? need to add other bounds other than -x
@@ -140,9 +151,9 @@ class GameScene extends Phaser.Scene{
     //Satellite movement
     var nextSatellite;
     nextSatellite = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'satellite');
-    nextSatellite.setScale(.3);
-    nextSatellite.setVelocityX(Phaser.Math.FloatBetween(-50, 50));
-    nextSatellite.setVelocityY(-100);
+    nextSatellite.setScale(.2);
+    nextSatellite.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
+    nextSatellite.setVelocityY(-200);
     nextSatellite.setAngularVelocity(Phaser.Math.FloatBetween(300,500));
     //used to destroy old satellites.. ? need to add other bounds other than -x
     flyingObject.children.iterate(function (child) {
@@ -160,8 +171,8 @@ class GameScene extends Phaser.Scene{
     var nextStone;
     nextStone = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'stone');
     nextStone.setScale(.01);
-    nextStone.setVelocityX(Phaser.Math.FloatBetween(-50, 50));
-    nextStone.setVelocityY(-100);
+    nextStone.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
+    nextStone.setVelocityY(-300);
     nextStone.setAngularVelocity(Phaser.Math.FloatBetween(0,100));
     //used to destroy old stones.. ? need to add other bounds other than -x
     flyingObject.children.iterate(function (child) {
@@ -180,8 +191,9 @@ class GameScene extends Phaser.Scene{
   }
 
   moveBackground() {
-    spaceBackground.y += -.05;
-    player.angle += 1;
+    //spaceBackground.y += -.05;
+    spaceBackground.y += -.5;
+    player.angle += 5;
   }
     //function to change the level !
   switchLevel() {
@@ -189,9 +201,9 @@ class GameScene extends Phaser.Scene{
 
     switch(level) {
       case 1:
-        timedMeteor = this.time.addEvent({ delay: 2500, callback: this.placeMeteor, callbackScope: this, loop: true });
-        timedSatellite = this.time.addEvent({ delay: 2500, callback: this.placeSatellite, callbackScope: this, loop: true });
-        timedStone = this.time.addEvent({ delay: 2500, callback: this.placeStone, callbackScope: this, loop: true });
+        timedMeteor = this.time.addEvent({ delay: 2000, callback: this.placeMeteor, callbackScope: this, loop: true });
+        timedSatellite = this.time.addEvent({ delay: 5000, callback: this.placeSatellite, callbackScope: this, loop: true });
+        timedStone = this.time.addEvent({ delay: 1000, callback: this.placeStone, callbackScope: this, loop: true });
         console.log("Level 1 !");
         break;
       case 2:
