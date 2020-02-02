@@ -32,6 +32,7 @@ class LoadScene extends Phaser.Scene{
     //particles
     this.load.image('starParticle', 'assets/blue.png');
     this.load.atlas('flares', 'assets/flares.png', 'assets/flares.json');
+    this.load.image('star', 'assets/star.png');
       //loading text
     this.add.text(20, 20, "Loading Game...");
 

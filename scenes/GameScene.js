@@ -11,9 +11,24 @@ var timedSwitch;
 var timedMeteor;
 var timedSatellite;
 var timedStone;
+var timedBackground;
+var timedStar;
+
 
 var keys;
+//background
 var spaceBackground;
+var hexColor;
+var sky;
+var space;
+var counter;
+var stars;
+var rect;
+var movingScreen;
+var backgroundImages;
+var starsDestroyed = 0;
+
+
 var music;
 var gameOver = false;
 var level = 0;
@@ -37,10 +52,24 @@ class GameScene extends Phaser.Scene{
   create()  {
 
     //Background image
-    spaceBackground = this.add.image(400, 500, 'space');
+      /*creates random rectangle of stars, would be good for background but
+      cannot figure out how to move the stars, as they are a shape and not an image*/
+
+    /*
+    stars =  this.add.group({ key: 'star', frameQuantity: 300 });
+    rect = new Phaser.Geom.Rectangle(0, 0, 800, 600);
+    Phaser.Actions.RandomRectangle(stars.getChildren(), rect); */
+
+
+  //  spaceBackground = this.add.image(400, 500, 'space');
+    sky = new Phaser.Display.Color(120, 120, 255);
+    space = new Phaser.Display.Color(0, 0, 0);
     timedBackground = this.time.addEvent({ delay: 10, callback: this.moveBackground, callbackScope: this, loop: true });
       //Flying Obstacles
     flyingObject = this.physics.add.group ();
+      //Game background images
+    backgroundImages = this.physics.add.group();
+    starsDestroyed = 0;
       //keyboard input
     keys = this.input.keyboard.addKeys('W,S,A,D,');
       //levels
@@ -84,6 +113,7 @@ class GameScene extends Phaser.Scene{
       //player
     player = this.physics.add.sprite(400, 0, 'dude');
     player.anims.play('turn', true);
+    player.body.collideWorldBounds=true;
       //colliders
     this.physics.add.collider(player, flyingObject, this.hitObject, null, this);
     this.physics.add.collider(flyingObject, flyingObject);
@@ -101,7 +131,8 @@ class GameScene extends Phaser.Scene{
     //timer
 
     text.setText('timedSwitch Progress: ' + timedSwitch.getProgress().toString().substr(0, 4) + '\nEvent.repeatCount: ' +
-    timedSwitch.repeatCount + '\nPaused?: ' + timedSwitch.paused + '\n Level: ' + level);
+    timedSwitch.repeatCount + '\nbackground Change Paused?: ' + timedBackground.paused + '\n Level: ' + level + '\n counter ' + counter
+    + '\n stars destroyed : ' + starsDestroyed);
     //console.log(player.y);
 
     //Player movement
@@ -111,7 +142,7 @@ class GameScene extends Phaser.Scene{
     else if (keys.D.isDown) {
       player.setVelocityX(200);
     } else {
-      player.setVelocityX(0);
+      //player.setVelocityX(0);
     }
     if (gameOver == true) {
       this.physics.pause();
@@ -126,6 +157,26 @@ class GameScene extends Phaser.Scene{
         player.body.gravity.y = 800;
     }
     //emitter.setPosition(player.x, player.y);
+
+  }
+
+//background star placement
+  placebStar()  {
+
+    var nextStar;
+    nextStar = backgroundImages.create(Phaser.Math.FloatBetween(0, 800), 650, 'star');
+    nextStar.setDepth(-1);
+    nextStar.setVelocityY(-20);
+    //used to destroy old meteors.. ? need to add other bounds other than -x
+    backgroundImages.children.iterate(function (child) {
+        //bit found in code that works, no idea what it does. ..
+      if (child == undefined)
+          return;
+      if (child.y < 0)
+          child.destroy();
+          starsDestroyed++;
+    })
+
   }
 
   placeMeteor()  {
@@ -141,7 +192,7 @@ class GameScene extends Phaser.Scene{
         //bit found in code that works, no idea what it does. ..
       if (child == undefined)
           return;
-      if (child.x < -50)
+      if (child.y < 0)
           child.destroy();
     })
 
@@ -158,10 +209,10 @@ class GameScene extends Phaser.Scene{
     //used to destroy old satellites.. ? need to add other bounds other than -x
     flyingObject.children.iterate(function (child) {
         //bit found in code that works, no idea what it does. ..
-      if (child == undefined)
-          return;
-      if (child.x < -50)
-          child.destroy();
+        if (child == undefined)
+            return;
+        if (child.y < 0)
+            child.destroy();
     })
 
   }
@@ -177,10 +228,10 @@ class GameScene extends Phaser.Scene{
     //used to destroy old stones.. ? need to add other bounds other than -x
     flyingObject.children.iterate(function (child) {
         //bit found in code that works, no idea what it does. ..
-      if (child == undefined)
-          return;
-      if (child.x < -50)
-          child.destroy();
+        if (child == undefined)
+            return;
+        if (child.y < 0)
+            child.destroy();
     })
 
   }
@@ -192,8 +243,21 @@ class GameScene extends Phaser.Scene{
 
   moveBackground() {
     //spaceBackground.y += -.05;
-    spaceBackground.y += -.5;
+    //spaceBackground.y += -.5;
     player.angle += 5;
+  }
+
+  switchBackgroundColor() {
+    counter++;
+      if (counter <= 1200) {
+        hexColor = Phaser.Display.Color.Interpolate.ColorWithColor(space, sky, 1200, counter);
+        this.cameras.main.setBackgroundColor(hexColor);
+      } else {
+        timedBackground.paused = true;
+      }
+
+
+
   }
     //function to change the level !
   switchLevel() {
@@ -204,6 +268,7 @@ class GameScene extends Phaser.Scene{
         timedMeteor = this.time.addEvent({ delay: 2000, callback: this.placeMeteor, callbackScope: this, loop: true });
         timedSatellite = this.time.addEvent({ delay: 5000, callback: this.placeSatellite, callbackScope: this, loop: true });
         timedStone = this.time.addEvent({ delay: 1000, callback: this.placeStone, callbackScope: this, loop: true });
+        timedStar = this.time.addEvent({ delay: 500, callback: this.placebStar, callbackScope: this, loop: true });
         console.log("Level 1 !");
         break;
       case 2:
@@ -211,6 +276,14 @@ class GameScene extends Phaser.Scene{
         timedSatellite.paused = true;
         timedStone.paused = true;
         console.log("Level 2 !");
+        counter = 0;
+        timedBackground = this.time.addEvent({ delay: 20, callback: this.switchBackgroundColor, callbackScope: this, loop: true });
+        //change background color?
+      /*  for (var i = 0; i < 600; i++) {
+          hexColor = Phaser.Display.Color.Interpolate.ColorWithColor(space, sky, 600, i);
+          this.cameras.main.setBackgroundColor(hexColor);
+          console.log("Interpolating?" + i);
+        } */
         break;
     }
   }
