@@ -278,12 +278,6 @@ class GameScene extends Phaser.Scene{
         console.log("Level 2 !");
         counter = 0;
         timedBackground = this.time.addEvent({ delay: 20, callback: this.switchBackgroundColor, callbackScope: this, loop: true });
-        //change background color?
-      /*  for (var i = 0; i < 600; i++) {
-          hexColor = Phaser.Display.Color.Interpolate.ColorWithColor(space, sky, 600, i);
-          this.cameras.main.setBackgroundColor(hexColor);
-          console.log("Interpolating?" + i);
-        } */
         break;
     }
   }
