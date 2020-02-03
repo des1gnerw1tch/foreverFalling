@@ -36,8 +36,9 @@ class MenuScene extends Phaser.Scene{
       //menu music
       music = this.sound.add('spaceTheme');
       music.play();
+      music.setLoop(true);
         //particles test
-      
+
       //emitter.setBlendMode(Phaser.BlendModes.ADD);
 
   }
