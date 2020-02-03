@@ -137,12 +137,12 @@ class GameScene extends Phaser.Scene{
 
     //Player movement
     if (keys.A.isDown)  {
-      player.setVelocityX(-200);
+      player.setAccelerationX(-500);
     }
     else if (keys.D.isDown) {
-      player.setVelocityX(200);
+      player.setAccelerationX(500);
     } else {
-      //player.setVelocityX(0);
+      player.setAccelerationX(0);
     }
     if (gameOver == true) {
       this.physics.pause();
