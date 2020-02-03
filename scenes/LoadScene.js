@@ -25,7 +25,7 @@ class LoadScene extends Phaser.Scene{
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
     this.load.spritesheet('astronaut', 'assets/astronaut.png', { frameWidth: 128.25, frameHeight: 180 });
         //theme music
-      this.load.audio('spaceTheme', 'assets/spaceMusic.mp3');
+      this.load.audio('spaceTheme', 'assets/menuMusic.mp3');
       //sound effects
     this.load.audio('yeet', 'assets/maxyeet.m4a');
     this.load.audio('datBei', 'assets/maxdatbei.m4a');
