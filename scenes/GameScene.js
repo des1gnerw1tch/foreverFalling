@@ -167,6 +167,8 @@ class GameScene extends Phaser.Scene{
     nextStar = backgroundImages.create(Phaser.Math.FloatBetween(0, 800), 650, 'star');
     nextStar.setDepth(-1);
     nextStar.setVelocityY(-20);
+//  nextStar.setVelocityY(Phaser.Math.Between(1, 3));
+
     //used to destroy old meteors.. ? need to add other bounds other than -x
     backgroundImages.children.iterate(function (child) {
         //bit found in code that works, no idea what it does. ..
@@ -235,10 +237,14 @@ class GameScene extends Phaser.Scene{
     })
 
   }
+
   hitObject() {
     player.setTint(0xff0000);
   //  gameOver = true;
-    this.scene.start("startMenu");
+  //  this.scene.start("startMenu");
+    this.physics.pause();
+    this.scene.pause("enterGame");
+    this.scene.launch("endGame", level);
   }
 
   moveBackground() {

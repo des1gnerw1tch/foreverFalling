@@ -6,7 +6,7 @@ class MenuScene extends Phaser.Scene{
   }
     //testing passing data down from scene
   init(data) {
-    console.log("data");
+    console.log(data);
     console.log("I got it! :)");
   }
 
