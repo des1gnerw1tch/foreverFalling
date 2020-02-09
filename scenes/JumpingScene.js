@@ -13,7 +13,14 @@ class JumpingScene extends Phaser.Scene{
     //keys
     keys = this.input.keyboard.addKeys('W,S,A,D,');
 
-    spaceBackground = this.add.image(400, 300, 'space');
+      //Background
+      for (var i = 0; i < 100; i++) {
+        var aStar = this.add.image(Phaser.Math.FloatBetween(0, 800), Phaser.Math.FloatBetween(0, 600), 'star');
+        aStar.setDepth(-1);
+      }
+
+          this.add.image(700, 100, 'smallMars').setScale(1);
+  //  spaceBackground = this.add.image(400, 300, 'space');
     platforms = this.physics.add.staticGroup();
 
       //creating platforms

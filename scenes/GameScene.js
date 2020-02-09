@@ -24,6 +24,7 @@ var space;
 var counter;
 var stars;
 var rect;
+var randomRect;
 var movingScreen;
 var backgroundImages;
 var starsDestroyed = 0;
@@ -50,18 +51,7 @@ class GameScene extends Phaser.Scene{
   }
 
   create()  {
-
-    //Background image
-      /*creates random rectangle of stars, would be good for background but
-      cannot figure out how to move the stars, as they are a shape and not an image*/
-
-    /*
-    stars =  this.add.group({ key: 'star', frameQuantity: 300 });
-    rect = new Phaser.Geom.Rectangle(0, 0, 800, 600);
-    Phaser.Actions.RandomRectangle(stars.getChildren(), rect); */
-
-
-  //  spaceBackground = this.add.image(400, 500, 'space');
+      //sky colors and player rotation
     sky = new Phaser.Display.Color(120, 120, 255);
     space = new Phaser.Display.Color(0, 0, 0);
     timedBackground = this.time.addEvent({ delay: 10, callback: this.moveBackground, callbackScope: this, loop: true });
@@ -74,7 +64,7 @@ class GameScene extends Phaser.Scene{
     keys = this.input.keyboard.addKeys('W,S,A,D,');
       //levels
     level = 0;
-    text = this.add.text(32, 32);
+    text = this.add.text(32, 32, '',  {fill: '#00ff00' });
     this.switchLevel();
     timedSwitch = this.time.addEvent({ delay: 20000, callback: this.switchLevel, callbackScope: this, loop: true });
       //spawns
@@ -121,6 +111,12 @@ class GameScene extends Phaser.Scene{
     /*  music = this.sound.add('spaceTheme');
       music.play();*/
 
+        //Background images of stars
+      for (var i = 0; i < 50; i++) {
+        var aStar = backgroundImages.create(Phaser.Math.FloatBetween(0, 800), Phaser.Math.FloatBetween(0, 600), 'star');
+        aStar.setDepth(-1);
+        aStar.setVelocityY(-20);
+      }
 
 
   }
@@ -128,12 +124,11 @@ class GameScene extends Phaser.Scene{
 
 
   update () {
-    //timer
+    //DEBUG
 
     text.setText('timedSwitch Progress: ' + timedSwitch.getProgress().toString().substr(0, 4) + '\nEvent.repeatCount: ' +
     timedSwitch.repeatCount + '\nbackground Change Paused?: ' + timedBackground.paused + '\n Level: ' + level + '\n counter ' + counter
     + '\n stars destroyed : ' + starsDestroyed);
-    //console.log(player.y);
 
     //Player movement
     if (keys.A.isDown)  {
@@ -174,9 +169,10 @@ class GameScene extends Phaser.Scene{
         //bit found in code that works, no idea what it does. ..
       if (child == undefined)
           return;
-      if (child.y < 0)
+      if (child.y < 0)  {
           child.destroy();
           starsDestroyed++;
+        }
     })
 
   }

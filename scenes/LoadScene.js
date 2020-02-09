@@ -17,6 +17,9 @@ class LoadScene extends Phaser.Scene{
     this.load.image('menu', 'assets/menu.jpg');
     this.load.image('title', 'assets/title.png');
     this.load.image('playButton', 'assets/playButton.png');
+    //background objects
+    this.load.image('star', 'assets/star.png');
+    this.load.image('smallMars', 'assets/smallMars.png');
     //blocks
     this.load.image('block1', 'assets/block1.png');
     this.load.image('block2', 'assets/block2.png');
@@ -32,7 +35,6 @@ class LoadScene extends Phaser.Scene{
     //particles
     this.load.image('starParticle', 'assets/blue.png');
     this.load.atlas('flares', 'assets/flares.png', 'assets/flares.json');
-    this.load.image('star', 'assets/star.png');
       //loading text
     this.add.text(20, 20, "Loading Game...");
 
