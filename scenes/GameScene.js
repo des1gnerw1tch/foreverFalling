@@ -13,14 +13,19 @@ var timedSatellite;
 var timedStone;
 var timedBackground;
 var timedStar;
+var timedFireball;
 
 
 var keys;
 //background
 var spaceBackground;
 var hexColor;
+//atmosphere colors
 var sky;
-var space;
+var cExo;
+var cThermo;
+var cIon;
+
 var counter;
 var stars;
 var rect;
@@ -33,6 +38,7 @@ var starsDestroyed = 0;
 var music;
 var gameOver = false;
 var level = 0;
+var atmosphere; // text holder for atmosphere player is in
 var children; // dont know why this has to be here
 var text;
 //obstacles
@@ -51,9 +57,13 @@ class GameScene extends Phaser.Scene{
   }
 
   create()  {
+    music.play();
       //sky colors and player rotation
     sky = new Phaser.Display.Color(120, 120, 255);
-    space = new Phaser.Display.Color(0, 0, 0);
+    cExo = new Phaser.Display.Color(0, 0, 0);
+    cThermo = new Phaser.Display.Color(255, 34, 0);
+    cIon = new Phaser.Display.Color(141, 5, 182);
+
     timedBackground = this.time.addEvent({ delay: 10, callback: this.moveBackground, callbackScope: this, loop: true });
       //Flying Obstacles
     flyingObject = this.physics.add.group ();
@@ -66,7 +76,7 @@ class GameScene extends Phaser.Scene{
     level = 0;
     text = this.add.text(32, 32, '',  {fill: '#00ff00' });
     this.switchLevel();
-    timedSwitch = this.time.addEvent({ delay: 20000, callback: this.switchLevel, callbackScope: this, loop: true });
+    timedSwitch = this.time.addEvent({ delay: 25500, callback: this.switchLevel, callbackScope: this, loop: true });
       //spawns
 
       //particles
@@ -101,8 +111,8 @@ class GameScene extends Phaser.Scene{
     emitter3.setSpeed(600);*/
 
       //player
-    player = this.physics.add.sprite(400, 0, 'dude');
-    player.anims.play('turn', true);
+    player = this.physics.add.sprite(400, 0, 'astronaut').setScale(.7);
+    player.anims.play('falling', true);
     player.body.collideWorldBounds=true;
       //colliders
     this.physics.add.collider(player, flyingObject, this.hitObject, null, this);
@@ -127,7 +137,7 @@ class GameScene extends Phaser.Scene{
     //DEBUG
 
     text.setText('timedSwitch Progress: ' + timedSwitch.getProgress().toString().substr(0, 4) + '\nEvent.repeatCount: ' +
-    timedSwitch.repeatCount + '\nbackground Change Paused?: ' + timedBackground.paused + '\n Level: ' + level + '\n counter ' + counter
+    timedSwitch.repeatCount + '\nbackground Change Paused?: ' + timedBackground.paused + '\n Level: ' + atmosphere + '\n counter ' + counter
     + '\n stars destroyed : ' + starsDestroyed);
 
     //Player movement
@@ -177,10 +187,17 @@ class GameScene extends Phaser.Scene{
 
   }
 
+/*Hit objects spawn functions
+------------------------------------------------------------------------
+*/
   placeMeteor()  {
     //Meteor movement
     var nextMeteor;
     nextMeteor = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'meteor');
+      //meteors will turn red when in thermosphere, need to add counter
+    if (level == 2 && counter >= 350)
+      nextMeteor.setTint(0xff0000);
+
     nextMeteor.setScale(.5);
     nextMeteor.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
     nextMeteor.setVelocityY(-100);
@@ -234,13 +251,33 @@ class GameScene extends Phaser.Scene{
 
   }
 
+  placeFireball() {
+    var nextFireball;
+    nextFireball = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'fireball');
+    nextFireball.setScale(.01);
+    nextFireball.setVelocityX(Phaser.Math.FloatBetween(-100, 100));
+    nextFireball.setVelocityY(-300);
+    nextFireball.setAngle(120);
+    nextFireball.setAngularVelocity(Phaser.Math.FloatBetween(0,20));
+    //used to destroy old stones.. ? need to add other bounds other than -x
+    flyingObject.children.iterate(function (child) {
+        //bit found in code that works, no idea what it does. ..
+        if (child == undefined)
+            return;
+        if (child.y < 0)
+            child.destroy();
+    })
+  }
+  //------------------------------------------------------------------
+
+
   hitObject() {
     player.setTint(0xff0000);
   //  gameOver = true;
   //  this.scene.start("startMenu");
     this.physics.pause();
     this.scene.pause("enterGame");
-    this.scene.launch("endGame", level);
+    this.scene.launch("endGame", atmosphere);
   }
 
   moveBackground() {
@@ -249,14 +286,32 @@ class GameScene extends Phaser.Scene{
     player.angle += 5;
   }
 
+    /*this function switches the background color with a counter and interpolate.
+    Is called multiple times until paused. the Switch is used so that the right colors
+    are switched for each level.
+    */
   switchBackgroundColor() {
     counter++;
-      if (counter <= 1200) {
-        hexColor = Phaser.Display.Color.Interpolate.ColorWithColor(space, sky, 1200, counter);
-        this.cameras.main.setBackgroundColor(hexColor);
-      } else {
-        timedBackground.paused = true;
-      }
+    switch(level) {
+      case 2:
+        if (counter <= 600) {
+          hexColor = Phaser.Display.Color.Interpolate.ColorWithColor(cExo, cThermo, 600, counter);
+          this.cameras.main.setBackgroundColor(hexColor);
+        } else {
+          timedBackground.paused = true;
+          }
+        break;
+      case 3:
+        if (counter <= 600) {
+          hexColor = Phaser.Display.Color.Interpolate.ColorWithColor(cThermo, cIon, 600, counter);
+          this.cameras.main.setBackgroundColor(hexColor);
+          } else {
+          timedBackground.paused = true;
+          }
+        break;
+
+
+    }
 
 
 
@@ -267,6 +322,7 @@ class GameScene extends Phaser.Scene{
 
     switch(level) {
       case 1:
+        atmosphere = "Exosphere";
         timedMeteor = this.time.addEvent({ delay: 2000, callback: this.placeMeteor, callbackScope: this, loop: true });
         timedSatellite = this.time.addEvent({ delay: 5000, callback: this.placeSatellite, callbackScope: this, loop: true });
         timedStone = this.time.addEvent({ delay: 1000, callback: this.placeStone, callbackScope: this, loop: true });
@@ -274,12 +330,25 @@ class GameScene extends Phaser.Scene{
         console.log("Level 1 !");
         break;
       case 2:
-        timedMeteor.paused = true;
+        atmosphere = "Thermosphere";
+        counter = 0;
+        timedBackground = this.time.addEvent({ delay: 20, callback: this.switchBackgroundColor, callbackScope: this, loop: true });
+          //pausing old objects so that they don't spawn
+      //  timedMeteor.paused = true;
         timedSatellite.paused = true;
         timedStone.paused = true;
         console.log("Level 2 !");
+        //starting new spawns
+        timedFireball = this.time.addEvent({ delay: 200, callback: this.placeFireball, callbackScope: this, loop: true });
+
+        break;
+      case 3:
+        atmosphere = "Ionosphere";
         counter = 0;
         timedBackground = this.time.addEvent({ delay: 20, callback: this.switchBackgroundColor, callbackScope: this, loop: true });
+        //pausing old objects
+        timedMeteor.paused = true;
+        timedFireball.paused = true;
         break;
     }
   }

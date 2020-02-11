@@ -29,13 +29,13 @@ class MenuScene extends Phaser.Scene{
     })
 
     playButton.on("pointerup", ()=>  {
-      music.pause();
+    //  music.pause();
       this.scene.start("enterIntro");
     })
 
       //menu music
       music = this.sound.add('spaceTheme');
-      music.play();
+    //  music.play();
       music.setLoop(true);
         //particles test
 

@@ -14,19 +14,22 @@ class LoadScene extends Phaser.Scene{
     this.load.image('meteor', 'assets/meteor.gif');
     this.load.image('satellite', 'assets/satellite.png');
     this.load.image('stone', 'assets/stone.png');
+    this.load.image('fireball', 'assets/fireball.png');
+      //load UI.
     this.load.image('menu', 'assets/menu.jpg');
     this.load.image('title', 'assets/title.png');
     this.load.image('playButton', 'assets/playButton.png');
-    //background objects
+      //background objects
     this.load.image('star', 'assets/star.png');
     this.load.image('smallMars', 'assets/smallMars.png');
-    //blocks
+      //blocks
     this.load.image('block1', 'assets/block1.png');
     this.load.image('block2', 'assets/block2.png');
     this.load.image('block3', 'assets/block3.png');
     this.load.image('block4', 'assets/block4.png');
+      //Sprites
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-    this.load.spritesheet('astronaut', 'assets/astronaut.png', { frameWidth: 128.25, frameHeight: 180 });
+    this.load.spritesheet('astronaut', 'assets/astronaut.png', { frameWidth: 43.5, frameHeight: 64 });
         //theme music
       this.load.audio('spaceTheme', 'assets/menuMusic.mp3');
       //sound effects

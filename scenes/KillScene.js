@@ -12,6 +12,7 @@ class KillScene extends Phaser.Scene{
     playerScore = score;
   }
   create()  {
+    music.pause();
     killText = this.add.text(400, 200, "Game Over. \n Level Reached: " + playerScore);
     homeButton = this.add.text(400, 240, "Home");
     homeButton.setInteractive();
