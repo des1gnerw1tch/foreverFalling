@@ -15,11 +15,11 @@ class JumpingScene extends Phaser.Scene{
 
       //Background
       for (var i = 0; i < 100; i++) {
-        var aStar = this.add.image(Phaser.Math.FloatBetween(0, 800), Phaser.Math.FloatBetween(0, 600), 'star');
+        var aStar = this.add.image(Phaser.Math.FloatBetween(0, 800), Phaser.Math.FloatBetween(0, 600), 'star').setScale(1);
         aStar.setDepth(-1);
       }
 
-          this.add.image(700, 100, 'smallMars').setScale(1);
+          this.add.image(700, 100, 'saturn').setScale(1);
   //  spaceBackground = this.add.image(400, 300, 'space');
     platforms = this.physics.add.staticGroup();
 

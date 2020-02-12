@@ -128,7 +128,42 @@ class GameScene extends Phaser.Scene{
         aStar.setVelocityY(-20);
       }
 
+      //animations -------------------------------------------------------------
+      //Meteor Types
+      this.anims.create({
+        key: 'm0',
+        frames: [ { key: 'meteor', frame: 0 } ],
+        frameRate: 20,
+      })
+      this.anims.create({
+        key: 'm1',
+        frames: [ { key: 'meteor', frame: 1 } ],
+        frameRate: 20,
+      })
+      this.anims.create({
+        key: 'm2',
+        frames: [ { key: 'meteor', frame: 2 } ],
+        frameRate: 20,
+      })
+      this.anims.create({
+        key: 'm3',
+        frames: [ { key: 'meteor', frame: 3 } ],
+        frameRate: 20,
+      })
+      this.anims.create({
+        key: 'm4',
+        frames: [ { key: 'meteor', frame: 4 } ],
+        frameRate: 20,
+      })
+      this.anims.create({
+        key: 'm5',
+        frames: [ { key: 'meteor', frame: 5 } ],
+        frameRate: 20,
+      })
 
+
+
+//------------------------------------------------------------------------------
   }
 
 
@@ -194,6 +229,24 @@ class GameScene extends Phaser.Scene{
     //Meteor movement
     var nextMeteor;
     nextMeteor = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'meteor');
+    //random meteor skin
+    var num = Phaser.Math.Between(0, 2);
+    console.log(num);
+    switch (num)  {
+      case 0: nextMeteor.anims.play('m0', true);
+      break;
+      case 1: nextMeteor.anims.play('m1', true);
+      break;
+      case 2: nextMeteor.anims.play('m2', true);
+      break;
+      case 3: nextMeteor.anims.play('m3', true);
+      break;
+      case 4: nextMeteor.anims.play('m4', true);
+      break;
+      case 5: nextMeteor.anims.play('m5', true);
+      break;
+    }
+
       //meteors will turn red when in thermosphere, need to add counter
     if (level == 2 && counter >= 350)
       nextMeteor.setTint(0xff0000);
@@ -201,7 +254,7 @@ class GameScene extends Phaser.Scene{
     nextMeteor.setScale(.5);
     nextMeteor.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
     nextMeteor.setVelocityY(-100);
-    nextMeteor.setAngularVelocity(Phaser.Math.FloatBetween(0,100));
+  //  nextMeteor.setAngularVelocity(Phaser.Math.FloatBetween(0,100));
     //used to destroy old meteors.. ? need to add other bounds other than -x
     flyingObject.children.iterate(function (child) {
         //bit found in code that works, no idea what it does. ..
@@ -236,7 +289,7 @@ class GameScene extends Phaser.Scene{
     //Stone movement
     var nextStone;
     nextStone = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'stone');
-    nextStone.setScale(.01);
+    nextStone.setScale(2);
     nextStone.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
     nextStone.setVelocityY(-300);
     nextStone.setAngularVelocity(Phaser.Math.FloatBetween(0,100));
