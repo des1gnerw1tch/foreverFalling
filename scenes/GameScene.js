@@ -14,6 +14,7 @@ var timedStone;
 var timedBackground;
 var timedStar;
 var timedFireball;
+var timedLMonster;
 
 
 var keys;
@@ -161,8 +162,13 @@ class GameScene extends Phaser.Scene{
         frameRate: 20,
       })
 
-
-
+      //Lava Dude
+      this.anims.create({
+        key: 'aLavaMonster',
+        frames: this.anims.generateFrameNumbers('lavaMonster', {start: 0, end: 6}),
+        frameRate: 12,
+        repeat: -1
+      })
 //------------------------------------------------------------------------------
   }
 
@@ -321,6 +327,25 @@ class GameScene extends Phaser.Scene{
             child.destroy();
     })
   }
+
+  placeLMonster() {
+    var nextLMonster;
+    nextLMonster = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'lavaMonster');
+    nextLMonster.setScale(1);
+    nextLMonster.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
+    nextLMonster.setVelocityY(-100);
+    nextLMonster.anims.play('aLavaMonster', true);
+  //  nextLMonster.setAngle(120);
+    nextLMonster.setAngularVelocity(Phaser.Math.FloatBetween(0,20));
+    //used to destroy old stones.. ? need to add other bounds other than -x
+    flyingObject.children.iterate(function (child) {
+        //bit found in code that works, no idea what it does. ..
+        if (child == undefined)
+            return;
+        if (child.y < 0)
+            child.destroy();
+    })
+  }
   //------------------------------------------------------------------
 
 
@@ -392,7 +417,8 @@ class GameScene extends Phaser.Scene{
         timedStone.paused = true;
         console.log("Level 2 !");
         //starting new spawns
-        timedFireball = this.time.addEvent({ delay: 200, callback: this.placeFireball, callbackScope: this, loop: true });
+        timedFireball = this.time.addEvent({ delay: 600, callback: this.placeFireball, callbackScope: this, loop: true });
+        timedLMonster = this.time.addEvent({ delay: 3000, callback: this.placeLMonster, callbackScope: this, loop: true });
 
         break;
       case 3:

@@ -16,6 +16,7 @@ class LoadScene extends Phaser.Scene{
     this.load.image('satellite', 'assets/satellite.png');
     this.load.image('stone', 'assets/stone.png');
     this.load.image('fireball', 'assets/fireball.png');
+    this.load.spritesheet('lavaMonster', 'assets/lavaMonster.png', {frameWidth: 64, frameHeight: 64});
       //load UI.
     this.load.image('menu', 'assets/menu.jpg');
     this.load.image('title', 'assets/title.png');
