@@ -128,7 +128,7 @@ class GameScene extends Phaser.Scene{
         aStar.setDepth(-1);
         aStar.setVelocityY(-20);
       }
-      var planet1 = backgroundImages.create(400, 300, 'planet1');
+      var planet1 = backgroundImages.create(600, 100, 'planet1');
       planet1.setDepth(-1);
       planet1.setVelocityY(-10);
     
