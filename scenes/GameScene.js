@@ -122,12 +122,16 @@ class GameScene extends Phaser.Scene{
     /*  music = this.sound.add('spaceTheme');
       music.play();*/
 
-        //Background images of stars
+        //Background images of stars + planet
       for (var i = 0; i < 50; i++) {
         var aStar = backgroundImages.create(Phaser.Math.FloatBetween(0, 800), Phaser.Math.FloatBetween(0, 600), 'star');
         aStar.setDepth(-1);
         aStar.setVelocityY(-20);
       }
+      var planet1 = backgroundImages.create(400, 300, 'planet1);
+      planet1.setDepth(-1);
+      planet1.setVelocityY(-10);
+    
 
       //animations -------------------------------------------------------------
       //Meteor Types
