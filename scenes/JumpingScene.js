@@ -126,6 +126,9 @@ class JumpingScene extends Phaser.Scene{
 
     if (player.y > 600) {
       soundDatBei.play();
+      keys.A.isDown = false;
+      keys.D.isDown = false;
+      keys.W.isDown = false;
       this.scene.start("enterGame");
     }
   }

@@ -15,7 +15,8 @@ var timedBackground;
 var timedStar;
 var timedFireball;
 var timedLMonster;
-
+var timedEnergyBall;
+var timedFairy;
 
 var keys;
 //background
@@ -39,9 +40,12 @@ var starsDestroyed = 0;
 var music;
 var gameOver = false;
 var level = 0;
+
 var atmosphere; // text holder for atmosphere player is in
+var aText;
 var children; // dont know why this has to be here
-var text;
+var debug;
+var showDebug = false;
 //obstacles
 var flyingObject;
 var timeText;
@@ -62,7 +66,7 @@ class GameScene extends Phaser.Scene{
       //sky colors and player rotation
     sky = new Phaser.Display.Color(120, 120, 255);
     cExo = new Phaser.Display.Color(0, 0, 0);
-    cThermo = new Phaser.Display.Color(255, 34, 0);
+    cThermo = new Phaser.Display.Color(200, 34, 0);
     cIon = new Phaser.Display.Color(141, 5, 182);
 
     timedBackground = this.time.addEvent({ delay: 10, callback: this.moveBackground, callbackScope: this, loop: true });
@@ -72,12 +76,14 @@ class GameScene extends Phaser.Scene{
     backgroundImages = this.physics.add.group();
     starsDestroyed = 0;
       //keyboard input
-    keys = this.input.keyboard.addKeys('W,S,A,D,');
+    keys = this.input.keyboard.addKeys('W,S,A,D,Z');
       //levels
     level = 0;
-    text = this.add.text(32, 32, '',  {fill: '#00ff00' });
+    debug = this.add.text(32, 32, '',  {fill: '#00ff00' });
+    aText = this.add.text(500, 50, '', {fontSize: 32});
     this.switchLevel();
     timedSwitch = this.time.addEvent({ delay: 25500, callback: this.switchLevel, callbackScope: this, loop: true });
+  //  timedSwitch = this.time.addEvent({ delay: 10000, callback: this.switchLevel, callbackScope: this, loop: true });
       //spawns
 
       //particles
@@ -122,16 +128,14 @@ class GameScene extends Phaser.Scene{
     /*  music = this.sound.add('spaceTheme');
       music.play();*/
 
-        //Background images of stars + planet
+        //Background images of stars/ planets
       for (var i = 0; i < 50; i++) {
         var aStar = backgroundImages.create(Phaser.Math.FloatBetween(0, 800), Phaser.Math.FloatBetween(0, 600), 'star');
         aStar.setDepth(-1);
         aStar.setVelocityY(-20);
       }
-      var planet1 = backgroundImages.create(600, 100, 'planet1');
-      planet1.setDepth(-1);
-      planet1.setVelocityY(-10);
-    
+
+      backgroundImages.create(700, 600, 'bigPlanet1').setScale(3).setVelocityY(-20).setDepth(-1);
 
       //animations -------------------------------------------------------------
       //Meteor Types
@@ -173,6 +177,23 @@ class GameScene extends Phaser.Scene{
         frameRate: 12,
         repeat: -1
       })
+
+      //Energy Ball animations
+      this.anims.create({
+        key: 'aEnergyBall',
+        frames: this.anims.generateFrameNumbers('energyBall', {start: 0, end: 6}),
+        frameRate: 48,
+        repeat: -1
+      })
+
+      //Fairy Animations
+      this.anims.create({
+        key: 'aFairy',
+        frames: this.anims.generateFrameNumbers('fairy', {start: 0, end: 2}),
+        frameRate: 10,
+        repeat: -1
+      })
+
 //------------------------------------------------------------------------------
   }
 
@@ -181,10 +202,22 @@ class GameScene extends Phaser.Scene{
   update () {
     //DEBUG
 
-    text.setText('timedSwitch Progress: ' + timedSwitch.getProgress().toString().substr(0, 4) + '\nEvent.repeatCount: ' +
-    timedSwitch.repeatCount + '\nbackground Change Paused?: ' + timedBackground.paused + '\n Level: ' + atmosphere + '\n counter ' + counter
-    + '\n stars destroyed : ' + starsDestroyed);
-
+    if (this.input.keyboard.checkDown(keys.Z, 1000))  {
+      if (showDebug)  {
+      showDebug = false;
+      } else {
+        showDebug = true;
+      }
+    }
+    if (showDebug)  {
+      debug.setText('timedSwitch Progress: ' + timedSwitch.getProgress().toString().substr(0, 4) + '\nEvent.repeatCount: ' +
+      timedSwitch.repeatCount + '\nbackground Change Paused?: ' + timedBackground.paused + '\n Level: ' + atmosphere + '\n counter ' + counter
+      + '\n stars destroyed : ' + starsDestroyed + '\nA key Down? : ' + keys.A.isDown + '\nD key Down? : ' + keys.D.isDown);
+    } else {
+      debug.setText('');
+    }
+    //level UI
+    aText.setText(atmosphere);
     //Player movement
     if (keys.A.isDown)  {
       player.setAccelerationX(-500);
@@ -224,7 +257,7 @@ class GameScene extends Phaser.Scene{
         //bit found in code that works, no idea what it does. ..
       if (child == undefined)
           return;
-      if (child.y < 0)  {
+      if (child.y < -300)  {
           child.destroy();
           starsDestroyed++;
         }
@@ -341,23 +374,51 @@ class GameScene extends Phaser.Scene{
     nextLMonster.anims.play('aLavaMonster', true);
   //  nextLMonster.setAngle(120);
     nextLMonster.setAngularVelocity(Phaser.Math.FloatBetween(0,20));
-    //used to destroy old stones.. ? need to add other bounds other than -x
+
     flyingObject.children.iterate(function (child) {
-        //bit found in code that works, no idea what it does. ..
         if (child == undefined)
             return;
         if (child.y < 0)
             child.destroy();
     })
   }
+
+  placeEnergyBall() {
+    if (counter > 200)  {
+      var nextEnergyBall;
+      nextEnergyBall = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'energyBall');
+      nextEnergyBall.setScale(.5);
+      nextEnergyBall.setVelocityX(Phaser.Math.FloatBetween(-50, 50));
+      nextEnergyBall.setVelocityY(-100);
+      nextEnergyBall.anims.play('aEnergyBall', true);
+      nextEnergyBall.setAngularVelocity(Phaser.Math.FloatBetween(200, 250));
+    }
+
+    flyingObject.children.iterate(function (child) {
+        if (child == undefined)
+            return;
+        if (child.y < 0)
+            child.destroy();
+    })
+  }
+
+  placeFairy()  {
+    var nextFairy;
+    nextFairy = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'fairy');
+    nextFairy.setScale(1);
+    nextFairy.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
+    nextFairy.setVelocityY(-120);
+    nextFairy.setAngle(-30);
+    nextFairy.anims.play('aFairy', true);
+    nextFairy.setAngularVelocity(Phaser.Math.FloatBetween(-2, -10));
+  }
   //------------------------------------------------------------------
 
 
   hitObject() {
     player.setTint(0xff0000);
-  //  gameOver = true;
-  //  this.scene.start("startMenu");
-    this.physics.pause();
+    keys.A.isDown = false;
+    keys.D.isDown = false;
     this.scene.pause("enterGame");
     this.scene.launch("endGame", atmosphere);
   }
@@ -432,6 +493,11 @@ class GameScene extends Phaser.Scene{
         //pausing old objects
         timedMeteor.paused = true;
         timedFireball.paused = true;
+        timedLMonster.paused = true;
+
+        //starting new spawns
+        timedEnergyBall = this.time.addEvent({delay: 1000, callback: this.placeEnergyBall, callbackScope: this, loop: true});
+        timedFairy = this.time.addEvent({delay: 6000, callback: this.placeFairy, callbackScope: this, loop: true});
         break;
     }
   }
