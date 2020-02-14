@@ -473,7 +473,7 @@ class GameScene extends Phaser.Scene{
     switch(level) {
       case 1:
         atmosphere = "Exosphere";
-        timedMeteor = this.time.addEvent({ delay: 2000, callback: this.placeMeteor, callbackScope: this, loop: true });
+        timedMeteor = this.time.addEvent({ delay: 1500, callback: this.placeMeteor, callbackScope: this, loop: true });
         timedSatellite = this.time.addEvent({ delay: 5000, callback: this.placeSatellite, callbackScope: this, loop: true });
         timedStone = this.time.addEvent({ delay: 1000, callback: this.placeStone, callbackScope: this, loop: true });
         timedStar = this.time.addEvent({ delay: 500, callback: this.placebStar, callbackScope: this, loop: true });
@@ -489,7 +489,7 @@ class GameScene extends Phaser.Scene{
         timedStone.paused = true;
         console.log("Level 2 !");
         //starting new spawns
-        timedFireball = this.time.addEvent({ delay: 600, callback: this.placeFireball, callbackScope: this, loop: true });
+        timedFireball = this.time.addEvent({ delay: 300, callback: this.placeFireball, callbackScope: this, loop: true });
         timedLMonster = this.time.addEvent({ delay: 3000, callback: this.placeLMonster, callbackScope: this, loop: true });
 
         break;
@@ -503,7 +503,7 @@ class GameScene extends Phaser.Scene{
         timedLMonster.paused = true;
 
         //starting new spawns
-        timedEnergyBall = this.time.addEvent({delay: 1000, callback: this.placeEnergyBall, callbackScope: this, loop: true});
+        timedEnergyBall = this.time.addEvent({delay: 500, callback: this.placeEnergyBall, callbackScope: this, loop: true});
         timedFairy = this.time.addEvent({delay: 6000, callback: this.placeFairy, callbackScope: this, loop: true});
         break;
     }
