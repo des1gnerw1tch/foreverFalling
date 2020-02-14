@@ -17,6 +17,7 @@ var timedFireball;
 var timedLMonster;
 var timedEnergyBall;
 var timedFairy;
+var timedKeyCatch;
 
 var keys;
 //background
@@ -70,6 +71,7 @@ class GameScene extends Phaser.Scene{
     cIon = new Phaser.Display.Color(141, 5, 182);
 
     timedBackground = this.time.addEvent({ delay: 10, callback: this.moveBackground, callbackScope: this, loop: true });
+    timedKeyCatch = this.time.addEvent({ delay: 100, callback: this.resetKeys, callbackScope: this, loop: false });
       //Flying Obstacles
     flyingObject = this.physics.add.group ();
       //Game background images
@@ -428,7 +430,11 @@ class GameScene extends Phaser.Scene{
     //spaceBackground.y += -.5;
     player.angle += 5;
   }
-
+    //temporary fix to movement glitch. resets the keys 100 ms after scene starts
+  resetKeys() {
+    keys.A.isDown = false;
+    keys.D.isDown = false;
+  }
     /*this function switches the background color with a counter and interpolate.
     Is called multiple times until paused. the Switch is used so that the right colors
     are switched for each level.
@@ -459,6 +465,7 @@ class GameScene extends Phaser.Scene{
 
 
   }
+
     //function to change the level !
   switchLevel() {
     level += 1;

@@ -12,7 +12,7 @@ class JumpingScene extends Phaser.Scene{
   create()  {
     //keys
     keys = this.input.keyboard.addKeys('W,S,A,D,');
-
+    timedKeyCatch = this.time.addEvent({ delay: 100, callback: this.resetKeys, callbackScope: this, loop: false });
       //Background
       for (var i = 0; i < 100; i++) {
         var aStar = this.add.image(Phaser.Math.FloatBetween(0, 800), Phaser.Math.FloatBetween(0, 600), 'star').setScale(1);
@@ -126,11 +126,14 @@ class JumpingScene extends Phaser.Scene{
 
     if (player.y > 600) {
       soundDatBei.play();
-      keys.A.isDown = false;
-      keys.D.isDown = false;
-      keys.W.isDown = false;
       this.scene.start("enterGame");
     }
+  }
+//temporary fix to movement glitch. resets the keys 100 ms after scene starts
+  resetKeys() {
+    keys.A.isDown = false;
+    keys.D.isDown = false;
+    keys.W.isDown = false;
   }
 
 }
