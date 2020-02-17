@@ -13,6 +13,7 @@ class MenuScene extends Phaser.Scene{
   create() {
     //create menu background image
     let menu;
+    let icon;
     menu = this.add.image(400, 300, 'menu');
     menu.setScale(1);
     this.add.image(400, 200, 'title').setScale(.6);
@@ -21,11 +22,12 @@ class MenuScene extends Phaser.Scene{
     playButton.setInteractive();
 
     playButton.on("pointerover", ()=>  {
-      playButton.setScale(.7);
+      icon = this.add.sprite(playButton.x + 150, playButton.y, 'astronaut');
+      icon.anims.play('falling', true);
     })
 
     playButton.on("pointerout", ()=>  {
-      playButton.setScale(.6);
+      icon.visible = false;
     })
 
     playButton.on("pointerup", ()=>  {
@@ -33,6 +35,13 @@ class MenuScene extends Phaser.Scene{
       this.scene.start("enterIntro");
     })
 
+    //menu astronaut animation
+    this.anims.create({
+      key: 'falling',
+      frames: this.anims.generateFrameNumbers('astronaut', {start: 0, end: 3}),
+      frameRate: 10,
+      repeat: -1
+    })
       //menu music
       music = this.sound.add('spaceTheme');
     //  music.play();

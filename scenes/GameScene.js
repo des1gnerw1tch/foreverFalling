@@ -18,6 +18,7 @@ var timedLMonster;
 var timedEnergyBall;
 var timedFairy;
 var timedKeyCatch;
+var timedSpaceship;
 
 var keys;
 //background
@@ -28,6 +29,7 @@ var sky;
 var cExo;
 var cThermo;
 var cIon;
+var cMeso;
 
 var counter;
 var stars;
@@ -69,6 +71,7 @@ class GameScene extends Phaser.Scene{
     cExo = new Phaser.Display.Color(0, 0, 0);
     cThermo = new Phaser.Display.Color(200, 34, 0);
     cIon = new Phaser.Display.Color(141, 5, 182);
+    cMeso = new Phaser.Display.Color(8, 18, 107);
 
     timedBackground = this.time.addEvent({ delay: 10, callback: this.moveBackground, callbackScope: this, loop: true });
     timedKeyCatch = this.time.addEvent({ delay: 100, callback: this.resetKeys, callbackScope: this, loop: false });
@@ -85,7 +88,7 @@ class GameScene extends Phaser.Scene{
     aText = this.add.text(500, 50, '', {fontSize: 32});
     this.switchLevel();
     timedSwitch = this.time.addEvent({ delay: 25500, callback: this.switchLevel, callbackScope: this, loop: true });
-  //  timedSwitch = this.time.addEvent({ delay: 10000, callback: this.switchLevel, callbackScope: this, loop: true });
+//    timedSwitch = this.time.addEvent({ delay: 1000, callback: this.switchLevel, callbackScope: this, loop: true });
       //spawns
 
       //particles
@@ -188,10 +191,18 @@ class GameScene extends Phaser.Scene{
         repeat: -1
       })
 
-      //Fairy Animations
+      //Fairy animations
       this.anims.create({
         key: 'aFairy',
         frames: this.anims.generateFrameNumbers('fairy', {start: 0, end: 2}),
+        frameRate: 10,
+        repeat: -1
+      })
+
+      //Spaceship animations
+      this.anims.create({
+        key: 'aSpaceship',
+        frames: this.anims.generateFrameNumbers('spaceship', {start: 0, end: 2}),
         frameRate: 10,
         repeat: -1
       })
@@ -414,6 +425,21 @@ class GameScene extends Phaser.Scene{
     nextFairy.anims.play('aFairy', true);
     nextFairy.setAngularVelocity(Phaser.Math.FloatBetween(-2, -10));
   }
+
+  placeSpaceship()  {
+    var num = Phaser.Math.Between(0, 2);
+    if (num == 0) {
+      var nextSpaceship;
+      nextSpaceship = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'spaceship');
+      nextSpaceship.setScale(1);
+  //  nextSpaceship.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
+      nextSpaceship.setVelocityY(-400);
+      nextSpaceship.setAngle(0);
+      nextSpaceship.anims.play('aSpaceship', true);
+    }
+  }
+
+
   //------------------------------------------------------------------
 
 
@@ -458,7 +484,14 @@ class GameScene extends Phaser.Scene{
           timedBackground.paused = true;
           }
         break;
-
+      case 4:
+        if (counter <= 600) {
+          hexColor = Phaser.Display.Color.Interpolate.ColorWithColor(cIon, cMeso, 600, counter);
+          this.cameras.main.setBackgroundColor(hexColor);
+          } else {
+            timedBackground.paused = true;
+          }
+          break;
 
     }
 
@@ -473,7 +506,7 @@ class GameScene extends Phaser.Scene{
     switch(level) {
       case 1:
         atmosphere = "Exosphere";
-        timedMeteor = this.time.addEvent({ delay: 1500, callback: this.placeMeteor, callbackScope: this, loop: true });
+        timedMeteor = this.time.addEvent({ delay: 2000, callback: this.placeMeteor, callbackScope: this, loop: true });
         timedSatellite = this.time.addEvent({ delay: 5000, callback: this.placeSatellite, callbackScope: this, loop: true });
         timedStone = this.time.addEvent({ delay: 1000, callback: this.placeStone, callbackScope: this, loop: true });
         timedStar = this.time.addEvent({ delay: 500, callback: this.placebStar, callbackScope: this, loop: true });
@@ -484,7 +517,6 @@ class GameScene extends Phaser.Scene{
         counter = 0;
         timedBackground = this.time.addEvent({ delay: 20, callback: this.switchBackgroundColor, callbackScope: this, loop: true });
           //pausing old objects so that they don't spawn
-      //  timedMeteor.paused = true;
         timedSatellite.paused = true;
         timedStone.paused = true;
         console.log("Level 2 !");
@@ -506,6 +538,19 @@ class GameScene extends Phaser.Scene{
         timedEnergyBall = this.time.addEvent({delay: 500, callback: this.placeEnergyBall, callbackScope: this, loop: true});
         timedFairy = this.time.addEvent({delay: 6000, callback: this.placeFairy, callbackScope: this, loop: true});
         break;
+        case 4:
+          atmosphere = 'Mesosphere';
+          counter = 0;
+          timedBackground = this.time.addEvent({ delay: 20, callback: this.switchBackgroundColor, callbackScope: this, loop: true });
+          //pausing old hitobjects
+          timedEnergyBall.paused = true;
+          timedFairy.paused = true;
+
+          //starting new spawns
+          timedSpaceship = this.time.addEvent({delay: 333, callback: this.placeSpaceship, callbackScope: this, loop: true});
+          break;
+
+
     }
   }
     //different case levels = new games!
