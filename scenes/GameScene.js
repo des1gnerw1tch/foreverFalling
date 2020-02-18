@@ -19,6 +19,7 @@ var timedEnergyBall;
 var timedFairy;
 var timedKeyCatch;
 var timedSpaceship;
+var timedIceCloud;
 
 var keys;
 //background
@@ -88,7 +89,7 @@ class GameScene extends Phaser.Scene{
     aText = this.add.text(500, 50, '', {fontSize: 32});
     this.switchLevel();
     timedSwitch = this.time.addEvent({ delay: 25500, callback: this.switchLevel, callbackScope: this, loop: true });
-//    timedSwitch = this.time.addEvent({ delay: 1000, callback: this.switchLevel, callbackScope: this, loop: true });
+  //  timedSwitch = this.time.addEvent({ delay: 1000, callback: this.switchLevel, callbackScope: this, loop: true });
       //spawns
 
       //particles
@@ -140,7 +141,7 @@ class GameScene extends Phaser.Scene{
         aStar.setVelocityY(-20);
       }
 
-      backgroundImages.create(700, 600, 'bigPlanet1').setScale(3).setVelocityY(-20).setDepth(-1);
+      backgroundImages.create(700, 600, 'bigPlanet1').setScale(1).setVelocityY(-20).setDepth(-1);
 
       //animations -------------------------------------------------------------
       //Meteor Types
@@ -204,6 +205,14 @@ class GameScene extends Phaser.Scene{
         key: 'aSpaceship',
         frames: this.anims.generateFrameNumbers('spaceship', {start: 0, end: 2}),
         frameRate: 10,
+        repeat: -1
+      })
+
+      //Ice cloud animations
+      this.anims.create({
+        key: 'aIceCloud',
+        frames: this.anims.generateFrameNumbers('iceCloud', {start: 0, end: 2}),
+        frameRate: 9,
         repeat: -1
       })
 
@@ -433,11 +442,23 @@ class GameScene extends Phaser.Scene{
       nextSpaceship = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'spaceship');
       nextSpaceship.setScale(1);
   //  nextSpaceship.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
-      nextSpaceship.setVelocityY(-400);
+      nextSpaceship.setVelocityY(-350);
       nextSpaceship.setAngle(0);
       nextSpaceship.anims.play('aSpaceship', true);
     }
   }
+
+  placeIceCloud()  {
+      var nextCloud;
+      nextCloud = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 700, 'iceCloud');
+      nextCloud.setScale(1);
+  //  nextSpaceship.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
+      nextCloud.setVelocityY(-25);
+      nextCloud.setAngle(0);
+      nextCloud.anims.play('aIceCloud', true);
+    }
+
+
 
 
   //------------------------------------------------------------------
@@ -548,8 +569,14 @@ class GameScene extends Phaser.Scene{
 
           //starting new spawns
           timedSpaceship = this.time.addEvent({delay: 333, callback: this.placeSpaceship, callbackScope: this, loop: true});
+          timedIceCloud = this.time.addEvent({delay: 2000, callback: this.placeIceCloud, callbackScope: this, loop: true});
           break;
-
+        case 5:
+          atmosphere = 'Stratosphere'
+          counter = 0;
+          timedSpaceship.paused = true;
+          timedIceCloud.paused = true;
+          break;
 
     }
   }
