@@ -13,7 +13,7 @@ class LoadScene extends Phaser.Scene{
       //loading hitobjects
     //this.load.image('meteor', 'assets/meteor.gif');
     this.load.spritesheet('meteor', 'assets/meteorMe.png', {frameWidth: 119, frameHeight: 120});
-    this.load.image('satellite', 'assets/satellite.png');
+    this.load.spritesheet('satellite', 'assets/Satellite.png', {frameWidth: 30, frameHeight: 31});
     this.load.image('stone', 'assets/stone.png');
     this.load.image('fireball', 'assets/fireball.png');
     this.load.spritesheet('lavaMonster', 'assets/lavaMonster.png', {frameWidth: 64, frameHeight: 64});
