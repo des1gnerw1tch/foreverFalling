@@ -215,6 +215,14 @@ class GameScene extends Phaser.Scene{
         frameRate: 9,
         repeat: -1
       })
+    
+    //Satellite
+     this.anims.create({
+        key: 'aSatellite',
+        frames: this.anims.generateFrameNumbers('Satellite', {start: 0, end: 3}),
+        frameRate: 3,
+        repeat: -1
+      })
 
 //------------------------------------------------------------------------------
   }
