@@ -13,14 +13,15 @@ class LoadScene extends Phaser.Scene{
       //loading hitobjects
     //this.load.image('meteor', 'assets/meteor.gif');
     this.load.spritesheet('meteor', 'assets/meteorMe.png', {frameWidth: 119, frameHeight: 120});
-    this.load.spritesheet('satellite', 'assets/Satellite.png', {frameWidth: 180, frameHeight: 186});
+    this.load.image('satellite', 'assets/satellite.png');
     this.load.image('stone', 'assets/stone.png');
     this.load.image('fireball', 'assets/fireball.png');
     this.load.spritesheet('lavaMonster', 'assets/lavaMonster.png', {frameWidth: 64, frameHeight: 64});
     this.load.spritesheet('energyBall', 'assets/energyBall.png', {frameWidth: 64, frameHeight: 64});
-    this.load.spritesheet('fairy', 'assets/fairy.png', {frameWidth: 29, frameHeight: 29});
+    this.load.spritesheet('fairy', 'assets/fairy.png', {frameWidth: 87, frameHeight: 87});
     this.load.spritesheet('spaceship', 'assets/spaceship.png', {frameWidth: 64, frameHeight: 64});
     this.load.spritesheet('iceCloud', 'assets/iceClouds.png', {frameWidth: 128, frameHeight: 128});
+    this.load.spritesheet('plane', 'assets/plane.png', {frameWidth: 192, frameHeight: 84});
       //load UI.
     this.load.image('menu', 'assets/menu.jpg');
     this.load.image('title', 'assets/title.png');

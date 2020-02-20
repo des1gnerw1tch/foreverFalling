@@ -1,7 +1,7 @@
 /* TO DO:
 Fix game over mechanic
-REAL GAME MECHANICS,
 Anims are trying to re define themselves, fix that.
+FIX CLOUD HITBOX
 */
 var player;
 var platforms;
@@ -20,6 +20,7 @@ var timedFairy;
 var timedKeyCatch;
 var timedSpaceship;
 var timedIceCloud;
+var timedPlane;
 
 var keys;
 //background
@@ -31,6 +32,7 @@ var cExo;
 var cThermo;
 var cIon;
 var cMeso;
+var cStrato;
 
 var counter;
 var stars;
@@ -73,6 +75,7 @@ class GameScene extends Phaser.Scene{
     cThermo = new Phaser.Display.Color(200, 34, 0);
     cIon = new Phaser.Display.Color(141, 5, 182);
     cMeso = new Phaser.Display.Color(8, 18, 107);
+    cStrato = new Phaser.Display.Color(0, 255, 255);
 
     timedBackground = this.time.addEvent({ delay: 10, callback: this.moveBackground, callbackScope: this, loop: true });
     timedKeyCatch = this.time.addEvent({ delay: 100, callback: this.resetKeys, callbackScope: this, loop: false });
@@ -129,7 +132,7 @@ class GameScene extends Phaser.Scene{
     player.body.collideWorldBounds=true;
       //colliders
     this.physics.add.collider(player, flyingObject, this.hitObject, null, this);
-    this.physics.add.collider(flyingObject, flyingObject);
+  //  this.physics.add.collider(flyingObject, flyingObject);
       //music
     /*  music = this.sound.add('spaceTheme');
       music.play();*/
@@ -215,12 +218,12 @@ class GameScene extends Phaser.Scene{
         frameRate: 9,
         repeat: -1
       })
-    
-    //Satellite
-     this.anims.create({
-        key: 'aSatellite',
-        frames: this.anims.generateFrameNumbers('Satellite', {start: 0, end: 3}),
-        frameRate: 3,
+
+      //Plane animation
+      this.anims.create({
+        key: 'aPlane',
+        frames: this.anims.generateFrameNumbers('plane', {start: 0, end: 1}),
+        frameRate: 6,
         repeat: -1
       })
 
@@ -435,12 +438,12 @@ class GameScene extends Phaser.Scene{
   placeFairy()  {
     var nextFairy;
     nextFairy = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'fairy');
-    nextFairy.setScale(1);
+    nextFairy.setScale(.75);
     nextFairy.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
     nextFairy.setVelocityY(-120);
-    nextFairy.setAngle(-30);
+    nextFairy.setAngle(-10);
     nextFairy.anims.play('aFairy', true);
-    nextFairy.setAngularVelocity(Phaser.Math.FloatBetween(-2, -10));
+    nextFairy.setAngularVelocity(Phaser.Math.FloatBetween(-1, -2));
   }
 
   placeSpaceship()  {
@@ -460,13 +463,38 @@ class GameScene extends Phaser.Scene{
       var nextCloud;
       nextCloud = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 700, 'iceCloud');
       nextCloud.setScale(1);
-  //  nextSpaceship.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
       nextCloud.setVelocityY(-25);
       nextCloud.setAngle(0);
       nextCloud.anims.play('aIceCloud', true);
     }
 
+  placePlane()  {
+    var nextPlane;
+    var posY = Phaser.Math.Between(0, 600);
+    nextPlane = flyingObject.create(-100, posY, 'plane');
+    nextPlane.setVelocityX(Phaser.Math.Between(100, 500));
+    nextPlane.anims.play('aPlane', true);
+    nextPlane.setScale(.75);
+    /*ensures that there will be a chance of collision when plane spawns.
+    When plane is spawned in the upper half, it will have a velocity that sends
+    the plane down, vice versa. Also sets plane angle corresponding to direction*/
+    if (posY > 300) {
+      var velY = Phaser.Math.Between(-300, 0);
+      nextPlane.setVelocityY(velY);
+      nextPlane.setAngle(velY/10);
+    } else if (posY < 300)  {
+      var velY = Phaser.Math.Between(0, 300);
+      nextPlane.setVelocityY(velY);
+      nextPlane.setAngle(velY/10);
+    }
 
+    if (posY < 384 && posY > 216 && velY < 100) {
+      nextPlane.destroy();
+      console.log("Destroyed impossible plane");
+    }
+
+
+  }
 
 
   //------------------------------------------------------------------
@@ -520,7 +548,15 @@ class GameScene extends Phaser.Scene{
           } else {
             timedBackground.paused = true;
           }
-          break;
+        break;
+      case 5:
+        if (counter <= 600) {
+          hexColor = Phaser.Display.Color.Interpolate.ColorWithColor(cMeso, cStrato, 600, counter);
+          this.cameras.main.setBackgroundColor(hexColor);
+          } else {
+          timedBackground.paused = true;
+          }
+        break;
 
     }
 
@@ -582,8 +618,12 @@ class GameScene extends Phaser.Scene{
         case 5:
           atmosphere = 'Stratosphere'
           counter = 0;
+          timedBackground = this.time.addEvent({ delay: 20, callback: this.switchBackgroundColor, callbackScope: this, loop: true });
+            //paused old objects
           timedSpaceship.paused = true;
           timedIceCloud.paused = true;
+          //new objects
+          timedPlane = this.time.addEvent({delay: 2000, callback: this.placePlane, callbackScope: this, loop: true});
           break;
 
     }
