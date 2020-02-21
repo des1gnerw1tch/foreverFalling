@@ -226,6 +226,13 @@ class GameScene extends Phaser.Scene{
         frameRate: 6,
         repeat: -1
       })
+      //satellite animation
+      this.anims.create({
+        key: 'aSatellite',
+        frames: this.anims.generateFrameNumbers('satellite', {start: 0, end: 3}),
+        frameRate: 3,
+        repeat: -1
+      })
 
 //------------------------------------------------------------------------------
   }
@@ -330,6 +337,7 @@ class GameScene extends Phaser.Scene{
     nextMeteor.setScale(.5);
     nextMeteor.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
     nextMeteor.setVelocityY(-100);
+    nextMeteor.setAngularVelocity(Phaser.Math.Between(-100, 100));
   //  nextMeteor.setAngularVelocity(Phaser.Math.FloatBetween(0,100));
     //used to destroy old meteors.. ? need to add other bounds other than -x
     flyingObject.children.iterate(function (child) {
@@ -346,10 +354,11 @@ class GameScene extends Phaser.Scene{
     //Satellite movement
     var nextSatellite;
     nextSatellite = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'satellite');
-    nextSatellite.setScale(.2);
+    nextSatellite.setScale(.5);
     nextSatellite.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
-    nextSatellite.setVelocityY(-200);
-    nextSatellite.setAngularVelocity(Phaser.Math.FloatBetween(300,500));
+    nextSatellite.setVelocityY(-50);
+    nextSatellite.setAngularVelocity(Phaser.Math.FloatBetween(10,50));
+    nextSatellite.anims.play('aSatellite', true);
     //used to destroy old satellites.. ? need to add other bounds other than -x
     flyingObject.children.iterate(function (child) {
         //bit found in code that works, no idea what it does. ..
@@ -462,7 +471,7 @@ class GameScene extends Phaser.Scene{
   placeIceCloud()  {
       var nextCloud;
       nextCloud = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 700, 'iceCloud');
-      nextCloud.setScale(1);
+      nextCloud.setScale(.5);
       nextCloud.setVelocityY(-25);
       nextCloud.setAngle(0);
       nextCloud.anims.play('aIceCloud', true);
