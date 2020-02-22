@@ -1,7 +1,6 @@
 /* TO DO:
-Fix game over mechanic
-Anims are trying to re define themselves, fix that.
-FIX CLOUD HITBOX
+Mesosphere and Stratosphere tweaks and changes
+Birds should follow sine curve
 */
 var player;
 var platforms;
@@ -21,6 +20,7 @@ var timedKeyCatch;
 var timedSpaceship;
 var timedIceCloud;
 var timedPlane;
+var timedBird;
 
 var keys;
 //background
@@ -32,7 +32,8 @@ var cExo;
 var cThermo;
 var cIon;
 var cMeso;
-var cStrato;
+var cStrato1;
+var cStrato2;
 
 var counter;
 var stars;
@@ -54,6 +55,8 @@ var debug;
 var showDebug = false;
 //obstacles
 var flyingObject;
+var birdGroup;
+var birdVelocity;
 var timeText;
 //particles (Not usable yet)
 var particles;
@@ -75,12 +78,16 @@ class GameScene extends Phaser.Scene{
     cThermo = new Phaser.Display.Color(200, 34, 0);
     cIon = new Phaser.Display.Color(141, 5, 182);
     cMeso = new Phaser.Display.Color(8, 18, 107);
-    cStrato = new Phaser.Display.Color(0, 255, 255);
+    cStrato1 = new Phaser.Display.Color(69, 179, 224);
+    cStrato2 = new Phaser.Display.Color(201, 233, 246);
 
     timedBackground = this.time.addEvent({ delay: 10, callback: this.moveBackground, callbackScope: this, loop: true });
     timedKeyCatch = this.time.addEvent({ delay: 100, callback: this.resetKeys, callbackScope: this, loop: false });
       //Flying Obstacles
     flyingObject = this.physics.add.group ();
+    birdGroup = this.physics.add.group();
+    //Bird group
+
       //Game background images
     backgroundImages = this.physics.add.group();
     starsDestroyed = 0;
@@ -93,49 +100,17 @@ class GameScene extends Phaser.Scene{
     this.switchLevel();
     timedSwitch = this.time.addEvent({ delay: 25500, callback: this.switchLevel, callbackScope: this, loop: true });
   //  timedSwitch = this.time.addEvent({ delay: 1000, callback: this.switchLevel, callbackScope: this, loop: true });
-      //spawns
-
-      //particles
-    /*  particles = this.add.particles('flares');
-      emitter = particles.createEmitter({
-        frame: 'yellow',
-        x: 300,
-        y: 400,
-        lifespan: 2000,
-        speedY: { min: -100, max: -600 },
-        speedX: { min: -100, max: 100 },
-        angle: -90,
-        gravityY: 300,
-        scale: { start: 0.4, end: 0 },
-        quantity: 50,
-        blendMode: 'ADD'
-    });*/
-
-//STAR PARTICLES TEST
-  /*  var p = this.add.particles('starParticle');
-    var emitter1 = p.createEmitter();
-    var emitter2 = p.createEmitter();
-    var emitter3 = p.createEmitter();
-    emitter1.setScale(.1)
-    emitter1.setPosition(0, 600);
-    emitter1.setSpeed(600);
-    emitter2.setScale(.1)
-    emitter2.setPosition(400, 600);
-    emitter2.setSpeed(600);
-    emitter3.setScale(.1)
-    emitter3.setPosition(800, 600);
-    emitter3.setSpeed(600);*/
 
       //player
     player = this.physics.add.sprite(400, 0, 'astronaut').setScale(.7);
     player.anims.play('falling', true);
     player.body.collideWorldBounds=true;
       //colliders
+
     this.physics.add.collider(player, flyingObject, this.hitObject, null, this);
+      this.physics.add.collider(player, birdGroup, this.hitObject, null, this);
+
   //  this.physics.add.collider(flyingObject, flyingObject);
-      //music
-    /*  music = this.sound.add('spaceTheme');
-      music.play();*/
 
         //Background images of stars/ planets
       for (var i = 0; i < 50; i++) {
@@ -146,95 +121,6 @@ class GameScene extends Phaser.Scene{
 
       backgroundImages.create(700, 600, 'bigPlanet1').setScale(1).setVelocityY(-20).setDepth(-1);
 
-      //animations -------------------------------------------------------------
-      //Meteor Types
-      this.anims.create({
-        key: 'm0',
-        frames: [ { key: 'meteor', frame: 0 } ],
-        frameRate: 20,
-      })
-      this.anims.create({
-        key: 'm1',
-        frames: [ { key: 'meteor', frame: 1 } ],
-        frameRate: 20,
-      })
-      this.anims.create({
-        key: 'm2',
-        frames: [ { key: 'meteor', frame: 2 } ],
-        frameRate: 20,
-      })
-      this.anims.create({
-        key: 'm3',
-        frames: [ { key: 'meteor', frame: 3 } ],
-        frameRate: 20,
-      })
-      this.anims.create({
-        key: 'm4',
-        frames: [ { key: 'meteor', frame: 4 } ],
-        frameRate: 20,
-      })
-      this.anims.create({
-        key: 'm5',
-        frames: [ { key: 'meteor', frame: 5 } ],
-        frameRate: 20,
-      })
-
-      //Lava Dude
-      this.anims.create({
-        key: 'aLavaMonster',
-        frames: this.anims.generateFrameNumbers('lavaMonster', {start: 0, end: 6}),
-        frameRate: 12,
-        repeat: -1
-      })
-
-      //Energy Ball animations
-      this.anims.create({
-        key: 'aEnergyBall',
-        frames: this.anims.generateFrameNumbers('energyBall', {start: 0, end: 6}),
-        frameRate: 48,
-        repeat: -1
-      })
-
-      //Fairy animations
-      this.anims.create({
-        key: 'aFairy',
-        frames: this.anims.generateFrameNumbers('fairy', {start: 0, end: 2}),
-        frameRate: 10,
-        repeat: -1
-      })
-
-      //Spaceship animations
-      this.anims.create({
-        key: 'aSpaceship',
-        frames: this.anims.generateFrameNumbers('spaceship', {start: 0, end: 2}),
-        frameRate: 10,
-        repeat: -1
-      })
-
-      //Ice cloud animations
-      this.anims.create({
-        key: 'aIceCloud',
-        frames: this.anims.generateFrameNumbers('iceCloud', {start: 0, end: 2}),
-        frameRate: 9,
-        repeat: -1
-      })
-
-      //Plane animation
-      this.anims.create({
-        key: 'aPlane',
-        frames: this.anims.generateFrameNumbers('plane', {start: 0, end: 1}),
-        frameRate: 6,
-        repeat: -1
-      })
-      //satellite animation
-      this.anims.create({
-        key: 'aSatellite',
-        frames: this.anims.generateFrameNumbers('satellite', {start: 0, end: 3}),
-        frameRate: 3,
-        repeat: -1
-      })
-
-//------------------------------------------------------------------------------
   }
 
 
@@ -250,14 +136,15 @@ class GameScene extends Phaser.Scene{
       }
     }
     if (showDebug)  {
-      debug.setText('timedSwitch Progress: ' + timedSwitch.getProgress().toString().substr(0, 4) + '\nEvent.repeatCount: ' +
-      timedSwitch.repeatCount + '\nbackground Change Paused?: ' + timedBackground.paused + '\n Level: ' + atmosphere + '\n counter ' + counter
-      + '\n stars destroyed : ' + starsDestroyed + '\nA key Down? : ' + keys.A.isDown + '\nD key Down? : ' + keys.D.isDown);
+      debug.setText('timedSwitch Progress: ' + timedSwitch.getProgress().toString().substr(0, 4) + '\n Level: ' + atmosphere + '\n counter ' + counter
+      + '\n stars destroyed : ' + starsDestroyed + '\nA key Down? : ' + keys.A.isDown + '\nD key Down? : ' + keys.D.isDown
+       + '\nbird velocity:' + birdVelocity);
     } else {
       debug.setText('');
     }
     //level UI
     aText.setText(atmosphere);
+    birdVelocity = Math.sin(timedSwitch.getProgress() *20) * 300;
     //Player movement
     if (keys.A.isDown)  {
       player.setAccelerationX(-500);
@@ -267,19 +154,48 @@ class GameScene extends Phaser.Scene{
     } else {
       player.setAccelerationX(0);
     }
-    if (gameOver == true) {
-      this.physics.pause();
-    }
 
     //Beginning falling
     if (player.y > 300) {
       player.body.allowGravity = false;
       player.setVelocityY(0);
-      //alert("hello?");
     } else if (player.y < 300) {
         player.body.gravity.y = 800;
     }
-    //emitter.setPosition(player.x, player.y);
+
+    /*Destroying old Objects when they go off screen.
+    ------------------------------------------ -------------------------*/
+    flyingObject.children.iterate(function (child) {
+        //bit found in code that works, no idea what it does. ..
+        if (child == undefined)
+            return;
+        if (child.y < 0)  {
+            child.destroy();
+            console.log("Destroyed Flying Object");
+          }
+    })
+
+    backgroundImages.children.iterate(function (child) {
+        //bit found in code that works, no idea what it does. ..
+      if (child == undefined)
+          return;
+      if (child.y < -300)  {
+          child.destroy();
+          starsDestroyed++;
+        }
+    })
+  /*----------------------------------------------------------------------------------------*/
+  //makes the birds move in a sinisouidel way
+  birdGroup.children.iterate(function (child) {
+      //bit found in code that works, no idea what it does. ..
+      if (child == undefined) {
+          return;
+        }
+      child.setVelocityY(Math.sin(timedSwitch.getProgress() * 40) * 300);
+      if (child.x > 850)  {
+        child.destroy();
+      }
+  })
 
   }
 
@@ -292,16 +208,7 @@ class GameScene extends Phaser.Scene{
     nextStar.setVelocityY(-20);
 //  nextStar.setVelocityY(Phaser.Math.Between(1, 3));
 
-    //used to destroy old meteors.. ? need to add other bounds other than -x
-    backgroundImages.children.iterate(function (child) {
-        //bit found in code that works, no idea what it does. ..
-      if (child == undefined)
-          return;
-      if (child.y < -300)  {
-          child.destroy();
-          starsDestroyed++;
-        }
-    })
+
 
   }
 
@@ -339,14 +246,6 @@ class GameScene extends Phaser.Scene{
     nextMeteor.setVelocityY(-100);
     nextMeteor.setAngularVelocity(Phaser.Math.Between(-100, 100));
   //  nextMeteor.setAngularVelocity(Phaser.Math.FloatBetween(0,100));
-    //used to destroy old meteors.. ? need to add other bounds other than -x
-    flyingObject.children.iterate(function (child) {
-        //bit found in code that works, no idea what it does. ..
-      if (child == undefined)
-          return;
-      if (child.y < 0)
-          child.destroy();
-    })
 
   }
 
@@ -360,13 +259,7 @@ class GameScene extends Phaser.Scene{
     nextSatellite.setAngularVelocity(Phaser.Math.FloatBetween(10,50));
     nextSatellite.anims.play('aSatellite', true);
     //used to destroy old satellites.. ? need to add other bounds other than -x
-    flyingObject.children.iterate(function (child) {
-        //bit found in code that works, no idea what it does. ..
-        if (child == undefined)
-            return;
-        if (child.y < 0)
-            child.destroy();
-    })
+
 
   }
 
@@ -378,14 +271,6 @@ class GameScene extends Phaser.Scene{
     nextStone.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
     nextStone.setVelocityY(-300);
     nextStone.setAngularVelocity(Phaser.Math.FloatBetween(0,100));
-    //used to destroy old stones.. ? need to add other bounds other than -x
-    flyingObject.children.iterate(function (child) {
-        //bit found in code that works, no idea what it does. ..
-        if (child == undefined)
-            return;
-        if (child.y < 0)
-            child.destroy();
-    })
 
   }
 
@@ -397,14 +282,7 @@ class GameScene extends Phaser.Scene{
     nextFireball.setVelocityY(-300);
     nextFireball.setAngle(120);
     nextFireball.setAngularVelocity(Phaser.Math.FloatBetween(0,20));
-    //used to destroy old stones.. ? need to add other bounds other than -x
-    flyingObject.children.iterate(function (child) {
-        //bit found in code that works, no idea what it does. ..
-        if (child == undefined)
-            return;
-        if (child.y < 0)
-            child.destroy();
-    })
+
   }
 
   placeLMonster() {
@@ -416,13 +294,6 @@ class GameScene extends Phaser.Scene{
     nextLMonster.anims.play('aLavaMonster', true);
   //  nextLMonster.setAngle(120);
     nextLMonster.setAngularVelocity(Phaser.Math.FloatBetween(0,20));
-
-    flyingObject.children.iterate(function (child) {
-        if (child == undefined)
-            return;
-        if (child.y < 0)
-            child.destroy();
-    })
   }
 
   placeEnergyBall() {
@@ -435,19 +306,12 @@ class GameScene extends Phaser.Scene{
       nextEnergyBall.anims.play('aEnergyBall', true);
       nextEnergyBall.setAngularVelocity(Phaser.Math.FloatBetween(200, 250));
     }
-
-    flyingObject.children.iterate(function (child) {
-        if (child == undefined)
-            return;
-        if (child.y < 0)
-            child.destroy();
-    })
   }
 
   placeFairy()  {
     var nextFairy;
     nextFairy = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'fairy');
-    nextFairy.setScale(.75);
+    nextFairy.setScale(.5);
     nextFairy.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
     nextFairy.setVelocityY(-120);
     nextFairy.setAngle(-10);
@@ -472,7 +336,7 @@ class GameScene extends Phaser.Scene{
       var nextCloud;
       nextCloud = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 700, 'iceCloud');
       nextCloud.setScale(.5);
-      nextCloud.setVelocityY(-25);
+      nextCloud.setVelocityY(-35);
       nextCloud.setAngle(0);
       nextCloud.anims.play('aIceCloud', true);
     }
@@ -484,7 +348,7 @@ class GameScene extends Phaser.Scene{
     nextPlane.setVelocityX(Phaser.Math.Between(100, 500));
     nextPlane.anims.play('aPlane', true);
     nextPlane.setScale(.75);
-    /*ensures that there will be a chance of collision when plane spawns.
+    /*ensures that there will be a chance of dodging when plane spawns.
     When plane is spawned in the upper half, it will have a velocity that sends
     the plane down, vice versa. Also sets plane angle corresponding to direction*/
     if (posY > 300) {
@@ -504,6 +368,16 @@ class GameScene extends Phaser.Scene{
 
 
   }
+
+  placeBird()  {
+      var next;
+      next = birdGroup.create(0, Phaser.Math.Between(100, 500), 'bird');
+      next.setScale(1);
+      next.setVelocityX(100);
+      next.setAngle(0);
+      next.anims.play('aBird', true);
+
+    }
 
 
   //------------------------------------------------------------------
@@ -559,10 +433,11 @@ class GameScene extends Phaser.Scene{
           }
         break;
       case 5:
-        if (counter <= 600) {
-          hexColor = Phaser.Display.Color.Interpolate.ColorWithColor(cMeso, cStrato, 600, counter);
+        if (counter <= 1300) {
+          hexColor = Phaser.Display.Color.Interpolate.ColorWithColor(cMeso, cStrato1, 1300, counter);
           this.cameras.main.setBackgroundColor(hexColor);
-          } else {
+          }
+        else {
           timedBackground.paused = true;
           }
         break;
@@ -609,7 +484,7 @@ class GameScene extends Phaser.Scene{
         timedLMonster.paused = true;
 
         //starting new spawns
-        timedEnergyBall = this.time.addEvent({delay: 500, callback: this.placeEnergyBall, callbackScope: this, loop: true});
+        timedEnergyBall = this.time.addEvent({delay: 200, callback: this.placeEnergyBall, callbackScope: this, loop: true});
         timedFairy = this.time.addEvent({delay: 6000, callback: this.placeFairy, callbackScope: this, loop: true});
         break;
         case 4:
@@ -632,7 +507,8 @@ class GameScene extends Phaser.Scene{
           timedSpaceship.paused = true;
           timedIceCloud.paused = true;
           //new objects
-          timedPlane = this.time.addEvent({delay: 2000, callback: this.placePlane, callbackScope: this, loop: true});
+          timedPlane = this.time.addEvent({delay: 5000, callback: this.placePlane, callbackScope: this, loop: true});
+          timedBird = this.time.addEvent({delay: 1000, callback: this.placeBird, callbackScope: this, loop: true});
           break;
 
     }

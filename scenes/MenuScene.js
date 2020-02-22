@@ -35,13 +35,7 @@ class MenuScene extends Phaser.Scene{
       this.scene.start("enterIntro");
     })
 
-    //menu astronaut animation
-    this.anims.create({
-      key: 'falling',
-      frames: this.anims.generateFrameNumbers('astronaut', {start: 0, end: 3}),
-      frameRate: 10,
-      repeat: -1
-    })
+    
       //menu music
       music = this.sound.add('spaceTheme');
     //  music.play();

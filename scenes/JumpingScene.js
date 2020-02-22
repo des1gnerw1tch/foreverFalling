@@ -19,7 +19,7 @@ class JumpingScene extends Phaser.Scene{
         aStar.setDepth(-1);
       }
 
-          this.add.image(700, 100, 'saturn').setScale(1);
+    this.add.image(700, 100, 'saturn').setScale(1);
   //  spaceBackground = this.add.image(400, 300, 'space');
     platforms = this.physics.add.staticGroup();
 
@@ -45,56 +45,6 @@ class JumpingScene extends Phaser.Scene{
       //player!
     player = this.physics.add.sprite(700, 200, 'astronaut').setScale(.7);
 
-      //player animations for "dude"!
-  /*  this.anims.create({
-        key: 'left',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-    });
-
-    this.anims.create({
-        key: 'turn',
-        frames: [ { key: 'dude', frame: 4 } ],
-        frameRate: 20
-    });
-
-    this.anims.create({
-        key: 'right',
-        frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-        frameRate: 10,
-        repeat: -1
-    });*/
-
-    //player animations for astronaut!
-
-    this.anims.create({
-      key: 'left',
-      frames: this.anims.generateFrameNumbers('astronaut', {start: 4, end: 7}),
-      frameRate: 10,
-      repeat: -1
-    })
-
-    this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNumbers('astronaut', {start: 8, end: 11}),
-      frameRate: 10,
-      repeat: -1
-    })
-
-    this.anims.create({
-      key: 'idle',
-      frames: this.anims.generateFrameNumbers('astronaut', {start: 0, end: 0}),
-      frameRate: 10,
-      repeat: -1
-    })
-
-    this.anims.create({
-      key: 'falling',
-      frames: this.anims.generateFrameNumbers('astronaut', {start: 0, end: 3}),
-      frameRate: 10,
-      repeat: -1
-    })
       //gravity
     player.body.gravity.y = 800;
 
