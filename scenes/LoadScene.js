@@ -26,7 +26,7 @@ class LoadScene extends Phaser.Scene{
     this.load.image('menu', 'assets/menu.jpg');
     this.load.image('title', 'assets/title.png');
     this.load.image('playButton', 'assets/playButton.png');
-    this.load.image('bluePanel', 'spaceUI/PNG/metalPanel_blue.png');
+   // this.load.image('bluePanel', 'spaceUI/PNG/metalPanel_blue.png');
       //background objects
     this.load.image('star', 'assets/star.png');
     this.load.image('smallMars', 'assets/smallMars.png');
