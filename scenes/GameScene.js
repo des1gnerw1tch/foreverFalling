@@ -167,7 +167,7 @@ class GameScene extends Phaser.Scene{
         //bit found in code that works, no idea what it does. ..
         if (child == undefined)
             return;
-        if (child.y < 0)  {
+        if (child.y < -200)  {
             child.destroy();
             console.log("Destroyed Flying Object");
           }
