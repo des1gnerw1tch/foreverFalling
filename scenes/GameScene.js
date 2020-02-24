@@ -1,6 +1,6 @@
 /* TO DO:
 Mesosphere and Stratosphere tweaks and changes
-Birds should follow sine curve
+
 */
 var player;
 var platforms;
@@ -110,8 +110,6 @@ class GameScene extends Phaser.Scene{
     this.physics.add.collider(player, flyingObject, this.hitObject, null, this);
       this.physics.add.collider(player, birdGroup, this.hitObject, null, this);
 
-  //  this.physics.add.collider(flyingObject, flyingObject);
-
         //Background images of stars/ planets
       for (var i = 0; i < 50; i++) {
         var aStar = backgroundImages.create(Phaser.Math.FloatBetween(0, 800), Phaser.Math.FloatBetween(0, 600), 'star');
@@ -119,7 +117,7 @@ class GameScene extends Phaser.Scene{
         aStar.setVelocityY(-20);
       }
 
-      backgroundImages.create(700, 600, 'bigPlanet1').setScale(1).setVelocityY(-20).setDepth(-1);
+      backgroundImages.create(700, 750, 'bigPlanet1').setScale(1).setVelocityY(-14).setDepth(-1);
 
   }
 
@@ -276,12 +274,14 @@ class GameScene extends Phaser.Scene{
 
   placeFireball() {
     var nextFireball;
-    nextFireball = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'fireball');
-    nextFireball.setScale(.01);
-    nextFireball.setVelocityX(Phaser.Math.FloatBetween(-100, 100));
-    nextFireball.setVelocityY(-300);
-    nextFireball.setAngle(120);
-    nextFireball.setAngularVelocity(Phaser.Math.FloatBetween(0,20));
+    if (counter> 100) {
+      nextFireball = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'fireball');
+      nextFireball.setScale(.01);
+      nextFireball.setVelocityX(Phaser.Math.FloatBetween(-100, 100));
+      nextFireball.setVelocityY(-300);
+      nextFireball.setAngle(120);
+      nextFireball.setAngularVelocity(Phaser.Math.FloatBetween(0,20));
+  }
 
   }
 
@@ -321,12 +321,12 @@ class GameScene extends Phaser.Scene{
 
   placeSpaceship()  {
     var num = Phaser.Math.Between(0, 2);
-    if (num == 0) {
+    if (num == 0 && counter > 400) {
       var nextSpaceship;
       nextSpaceship = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'spaceship');
       nextSpaceship.setScale(1);
   //  nextSpaceship.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
-      nextSpaceship.setVelocityY(-350);
+      nextSpaceship.setVelocityY(-325);
       nextSpaceship.setAngle(0);
       nextSpaceship.anims.play('aSpaceship', true);
     }
@@ -375,7 +375,19 @@ class GameScene extends Phaser.Scene{
       next.setScale(1);
       next.setVelocityX(100);
       next.setAngle(0);
-      next.anims.play('aBird', true);
+      var rand = Phaser.Math.Between(1, 3);
+      switch (rand){
+        case 1:
+          next.anims.play('aBBird', true);
+          break;
+        case 2:
+          next.anims.play('aRBird', true);
+          break;
+        case 3:
+          next.anims.play('aYBird', true);
+          break;
+      }
+
 
     }
 
@@ -486,6 +498,7 @@ class GameScene extends Phaser.Scene{
         //starting new spawns
         timedEnergyBall = this.time.addEvent({delay: 200, callback: this.placeEnergyBall, callbackScope: this, loop: true});
         timedFairy = this.time.addEvent({delay: 6000, callback: this.placeFairy, callbackScope: this, loop: true});
+        backgroundImages.create(200, 750, 'pluto').setScale(1).setVelocityY(-18).setDepth(-1);
         break;
         case 4:
           atmosphere = 'Mesosphere';

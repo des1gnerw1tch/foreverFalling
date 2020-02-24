@@ -21,17 +21,18 @@ class LoadScene extends Phaser.Scene{
     this.load.spritesheet('iceCloud', 'assets/iceClouds.png', {frameWidth: 192, frameHeight: 114});
     this.load.spritesheet('plane', 'assets/plane.png', {frameWidth: 192, frameHeight: 84});
     this.load.spritesheet('satellite', 'assets/satellite.png', {frameWidth: 180, frameHeight: 186});
-    this.load.spritesheet('bird', 'assets/birdy.png', {frameWidth: 34, frameHeight: 24});
+    this.load.spritesheet('bird', 'assets/bird.png', {frameWidth: 42, frameHeight: 28});
       //load UI.
     this.load.image('menu', 'assets/menu.jpg');
     this.load.image('title', 'assets/title.png');
     this.load.image('playButton', 'assets/playButton.png');
-   // this.load.image('bluePanel', 'spaceUI/PNG/metalPanel_blue.png');
+  //  this.load.image('bluePanel', 'spaceUI/PNG/metalPanel_blue.png');
       //background objects
     this.load.image('star', 'assets/star.png');
     this.load.image('smallMars', 'assets/smallMars.png');
     this.load.image('saturn', 'assets/saturn.png');
     this.load.image('bigPlanet1', 'assets/bigPlanet1.png');
+    this.load.image('pluto', 'assets/pluto.png');
       //blocks
     this.load.image('block1', 'assets/block1.png');
     this.load.image('block2', 'assets/block2.png');
@@ -183,14 +184,29 @@ class LoadScene extends Phaser.Scene{
       repeat: -1
     })
 
-    //flappy birds animation
+    //bird animations
+      //black bird
     this.anims.create({
-        key: 'aBird',
-        frames: this.anims.generateFrameNumbers('bird', { start: 0, end: 3 }),
+        key: 'aBBird',
+        frames: this.anims.generateFrameNumbers('bird', { start: 0, end: 1 }),
         frameRate: 10,
         repeat: -1
       });
+      //red bird
+    this.anims.create({
+        key: 'aRBird',
+        frames: this.anims.generateFrameNumbers('bird', { start: 2, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+        });
+        //yellow bird
+    this.anims.create({
+          key: 'aYBird',
+          frames: this.anims.generateFrameNumbers('bird', { start: 4, end: 5 }),
+          frameRate: 10,
+          repeat: -1
+          });
       //start menu screen
-    this.scene.start("startMenu", "whats up");
+    this.scene.start("startMenu");
   }
 }
