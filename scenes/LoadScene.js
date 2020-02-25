@@ -24,8 +24,11 @@ class LoadScene extends Phaser.Scene{
     this.load.spritesheet('bird', 'assets/bird.png', {frameWidth: 42, frameHeight: 28});
       //load UI.
     this.load.image('menu', 'assets/menu.jpg');
-    this.load.image('title', 'assets/title.png');
-    this.load.image('playButton', 'assets/playButton.png');
+  //  this.load.image('title', 'assets/title.png');
+    this.load.image('title', 'assets/ffTitle.png');
+    this.load.image('playButton', 'assets/play.png');
+    this.load.image('optionsButton', 'assets/options.png');
+    this.load.image('extrasButton', 'assets/extras.png');
   //  this.load.image('bluePanel', 'spaceUI/PNG/metalPanel_blue.png');
       //background objects
     this.load.image('star', 'assets/star.png');
