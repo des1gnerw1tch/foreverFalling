@@ -397,7 +397,7 @@ class GameScene extends Phaser.Scene{
 
   hitObject() {
     player.setTint(0xff0000);
-    if (showDebug == false) {
+    if (!showDebug) {
       this.scene.pause("enterGame");
       this.scene.launch("endGame", atmosphere);
     }
