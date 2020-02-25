@@ -108,7 +108,7 @@ class GameScene extends Phaser.Scene{
       //colliders
 
     this.physics.add.overlap(player, flyingObject, this.hitObject, null, this);
-      this.physics.add.overlap(player, birdGroup, this.hitObject, null, this);
+    this.physics.add.overlap(player, birdGroup, this.hitObject, null, this);
 
         //Background images of stars/ planets
       for (var i = 0; i < 50; i++) {
@@ -396,11 +396,10 @@ class GameScene extends Phaser.Scene{
 
 
   hitObject() {
-    
     if (!showDebug) {
+      player.setTint(0xff0000);
       keys.A.isDown = false;
       keys.D.isDown = false;
-      player.setTint(0xff0000);
       this.scene.pause("enterGame");
       this.scene.launch("endGame", atmosphere);
     }
@@ -514,7 +513,7 @@ class GameScene extends Phaser.Scene{
           //starting new spawns
           timedSpaceship = this.time.addEvent({delay: 333, callback: this.placeSpaceship, callbackScope: this, loop: true});
           timedIceCloud = this.time.addEvent({delay: 2000, callback: this.placeIceCloud, callbackScope: this, loop: true});
-           backgroundImages.create(600, 750, 'mesosPlanet').setScale(1).setVelocityY(-18).setDepth(-1);
+          backgroundImages.create(600, 900, 'mesosPlanet').setScale(1).setVelocityY(-18).setDepth(-1);
           break;
         case 5:
           atmosphere = 'Stratosphere'
