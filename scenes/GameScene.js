@@ -107,8 +107,8 @@ class GameScene extends Phaser.Scene{
     player.body.collideWorldBounds=true;
       //colliders
 
-    this.physics.add.collider(player, flyingObject, this.hitObject, null, this);
-      this.physics.add.collider(player, birdGroup, this.hitObject, null, this);
+    this.physics.add.overlap(player, flyingObject, this.hitObject, null, this);
+      this.physics.add.overlap(player, birdGroup, this.hitObject, null, this);
 
         //Background images of stars/ planets
       for (var i = 0; i < 50; i++) {
