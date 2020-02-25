@@ -36,6 +36,7 @@ class LoadScene extends Phaser.Scene{
     this.load.image('saturn', 'assets/saturn.png');
     this.load.image('bigPlanet1', 'assets/bigPlanet1.png');
     this.load.image('pluto', 'assets/pluto.png');
+    this.load.image('mesosPlanet', 'assets/mesosPlanet.png');
       //blocks
     this.load.image('block1', 'assets/block1.png');
     this.load.image('block2', 'assets/block2.png');
