@@ -397,10 +397,10 @@ class GameScene extends Phaser.Scene{
 
   hitObject() {
     player.setTint(0xff0000);
-    keys.A.isDown = false;
-    keys.D.isDown = false;
-    this.scene.pause("enterGame");
-    this.scene.launch("endGame", atmosphere);
+    if (showDebug == false) {
+      this.scene.pause("enterGame");
+      this.scene.launch("endGame", atmosphere);
+    }
   }
 
   moveBackground() {
@@ -511,6 +511,7 @@ class GameScene extends Phaser.Scene{
           //starting new spawns
           timedSpaceship = this.time.addEvent({delay: 333, callback: this.placeSpaceship, callbackScope: this, loop: true});
           timedIceCloud = this.time.addEvent({delay: 2000, callback: this.placeIceCloud, callbackScope: this, loop: true});
+           backgroundImages.create(600, 750, 'mesosPlanet').setScale(1).setVelocityY(-18).setDepth(-1);
           break;
         case 5:
           atmosphere = 'Stratosphere'
