@@ -1,4 +1,11 @@
 //import { CST } from "../CST";
+var soundOn = true;
+var wasdOn = true;
+var soundYeet;
+var soundDatBei;
+var soundPlay;
+var soundSelect;
+var soundBack;
 class MenuScene extends Phaser.Scene{
   constructor(){
 
@@ -11,16 +18,26 @@ class MenuScene extends Phaser.Scene{
   }
 
   create() {
+    //music
+      music = this.sound.add('spaceTheme');
+      music.setLoop(true);
+
+      //sound effects
+    soundYeet = this.sound.add('yeet');
+    soundDatBei = this.sound.add('datBei');
+    soundPlay = this.sound.add('playPlay');
+    soundSelect = this.sound.add('playSelect');
+    soundBack = this.sound.add('playBack');
     //create menu background image
     let backdrop;
-    let icon;
     backdrop = this.add.image(400, 300, 'mountains').setScale(1);
+    this.add.image(10, 175, 'title').setScale(.4).setOrigin(0, 0);
     //planets
     this.add.image(700, 100, 'bigPlanet1').setScale(.5);
     this.add.image(250, 400, 'mesosPlanet').setScale(.2);
 
     this.add.image(100, 450, 'lavaMonster').setScale(.75).setAngle(-30);
-    this.add.image(90, 485, 'lavaMonster').setScale(.75).setAngle(-30);
+    var easterEgg1 = this.add.image(90, 485, 'lavaMonster').setScale(.75).setAngle(-30);
     this.add.image(90, 425, 'fireball').setScale(.005).setAngle(80);
     this.add.image(70, 425, 'fireball').setScale(.005).setAngle(80);
     this.add.image(60, 470, 'fireball').setScale(.005).setAngle(80);
@@ -36,70 +53,13 @@ class MenuScene extends Phaser.Scene{
     this.add.sprite(200, 100, 'meteor').setScale(.6).setAngle(40);
     this.add.sprite(275, 130, 'meteor').setScale(.2).anims.play('m2', true).setAngle(30);
     this.add.sprite(160, 0, 'meteor').setScale(.6).anims.play('m1', true).setAngle(20);
+    this.scene.launch("titleScene");
 
-
-      //title image
-    this.add.image(10, 175, 'title').setScale(.4).setOrigin(0, 0);
-    //play button
-    let playButton = this.add.image(23, 250, 'playButton').setScale(.3).setOrigin(0, 0);
-    playButton.setInteractive();
-
-    playButton.on("pointerover", ()=>  {
-      icon = this.add.sprite(playButton.x + 130, playButton.y + 20, 'astronaut').setScale(.5);
-      icon.anims.play('falling', true);
+    easterEgg1.setInteractive();
+    easterEgg1.on("pointerup", ()=>  {
+      if(soundOn)
+        soundYeet.play();
     })
-
-    playButton.on("pointerout", ()=>  {
-      icon.visible = false;
-    })
-
-    playButton.on("pointerup", ()=>  {
-    //  music.pause();
-      this.scene.start("enterIntro");
-    })
-
-      //options button
-    let optionsButton = this.add.image(23, 300, 'optionsButton').setScale(.3).setOrigin(0, 0);
-    optionsButton.setInteractive();
-
-    optionsButton.on("pointerover", ()=>  {
-      icon = this.add.sprite(optionsButton.x + 205, optionsButton.y + 20, 'astronaut').setScale(.5);
-      icon.anims.play('falling', true);
-    })
-
-    optionsButton.on("pointerout", ()=>  {
-      icon.visible = false;
-    })
-
-    optionsButton.on("pointerup", ()=>  {
-    //  this.scene.start(");
-    })
-
-    //extras button
-  let extrasButton = this.add.image(23, 350, 'extrasButton').setScale(.3).setOrigin(0,0);
-    extrasButton.setInteractive();
-
-    extrasButton.on("pointerover", ()=>  {
-    icon = this.add.sprite(extrasButton.x + 180, extrasButton.y + 20, 'astronaut').setScale(.5);
-    icon.anims.play('falling', true);
-  })
-
-  extrasButton.on("pointerout", ()=>  {
-    icon.visible = false;
-  })
-
-  extrasButton.on("pointerup", ()=>  {
-  //  this.scene.start(");
-  })
-
-
-      //menu music
-      music = this.sound.add('spaceTheme');
-    //  music.play();
-      music.setLoop(true);
-        //particles test
-
-      //emitter.setBlendMode(Phaser.BlendModes.ADD);
 
   }
 

@@ -1,6 +1,4 @@
 var platforms;
-var soundYeet;
-var soundDatBei;
 class JumpingScene extends Phaser.Scene{
   constructor(){
   /*  super ({
@@ -12,6 +10,7 @@ class JumpingScene extends Phaser.Scene{
   create()  {
     //keys
     keys = this.input.keyboard.addKeys('W,S,A,D,');
+    cursors = this.input.keyboard.createCursorKeys();
     timedKeyCatch = this.time.addEvent({ delay: 100, callback: this.resetKeys, callbackScope: this, loop: false });
       //Background
       for (var i = 0; i < 100; i++) {
@@ -44,38 +43,49 @@ class JumpingScene extends Phaser.Scene{
     platforms.create(640, 330, 'block2').setScale(.5).refreshBody();
       //player!
     player = this.physics.add.sprite(700, 200, 'astronaut').setScale(.7);
-
       //gravity
     player.body.gravity.y = 800;
 
     //colliders
     this.physics.add.collider(player, platforms);
 
-      //sound effects
-    soundYeet = this.sound.add('yeet');
-    soundDatBei = this.sound.add('datBei');
+
 
   }
   update()  {
-    if (keys.A.isDown)  {
+    if (wasdOn) {
+      if (keys.A.isDown)  {
+        player.setVelocityX(-200);
+        player.anims.play('left', true);
+      }
+      else if (keys.D.isDown) {
+        player.setVelocityX(200);
+        player.anims.play('right', true);
+      } else {
+        player.setVelocityX(0);
+        player.anims.play('idle', true);
+      }
+      if (keys.W.isDown && player.body.touching.down) {
+        player.setVelocityY(-330);
+      }
+  } else {
+    if (cursors.left.isDown)  {
       player.setVelocityX(-200);
       player.anims.play('left', true);
     }
-    else if (keys.D.isDown) {
+    else if (cursors.right.isDown) {
       player.setVelocityX(200);
       player.anims.play('right', true);
     } else {
       player.setVelocityX(0);
       player.anims.play('idle', true);
     }
-    if (keys.W.isDown && player.body.touching.down)
-    {
-        player.setVelocityY(-330);
-        soundYeet.play();
+    if (cursors.up.isDown && player.body.touching.down) {
+      player.setVelocityY(-330);
     }
+  }
 
     if (player.y > 600) {
-      soundDatBei.play();
       this.scene.start("enterGame");
     }
   }
@@ -84,6 +94,9 @@ class JumpingScene extends Phaser.Scene{
     keys.A.isDown = false;
     keys.D.isDown = false;
     keys.W.isDown = false;
+    cursors.left.isDown= false;
+    cursors.right.isDown= false;
+    cursors.up.isDown= false;
   }
 
 }

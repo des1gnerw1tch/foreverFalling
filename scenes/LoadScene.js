@@ -28,6 +28,13 @@ class LoadScene extends Phaser.Scene{
     this.load.image('playButton', 'assets/play.png');
     this.load.image('optionsButton', 'assets/options.png');
     this.load.image('extrasButton', 'assets/extras.png');
+    this.load.image('volumeButton', 'assets/volume.png');
+    this.load.image('controlsButton', 'assets/controls.png');
+    this.load.image('backButton', 'assets/back.png');
+    this.load.image('on', 'assets/on.png');
+    this.load.image('off', 'assets/off.png');
+    this.load.image('wasd', 'assets/wasd.png');
+    this.load.image('arrows', 'assets/arrows.png');
   //  this.load.image('bluePanel', 'spaceUI/PNG/metalPanel_blue.png');
       //background objects
     this.load.image('star', 'assets/star.png');
@@ -49,9 +56,10 @@ class LoadScene extends Phaser.Scene{
       //sound effects
     this.load.audio('yeet', 'assets/maxyeet.m4a');
     this.load.audio('datBei', 'assets/maxdatbei.m4a');
-    //particles
-    this.load.image('starParticle', 'assets/blue.png');
-    this.load.atlas('flares', 'assets/flares.png', 'assets/flares.json');
+    this.load.audio('playPlay', 'assets/play.wav');
+    this.load.audio('playSelect', 'assets/select.wav');
+    this.load.audio('playBack', 'assets/back.wav');
+
       //loading text
     this.add.text(20, 20, "Loading Game...");
 

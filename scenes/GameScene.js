@@ -21,8 +21,9 @@ var timedSpaceship;
 var timedIceCloud;
 var timedPlane;
 var timedBird;
-
+//input
 var keys;
+var cursors;
 //background
 var spaceBackground;
 var hexColor;
@@ -71,7 +72,9 @@ class GameScene extends Phaser.Scene{
   }
 
   create()  {
-    music.play();
+    if (soundOn)  {
+      music.play();
+    }
       //sky colors and player rotation
     sky = new Phaser.Display.Color(120, 120, 255);
     cExo = new Phaser.Display.Color(0, 0, 0);
@@ -93,6 +96,7 @@ class GameScene extends Phaser.Scene{
     starsDestroyed = 0;
       //keyboard input
     keys = this.input.keyboard.addKeys('W,S,A,D,Z');
+    cursors = this.input.keyboard.createCursorKeys();
       //levels
     level = 0;
     debug = this.add.text(32, 32, '',  {fill: '#00ff00' });
@@ -135,7 +139,7 @@ class GameScene extends Phaser.Scene{
     }
     if (showDebug)  {
       debug.setText('timedSwitch Progress: ' + timedSwitch.getProgress().toString().substr(0, 4) + '\n Level: ' + atmosphere + '\n counter ' + counter
-      + '\n stars destroyed : ' + starsDestroyed + '\nA key Down? : ' + keys.A.isDown + '\nD key Down? : ' + keys.D.isDown
+      + '\n stars destroyed : ' + starsDestroyed + '\nLeft Down? : ' + keys.A.isDown + '\nRight Down? : ' + keys.D.isDown
        + '\nbird velocity:' + birdVelocity);
     } else {
       debug.setText('');
@@ -144,13 +148,24 @@ class GameScene extends Phaser.Scene{
     aText.setText(atmosphere);
     birdVelocity = Math.sin(timedSwitch.getProgress() *20) * 300;
     //Player movement
-    if (keys.A.isDown)  {
-      player.setAccelerationX(-500);
-    }
-    else if (keys.D.isDown) {
-      player.setAccelerationX(500);
+    if (wasdOn) {
+      if (keys.A.isDown)  {
+        player.setAccelerationX(-500);
+      }
+      else if (keys.D.isDown) {
+        player.setAccelerationX(500);
+      } else {
+        player.setAccelerationX(0);
+      }
     } else {
-      player.setAccelerationX(0);
+      if (cursors.left.isDown)  {
+        player.setAccelerationX(-500);
+      }
+      else if (cursors.right.isDown) {
+        player.setAccelerationX(500);
+      } else {
+        player.setAccelerationX(0);
+      }
     }
 
     //Beginning falling
@@ -414,6 +429,8 @@ class GameScene extends Phaser.Scene{
   resetKeys() {
     keys.A.isDown = false;
     keys.D.isDown = false;
+    cursors.left.isDown = false;
+    cursors.right.isDown = false;
   }
     /*this function switches the background color with a counter and interpolate.
     Is called multiple times until paused. the Switch is used so that the right colors
