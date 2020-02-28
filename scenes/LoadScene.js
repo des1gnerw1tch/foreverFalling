@@ -17,7 +17,7 @@ class LoadScene extends Phaser.Scene{
     this.load.spritesheet('lavaMonster', 'assets/lavaMonster.png', {frameWidth: 64, frameHeight: 64});
     this.load.spritesheet('energyBall', 'assets/energyBall.png', {frameWidth: 64, frameHeight: 64});
     this.load.spritesheet('fairy', 'assets/fairy.png', {frameWidth: 87, frameHeight: 87});
-    this.load.spritesheet('spaceship', 'assets/spaceship.png', {frameWidth: 64, frameHeight: 64});
+    this.load.spritesheet('spaceship', 'assets/spaceship.png', {frameWidth: 36, frameHeight: 96});
     this.load.spritesheet('iceCloud', 'assets/iceClouds.png', {frameWidth: 192, frameHeight: 114});
     this.load.spritesheet('plane', 'assets/plane.png', {frameWidth: 192, frameHeight: 84});
     this.load.spritesheet('satellite', 'assets/satellite.png', {frameWidth: 180, frameHeight: 186});
@@ -43,11 +43,14 @@ class LoadScene extends Phaser.Scene{
     this.load.image('bigPlanet1', 'assets/bigPlanet1.png');
     this.load.image('pluto', 'assets/pluto.png');
     this.load.image('mesosPlanet', 'assets/mesosPlanet.png');
+    this.load.image('moon', 'assets/moon.png');
+    this.load.spritesheet('foliage', 'assets/foliage.png', {frameWidth: 200, frameHeight: 200});
       //blocks
     this.load.image('block1', 'assets/block1.png');
     this.load.image('block2', 'assets/block2.png');
     this.load.image('block3', 'assets/block3.png');
     this.load.image('block4', 'assets/block4.png');
+    this.load.image('ground', 'assets/ground.png');
       //Sprites
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
     this.load.spritesheet('astronaut', 'assets/astronaut.png', { frameWidth: 43.5, frameHeight: 64 });
@@ -167,8 +170,8 @@ class LoadScene extends Phaser.Scene{
     //Spaceship animations
     this.anims.create({
       key: 'aSpaceship',
-      frames: this.anims.generateFrameNumbers('spaceship', {start: 0, end: 2}),
-      frameRate: 10,
+      frames: this.anims.generateFrameNumbers('spaceship', {start: 0, end: 1}),
+      frameRate: 18,
       repeat: -1
     })
 

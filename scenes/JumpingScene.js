@@ -1,4 +1,4 @@
-var platforms;
+
 class JumpingScene extends Phaser.Scene{
   constructor(){
   /*  super ({
@@ -20,9 +20,10 @@ class JumpingScene extends Phaser.Scene{
 
     this.add.image(700, 100, 'saturn').setScale(1);
   //  spaceBackground = this.add.image(400, 300, 'space');
-    platforms = this.physics.add.staticGroup();
+
 
       //creating platforms
+      var platforms = this.physics.add.staticGroup();
       //silver platforms
     for (var i = 1; i <=4; i++) {
 

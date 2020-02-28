@@ -169,11 +169,13 @@ class GameScene extends Phaser.Scene{
     }
 
     //Beginning falling
-    if (player.y > 300) {
+    if (player.y > 300 && level != 6) {
       player.body.allowGravity = false;
       player.setVelocityY(0);
-    } else if (player.y < 300) {
+    } else if (player.y < 300 && level != 6) {
         player.body.gravity.y = 800;
+    } else if(player.y > 600) {
+      this.scene.start("enterEnd");
     }
 
     /*Destroying old Objects when they go off screen.
@@ -542,6 +544,13 @@ class GameScene extends Phaser.Scene{
           //new objects
           timedPlane = this.time.addEvent({delay: 5000, callback: this.placePlane, callbackScope: this, loop: true});
           timedBird = this.time.addEvent({delay: 1000, callback: this.placeBird, callbackScope: this, loop: true});
+          break;
+        case 6:
+          timedPlane.paused = true;
+          timedBird.paused = true;
+          player.body.allowGravity = true;
+          player.body.gravity.y = 800;
+          player.body.collideWorldBounds=false;
           break;
 
     }
