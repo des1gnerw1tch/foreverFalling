@@ -35,6 +35,9 @@ class LoadScene extends Phaser.Scene{
     this.load.image('off', 'assets/off.png');
     this.load.image('wasd', 'assets/wasd.png');
     this.load.image('arrows', 'assets/arrows.png');
+    this.load.image('gameOver', 'assets/gameOver.png');
+    this.load.image('playAgain', 'assets/playAgain.png');
+    this.load.image('houseIcon', 'assets/houseIcon.png');
   //  this.load.image('bluePanel', 'spaceUI/PNG/metalPanel_blue.png');
       //background objects
     this.load.image('star', 'assets/star.png');

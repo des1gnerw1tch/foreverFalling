@@ -2,10 +2,12 @@ var killText;
 var homeButton;
 var againButton;
 var playerScore;
+var timedFlash;
+var alpha;
 class KillScene extends Phaser.Scene{
   constructor(){
 
-      super("endGame");
+      super("enterKill");
   }
 
   init(score) {
@@ -13,40 +15,26 @@ class KillScene extends Phaser.Scene{
   }
   create()  {
     music.pause();
-  //  this.add.image(400, 300, 'bluePanel');
-    killText = this.add.text(400, 200, "Game Over. \n Level Reached: " + playerScore);
-    homeButton = this.add.text(400, 240, "Home");
-    homeButton.setInteractive();
-    againButton = this.add.text(400, 260, "Play Again");
-    againButton.setInteractive();
-
-    homeButton.on("pointerover", ()=>  {
-      homeButton.setScale(1.2);
-    })
-
-    homeButton.on("pointerout", ()=>  {
-      homeButton.setScale(1);
-    })
-
-    homeButton.on("pointerup", ()=>  {
-      this.scene.stop("enterGame");
-      this.scene.start("startMenu");
-    })
+    alpha = 0;
+    //makes game over screen delay before popping up
+    this.time.addEvent({delay: 700, callback: this.placeKillText, callbackScope: this, loop: false});
 
 
-    againButton.on("pointerover", ()=>  {
-      againButton.setScale(1.2);
-    })
-
-    againButton.on("pointerout", ()=>  {
-      againButton.setScale(1);
-    })
-
-    againButton.on("pointerup", ()=>  {
-      this.scene.stop("enterGame");
-      this.scene.start("enterIntro");
-    })
 
 
+  }
+
+  update()  {
+
+  }
+
+  placeKillText() {
+    killText = this.add.image(400, 300, 'gameOver').setScale(.5);
+    againButton = this.add.image(400, 400, 'playAgain').setScale(.5);
+    timedFlash = this.time.addEvent({delay: 10, callback: this.flashAgain, callbackScope: this, loop: true});
+  }
+  flashAgain()  {
+    againButton.setAlpha((Math.sin(alpha) + 1)/2);
+    alpha += .1;
   }
 }

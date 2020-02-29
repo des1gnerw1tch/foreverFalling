@@ -128,7 +128,15 @@ class GameScene extends Phaser.Scene{
       }
 
       backgroundImages.create(700, 750, 'bigPlanet1').setScale(1).setVelocityY(-14).setDepth(-1);
+      //home button
+      homeButton = this.add.image(750, 50, 'houseIcon');
+      homeButton.setInteractive();
 
+      homeButton.on("pointerup", ()=>  {
+        music.pause();
+        this.scene.stop("enterKill");
+        this.scene.start("startMenu");
+      })
   }
 
 
@@ -148,13 +156,20 @@ class GameScene extends Phaser.Scene{
     if (showDebug)  {
       debug.setText('timedSwitch Progress: ' + timedSwitch.getProgress().toString().substr(0, 4) + '\n Level: ' + atmosphere + '\n counter ' + counter
       + '\n stars destroyed : ' + starsDestroyed + '\nLeft Down? : ' + keys.A.isDown + '\nRight Down? : ' + keys.D.isDown
-       + '\nbird velocity:' + birdVelocity);
+       + '\nbird velocity:' + birdVelocity + '\nIs Dead?' + isDead);
     } else {
       debug.setText('');
     }
     //level UI
     aText.setText(atmosphere);
     birdVelocity = Math.sin(timedSwitch.getProgress() *20) * 300;
+    //respawn after death with space bar
+    if (cursors.space.isDown && isDead) {
+      cursors.space.isDown = false;
+      this.scene.stop("enterKill");
+      this.scene.start("enterIntro");
+    }
+
     //Player movement
     if (wasdOn) {
       if (keys.A.isDown)  {
@@ -426,7 +441,6 @@ class GameScene extends Phaser.Scene{
       keys.A.isDown = false;
       keys.D.isDown = false;
       this.scene.pause("enterGame");*/
-
       keys.A.isDown = false;
       keys.D.isDown = false;
       timedSwitch.paused = true;
@@ -436,7 +450,7 @@ class GameScene extends Phaser.Scene{
       playerCollider2.destroy();
       if (soundOn)
         soundBack.play();
-      this.scene.launch("endGame", atmosphere);
+      this.scene.launch("enterKill", atmosphere);
     }
   }
 
