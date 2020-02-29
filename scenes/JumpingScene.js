@@ -27,21 +27,23 @@ class JumpingScene extends Phaser.Scene{
       //silver platforms
     for (var i = 1; i <=4; i++) {
 
-      var y = 330 + (30*i);
-      for (var x = 320 + (40*i); x <= 800; x+=40) {
-      platforms.create(x, y, 'block1').setScale(.5).refreshBody();
+    //  var y = 330 + (30*i);
+    var y = 330 + (48*i);
+      for (var x = 320 + (/*40*/48*i); x <= 800; x+=/*40*/48) {
+    //  platforms.create(x, y, 'block1').setScale(.5).refreshBody();
+      platforms.create(x, y, 'spaceBlock', 0);
       }
     }
       //caution platforms
-    platforms.create(360, 360, 'block3').setScale(.5).refreshBody();
-    platforms.create(400, 360, 'block3').setScale(.5).refreshBody();
-    platforms.create(440, 360, 'block3').setScale(.5).refreshBody();
-    platforms.create(480, 360, 'block3').setScale(.5).refreshBody();
+    platforms.create(368, 378, 'spaceBlock', 1);
+    platforms.create(416, 378, 'spaceBlock', 1);
+    platforms.create(464, 378, 'spaceBlock', 1);
+    platforms.create(512, 378, 'spaceBlock', 1);
       //barrels!
-    platforms.create(720, 330, 'block2').setScale(.5).refreshBody();
-    platforms.create(760, 330, 'block2').setScale(.5).refreshBody();
-    platforms.create(760, 300, 'block2').setScale(.5).refreshBody();
-    platforms.create(640, 330, 'block2').setScale(.5).refreshBody();
+    platforms.create(720, 330, 'spaceBlock', 2);
+    platforms.create(768, 330, 'spaceBlock', 2);
+  //  platforms.create(768, 282, 'spaceBlock', 2);
+    platforms.create(640, 330, 'spaceBlock', 2);
       //player!
     player = this.physics.add.sprite(700, 200, 'astronaut').setScale(.7);
       //gravity

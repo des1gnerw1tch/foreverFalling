@@ -21,6 +21,8 @@ class EndScene extends Phaser.Scene{
       }
       aStar.setDepth(-1);
     }
+    //welcome home image
+    this.add.image(400, 200, 'welcomeHome').setScale(.4);
     //trees and foliage
     this.add.image(200, 470, 'foliage', 0).setDepth(-1);
     this.add.image(700, 470, 'foliage', 1).setDepth(-1);

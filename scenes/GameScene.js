@@ -62,6 +62,11 @@ var timeText;
 //particles (Not usable yet)
 var particles;
 var emitter;
+//death stuff
+var isDead;
+//colliders
+var playerCollider1;
+var playerCollider2;
 
 class GameScene extends Phaser.Scene{
   constructor(){
@@ -100,7 +105,7 @@ class GameScene extends Phaser.Scene{
       //levels
     level = 0;
     debug = this.add.text(32, 32, '',  {fill: '#00ff00' });
-    aText = this.add.text(500, 50, '', {fontSize: 32});
+    aText = this.add.text(500, 50, '', {fontSize: 32}).setDepth(1);
     this.switchLevel();
     timedSwitch = this.time.addEvent({ delay: 25500, callback: this.switchLevel, callbackScope: this, loop: true });
   //  timedSwitch = this.time.addEvent({ delay: 1000, callback: this.switchLevel, callbackScope: this, loop: true });
@@ -109,10 +114,11 @@ class GameScene extends Phaser.Scene{
     player = this.physics.add.sprite(400, 0, 'astronaut').setScale(.7);
     player.anims.play('falling', true);
     player.body.collideWorldBounds=true;
+    isDead = false;
       //colliders
 
-    this.physics.add.overlap(player, flyingObject, this.hitObject, null, this);
-    this.physics.add.overlap(player, birdGroup, this.hitObject, null, this);
+    playerCollider1 = this.physics.add.overlap(player, flyingObject, this.hitObject, null, this);
+    playerCollider2 = this.physics.add.overlap(player, birdGroup, this.hitObject, null, this);
 
         //Background images of stars/ planets
       for (var i = 0; i < 50; i++) {
@@ -128,7 +134,9 @@ class GameScene extends Phaser.Scene{
 
 
   update () {
-    //DEBUG
+    /*DEBUG
+    When debug menu is open, player does not collide with objects, as the hitObject
+    function will fire but nothing will happen*/
 
     if (this.input.keyboard.checkDown(keys.Z, 1000))  {
       if (showDebug)  {
@@ -168,13 +176,16 @@ class GameScene extends Phaser.Scene{
       }
     }
 
-    //Beginning falling
-    if (player.y > 300 && level != 6) {
+    /*Beginning falling. Player will first fall down from the spaceship. Then
+    when his y position hits greater than 300, there will be no more force of
+    gravity. Once the game is completed (leve 6), these rules are negated and
+    enter end will happen once player drops through floor*/
+    if (player.y > 300 && level != 6 && !isDead) {
       player.body.allowGravity = false;
       player.setVelocityY(0);
-    } else if (player.y < 300 && level != 6) {
+    } else if (player.y < 300 && level != 6 && !isDead) {
         player.body.gravity.y = 800;
-    } else if(player.y > 600) {
+    } else if(player.y > 600 && !isDead) {
       this.scene.start("enterEnd");
     }
 
@@ -273,8 +284,6 @@ class GameScene extends Phaser.Scene{
     nextSatellite.setVelocityY(-50);
     nextSatellite.setAngularVelocity(Phaser.Math.FloatBetween(10,50));
     nextSatellite.anims.play('aSatellite', true);
-    //used to destroy old satellites.. ? need to add other bounds other than -x
-
 
   }
 
@@ -309,7 +318,6 @@ class GameScene extends Phaser.Scene{
     nextLMonster.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
     nextLMonster.setVelocityY(-100);
     nextLMonster.anims.play('aLavaMonster', true);
-  //  nextLMonster.setAngle(120);
     nextLMonster.setAngularVelocity(Phaser.Math.FloatBetween(0,20));
   }
 
@@ -342,8 +350,7 @@ class GameScene extends Phaser.Scene{
       var nextSpaceship;
       nextSpaceship = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'spaceship');
       nextSpaceship.setScale(1);
-  //  nextSpaceship.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
-      nextSpaceship.setVelocityY(-325);
+      nextSpaceship.setVelocityY(-400);
       nextSpaceship.setAngle(0);
       nextSpaceship.anims.play('aSpaceship', true);
     }
@@ -414,10 +421,21 @@ class GameScene extends Phaser.Scene{
 
   hitObject() {
     if (!showDebug) {
-      player.setTint(0xff0000);
+      isDead = true;
+    /*  player.setTint(0xff0000);
       keys.A.isDown = false;
       keys.D.isDown = false;
-      this.scene.pause("enterGame");
+      this.scene.pause("enterGame");*/
+
+      keys.A.isDown = false;
+      keys.D.isDown = false;
+      timedSwitch.paused = true;
+      player.body.collideWorldBounds = false;
+      player.setVelocityY(-400);
+      playerCollider1.destroy();
+      playerCollider2.destroy();
+      if (soundOn)
+        soundBack.play();
       this.scene.launch("endGame", atmosphere);
     }
   }
@@ -530,8 +548,8 @@ class GameScene extends Phaser.Scene{
           timedFairy.paused = true;
 
           //starting new spawns
-          timedSpaceship = this.time.addEvent({delay: 333, callback: this.placeSpaceship, callbackScope: this, loop: true});
-          timedIceCloud = this.time.addEvent({delay: 2000, callback: this.placeIceCloud, callbackScope: this, loop: true});
+          timedSpaceship = this.time.addEvent({delay: 200, callback: this.placeSpaceship, callbackScope: this, loop: true});
+          timedIceCloud = this.time.addEvent({delay: 5000, callback: this.placeIceCloud, callbackScope: this, loop: true});
           backgroundImages.create(600, 900, 'mesosPlanet').setScale(1).setVelocityY(-18).setDepth(-1);
           break;
         case 5:
@@ -555,6 +573,6 @@ class GameScene extends Phaser.Scene{
 
     }
   }
-    //different case levels = new games!
+    //different case levels = new atmospheres!
 
 }
