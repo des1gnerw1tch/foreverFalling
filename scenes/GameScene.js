@@ -111,8 +111,8 @@ class GameScene extends Phaser.Scene{
   //  timedSwitch = this.time.addEvent({ delay: 1000, callback: this.switchLevel, callbackScope: this, loop: true });
 
       //player
-    player = this.physics.add.sprite(400, 0, 'astronaut').setScale(.7);
-    player.anims.play('falling', true);
+    player = this.physics.add.sprite(400, 0, 'astronaut').setScale(.9);
+    player.anims.play('idle', true);
     player.body.collideWorldBounds=true;
     isDead = false;
       //colliders
@@ -174,9 +174,11 @@ class GameScene extends Phaser.Scene{
     if (wasdOn) {
       if (keys.A.isDown)  {
         player.setAccelerationX(-500);
+        player.anims.play('left', true);
       }
       else if (keys.D.isDown) {
         player.setAccelerationX(500);
+        player.anims.play('right', true);
       } else {
         player.setAccelerationX(0);
       }
@@ -455,8 +457,6 @@ class GameScene extends Phaser.Scene{
   }
 
   moveBackground() {
-    //spaceBackground.y += -.05;
-    //spaceBackground.y += -.5;
     player.angle += 5;
   }
     //temporary fix to movement glitch. resets the keys 100 ms after scene starts

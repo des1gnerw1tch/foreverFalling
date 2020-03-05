@@ -11,7 +11,7 @@ class TitleScene extends Phaser.Scene{
 
     playButton.on("pointerover", ()=>  {
       icon = this.add.sprite(playButton.x + 130, playButton.y + 20, 'astronaut').setScale(.5);
-      icon.anims.play('falling', true);
+      icon.anims.play('right', true);
     })
 
     playButton.on("pointerout", ()=>  {
@@ -32,7 +32,7 @@ class TitleScene extends Phaser.Scene{
 
     optionsButton.on("pointerover", ()=>  {
       icon = this.add.sprite(optionsButton.x + 205, optionsButton.y + 20, 'astronaut').setScale(.5);
-      icon.anims.play('falling', true);
+      icon.anims.play('right', true);
     })
 
     optionsButton.on("pointerout", ()=>  {
@@ -51,7 +51,7 @@ class TitleScene extends Phaser.Scene{
 
     extrasButton.on("pointerover", ()=>  {
     icon = this.add.sprite(extrasButton.x + 180, extrasButton.y + 20, 'astronaut').setScale(.5);
-    icon.anims.play('falling', true);
+    icon.anims.play('right', true);
   })
 
   extrasButton.on("pointerout", ()=>  {

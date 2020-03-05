@@ -20,7 +20,7 @@ class OptionsScene extends Phaser.Scene{
 
     volumeButton.on("pointerover", ()=>  {
       icon = this.add.sprite(volumeButton.x + 190, volumeButton.y + 20, 'astronaut').setScale(.5);
-      icon.anims.play('falling', true);
+      icon.anims.play('right', true);
     })
 
     volumeButton.on("pointerout", ()=>  {
@@ -45,7 +45,7 @@ class OptionsScene extends Phaser.Scene{
 
     controlsButton.on("pointerover", ()=>  {
       icon = this.add.sprite(controlsButton.x + 218, controlsButton.y + 20, 'astronaut').setScale(.5);
-      icon.anims.play('falling', true);
+      icon.anims.play('right', true);
     })
 
     controlsButton.on("pointerout", ()=>  {
@@ -69,7 +69,7 @@ class OptionsScene extends Phaser.Scene{
 
     backButton.on("pointerover", ()=>  {
       icon = this.add.sprite(backButton.x + 145, backButton.y + 20, 'astronaut').setScale(.5);
-      icon.anims.play('falling', true);
+      icon.anims.play('right', true);
     })
 
     backButton.on("pointerout", ()=>  {

@@ -58,7 +58,8 @@ class LoadScene extends Phaser.Scene{
     this.load.spritesheet('spaceBlock', 'assets/spaceBlock.png', {frameWidth: 48, frameHeight: 48});
       //Sprites
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-    this.load.spritesheet('astronaut', 'assets/astronaut.png', { frameWidth: 43.5, frameHeight: 64 });
+  //  this.load.spritesheet('astronaut', 'assets/astronaut.png', { frameWidth: 43.5, frameHeight: 64 });
+    this.load.spritesheet('astronaut', 'assets/myAstronaut.png', { frameWidth: 36, frameHeight: 45 });
         //theme music
       this.load.audio('spaceTheme', 'assets/menuMusic.mp3');
       //sound effects
@@ -97,24 +98,18 @@ class LoadScene extends Phaser.Scene{
 
     this.anims.create({
       key: 'right',
-      frames: this.anims.generateFrameNumbers('astronaut', {start: 8, end: 11}),
+      frames: this.anims.generateFrameNumbers('astronaut', {start: 0, end: 3}),
       frameRate: 10,
       repeat: -1
     })
 
     this.anims.create({
       key: 'idle',
-      frames: this.anims.generateFrameNumbers('astronaut', {start: 0, end: 0}),
+      frames: this.anims.generateFrameNumbers('astronaut', {start: 8, end: 8}),
       frameRate: 10,
       repeat: -1
     })
 
-    this.anims.create({
-      key: 'falling',
-      frames: this.anims.generateFrameNumbers('astronaut', {start: 0, end: 3}),
-      frameRate: 10,
-      repeat: -1
-    })
 
     //Meteor Types
     this.anims.create({
