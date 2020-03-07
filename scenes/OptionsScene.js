@@ -19,7 +19,7 @@ class OptionsScene extends Phaser.Scene{
     offIcon = this.add.image(volumeButton.x + 250, volumeButton.y + 20, 'off');
 
     volumeButton.on("pointerover", ()=>  {
-      icon = this.add.sprite(volumeButton.x + 190, volumeButton.y + 20, 'astronaut').setScale(.5);
+      icon = this.add.sprite(volumeButton.x + 190, volumeButton.y + 20, 'astronautPadded').setScale(.5);
       icon.anims.play('right', true);
     })
 
@@ -44,7 +44,7 @@ class OptionsScene extends Phaser.Scene{
     arrowsIcon = this.add.image(controlsButton.x + 350, controlsButton.y + 20, 'arrows');
 
     controlsButton.on("pointerover", ()=>  {
-      icon = this.add.sprite(controlsButton.x + 218, controlsButton.y + 20, 'astronaut').setScale(.5);
+      icon = this.add.sprite(controlsButton.x + 218, controlsButton.y + 20, 'astronautPadded').setScale(.5);
       icon.anims.play('right', true);
     })
 
@@ -68,7 +68,7 @@ class OptionsScene extends Phaser.Scene{
     backButton.setOrigin(0, 0);
 
     backButton.on("pointerover", ()=>  {
-      icon = this.add.sprite(backButton.x + 145, backButton.y + 20, 'astronaut').setScale(.5);
+      icon = this.add.sprite(backButton.x + 145, backButton.y + 20, 'astronautPadded').setScale(.5);
       icon.anims.play('right', true);
     })
 

@@ -10,7 +10,7 @@ class TitleScene extends Phaser.Scene{
     playButton.setInteractive();
 
     playButton.on("pointerover", ()=>  {
-      icon = this.add.sprite(playButton.x + 130, playButton.y + 20, 'astronaut').setScale(.5);
+      icon = this.add.sprite(playButton.x + 130, playButton.y + 20, 'astronautPadded').setScale(.5);
       icon.anims.play('right', true);
     })
 
@@ -31,7 +31,7 @@ class TitleScene extends Phaser.Scene{
     optionsButton.setInteractive();
 
     optionsButton.on("pointerover", ()=>  {
-      icon = this.add.sprite(optionsButton.x + 205, optionsButton.y + 20, 'astronaut').setScale(.5);
+      icon = this.add.sprite(optionsButton.x + 205, optionsButton.y + 20, 'astronautPadded').setScale(.5);
       icon.anims.play('right', true);
     })
 
@@ -50,7 +50,7 @@ class TitleScene extends Phaser.Scene{
     extrasButton.setInteractive();
 
     extrasButton.on("pointerover", ()=>  {
-    icon = this.add.sprite(extrasButton.x + 180, extrasButton.y + 20, 'astronaut').setScale(.5);
+    icon = this.add.sprite(extrasButton.x + 180, extrasButton.y + 20, 'astronautPadded').setScale(.5);
     icon.anims.play('right', true);
   })
 
@@ -61,7 +61,7 @@ class TitleScene extends Phaser.Scene{
   extrasButton.on("pointerup", ()=>  {
     if (soundOn)
       soundSelect.play();
-  //  this.scene.start(");
+    this.scene.start("enterEnd");
   })
   }
 }

@@ -367,7 +367,7 @@ class GameScene extends Phaser.Scene{
       var nextSpaceship;
       nextSpaceship = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'spaceship');
       nextSpaceship.setScale(1);
-      nextSpaceship.setVelocityY(-400);
+      nextSpaceship.setVelocityY(-320);
       nextSpaceship.setAngle(0);
       nextSpaceship.anims.play('aSpaceship', true);
     }
@@ -562,7 +562,7 @@ class GameScene extends Phaser.Scene{
           timedFairy.paused = true;
 
           //starting new spawns
-          timedSpaceship = this.time.addEvent({delay: 200, callback: this.placeSpaceship, callbackScope: this, loop: true});
+          timedSpaceship = this.time.addEvent({delay: 150, callback: this.placeSpaceship, callbackScope: this, loop: true});
           timedIceCloud = this.time.addEvent({delay: 5000, callback: this.placeIceCloud, callbackScope: this, loop: true});
           backgroundImages.create(600, 900, 'mesosPlanet').setScale(1).setVelocityY(-18).setDepth(-1);
           break;

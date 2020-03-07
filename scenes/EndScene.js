@@ -24,10 +24,11 @@ class EndScene extends Phaser.Scene{
     //welcome home image
     this.add.image(400, 200, 'welcomeHome').setScale(.4);
     //trees and foliage
-    this.add.image(200, 470, 'foliage', 0).setDepth(-1);
+    this.add.image(100, 470, 'foliage', 0).setDepth(-1);
     this.add.image(700, 470, 'foliage', 1).setDepth(-1);
     this.add.image(660, 518, 'foliage', 2).setDepth(-1).setScale(.5);
-
+    //house
+    this.add.image(300, 420, 'house').setScale(1);
     //background color
     cStrato1 = new Phaser.Display.Color(69, 179, 224);
     this.cameras.main.setBackgroundColor(cStrato1);
@@ -35,7 +36,7 @@ class EndScene extends Phaser.Scene{
     keys = this.input.keyboard.addKeys('W,S,A,D,');
     cursors = this.input.keyboard.createCursorKeys();
     //player
-    player = this.physics.add.sprite(400, 0, 'astronaut').setScale(.7);
+    player = this.physics.add.sprite(400, 0, 'astronautPadded').setScale(.9);
     player.body.gravity.y = 800;
     //colliders
     this.physics.add.collider(player, platforms);

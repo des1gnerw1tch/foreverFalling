@@ -45,7 +45,7 @@ class JumpingScene extends Phaser.Scene{
   //  platforms.create(768, 282, 'spaceBlock', 2);
     platforms.create(640, 330, 'spaceBlock', 2);
       //player!
-    player = this.physics.add.sprite(700, 200, 'astronaut').setScale(.9);
+    player = this.physics.add.sprite(700, 200, 'astronautPadded').setScale(.9);
       //gravity
     player.body.gravity.y = 800;
 

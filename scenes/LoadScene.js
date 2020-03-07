@@ -49,6 +49,7 @@ class LoadScene extends Phaser.Scene{
     this.load.image('moon', 'assets/moon.png');
     this.load.spritesheet('foliage', 'assets/foliage.png', {frameWidth: 200, frameHeight: 200});
     this.load.image('welcomeHome', 'assets/welcomeHome.png');
+    this.load.image('house', 'assets/house.png');
       //blocks
     this.load.image('block1', 'assets/block1.png');
     this.load.image('block2', 'assets/block2.png');
@@ -58,8 +59,10 @@ class LoadScene extends Phaser.Scene{
     this.load.spritesheet('spaceBlock', 'assets/spaceBlock.png', {frameWidth: 48, frameHeight: 48});
       //Sprites
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-  //  this.load.spritesheet('astronaut', 'assets/astronaut.png', { frameWidth: 43.5, frameHeight: 64 });
+    /* without padding, hitboxes are better but there is some pixel bleeding
+    when animating*/
     this.load.spritesheet('astronaut', 'assets/myAstronaut.png', { frameWidth: 36, frameHeight: 45 });
+    this.load.spritesheet('astronautPadded', 'assets/astronautPadding.png', { frameWidth: 42, frameHeight: 51 });
         //theme music
       this.load.audio('spaceTheme', 'assets/menuMusic.mp3');
       //sound effects
@@ -91,21 +94,21 @@ class LoadScene extends Phaser.Scene{
     //player movement
     this.anims.create({
       key: 'left',
-      frames: this.anims.generateFrameNumbers('astronaut', {start: 4, end: 7}),
+      frames: this.anims.generateFrameNumbers('astronautPadded', {start: 4, end: 7}),
       frameRate: 10,
       repeat: -1
     })
 
     this.anims.create({
       key: 'right',
-      frames: this.anims.generateFrameNumbers('astronaut', {start: 0, end: 3}),
+      frames: this.anims.generateFrameNumbers('astronautPadded', {start: 0, end: 3}),
       frameRate: 10,
       repeat: -1
     })
 
     this.anims.create({
       key: 'idle',
-      frames: this.anims.generateFrameNumbers('astronaut', {start: 8, end: 8}),
+      frames: this.anims.generateFrameNumbers('astronautPadded', {start: 8, end: 8}),
       frameRate: 10,
       repeat: -1
     })
