@@ -71,6 +71,7 @@ class LoadScene extends Phaser.Scene{
     this.load.audio('playPlay', 'assets/play.wav');
     this.load.audio('playSelect', 'assets/select.wav');
     this.load.audio('playBack', 'assets/back.wav');
+    this.load.audio('spaceshipSound', 'assets/spaceship.wav');
 
       //loading text
     this.add.text(20, 20, "Loading Game...");

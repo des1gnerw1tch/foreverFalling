@@ -1,4 +1,6 @@
-
+var introObjects;
+var timedBSpaceship;
+var spaceshipSound;
 class JumpingScene extends Phaser.Scene{
   constructor(){
   /*  super ({
@@ -17,9 +19,13 @@ class JumpingScene extends Phaser.Scene{
         var aStar = this.add.image(Phaser.Math.FloatBetween(0, 800), Phaser.Math.FloatBetween(0, 600), 'star').setScale(1);
         aStar.setDepth(-1);
       }
+      //background objects
+      introObjects = this.physics.add.group();
+      timedBSpaceship = this.time.addEvent({ delay: 10000, callback: this.placeBSpaceship, callbackScope: this, loop: true});
 
-    this.add.image(700, 100, 'saturn').setScale(1);
-  //  spaceBackground = this.add.image(400, 300, 'space');
+      this.add.image(700, 100, 'saturn').setScale(1);
+      //background objects sounds
+      spaceshipSound = this.sound.add('spaceshipSound');
 
 
       //creating platforms
@@ -91,6 +97,15 @@ class JumpingScene extends Phaser.Scene{
     if (player.y > 600) {
       this.scene.start("enterGame");
     }
+
+    introObjects.children.iterate(function (child) {
+        //bit found in code that works, no idea what it does. ..
+      if (child == undefined)
+          return;
+      if (child.x >= 800)  {
+          child.destroy();
+        }
+    })
   }
 //temporary fix to movement glitch. resets the keys 100 ms after scene starts
   resetKeys() {
@@ -100,6 +115,18 @@ class JumpingScene extends Phaser.Scene{
     cursors.left.isDown= false;
     cursors.right.isDown= false;
     cursors.up.isDown= false;
+  }
+  placeBSpaceship() {
+    var rand = Phaser.Math.Between(0, 5);
+    if (rand == 0)  {
+      var ship = introObjects.create(-22, Phaser.Math.Between(0, 200), 'spaceship');
+      ship.setScale(.2);
+      ship.setAngle(90);
+      ship.anims.play('aSpaceship', true);
+      ship.setVelocityX(100);
+      ship.setAccelerationX(500);
+      spaceshipSound.play();
+  }
   }
 
 }

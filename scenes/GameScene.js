@@ -1,6 +1,6 @@
 /* TO DO:
 Mesosphere and Stratosphere tweaks and changes
-
+spaceship scene art and background!
 */
 var player;
 var platforms;
@@ -90,6 +90,7 @@ class GameScene extends Phaser.Scene{
     cStrato2 = new Phaser.Display.Color(201, 233, 246);
 
     timedBackground = this.time.addEvent({ delay: 10, callback: this.moveBackground, callbackScope: this, loop: true });
+    //fix for movement glitch
     timedKeyCatch = this.time.addEvent({ delay: 100, callback: this.resetKeys, callbackScope: this, loop: false });
       //Flying Obstacles
     flyingObject = this.physics.add.group ();
@@ -185,9 +186,11 @@ class GameScene extends Phaser.Scene{
     } else {
       if (cursors.left.isDown)  {
         player.setAccelerationX(-500);
+        player.anims.play('left', true);
       }
       else if (cursors.right.isDown) {
         player.setAccelerationX(500);
+        player.anims.play('right', true);
       } else {
         player.setAccelerationX(0);
       }
