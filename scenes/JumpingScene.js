@@ -1,6 +1,7 @@
 var introObjects;
 var timedBSpaceship;
 var spaceshipSound;
+var homeButton;
 class JumpingScene extends Phaser.Scene{
   constructor(){
   /*  super ({
@@ -21,6 +22,7 @@ class JumpingScene extends Phaser.Scene{
       }
       //background objects
       introObjects = this.physics.add.group();
+      this.placeBSpaceship();
       timedBSpaceship = this.time.addEvent({ delay: 10000, callback: this.placeBSpaceship, callbackScope: this, loop: true});
 
       this.add.image(700, 100, 'saturn').setScale(1);
@@ -58,6 +60,13 @@ class JumpingScene extends Phaser.Scene{
     //colliders
     this.physics.add.collider(player, platforms);
 
+    //home button
+    homeButton = this.add.image(750, 50, 'houseIcon');
+    homeButton.setInteractive();
+
+    homeButton.on("pointerup", ()=>  {
+      this.scene.start("startMenu");
+    })
 
 
   }
@@ -126,7 +135,7 @@ class JumpingScene extends Phaser.Scene{
       ship.setVelocityX(100);
       ship.setAccelerationX(500);
       spaceshipSound.play();
-  }
+    }
   }
 
 }

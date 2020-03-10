@@ -9,6 +9,46 @@ class LoadScene extends Phaser.Scene{
 
   preload() {
 
+
+    //loading text
+    var loadingText = this.make.text({
+      x: 300,
+      y: 260,
+      text: 'Loading Game... ;)',
+      style: {
+      //    font: '20px monospace',
+          fill: '#ffffff'
+      }
+  });
+  //loading box
+  var progressBox = this.add.graphics();
+  progressBox.fillStyle(0x222222, 0.8);
+  progressBox.fillRect(237.5, 290, 325, 50);
+    //loading bar
+  let loadingBar = this.add.graphics({
+    fillStyle: {
+      color: 0x32CD32 // green
+    }
+  })
+  //progress bar movement
+  this.load.on("progress", (percent)=>{
+  loadingBar.fillRect(250, 300, 300 * percent, 30);
+  loadingText.setText('Loading Game... ' + Math.trunc(percent* 100)  + "%")
+  console.log(percent);
+  })
+  //asset loading text
+  var fileText = this.add.text(300, 340);
+  this.load.on('fileprogress', function (file) {
+    fileText.setText(file.src);
+  });
+  //complete loading event listener
+  this.load.on('complete', function () {
+    loadingText.destroy();
+    progressBox.destroy();
+    loadingBar.destroy();
+    fileText.destroy();
+  });
+
     this.load.image('space', 'assets/space.png');
       //loading hitobjects
     this.load.spritesheet('meteor', 'assets/meteorMe.png', {frameWidth: 119, frameHeight: 120});
@@ -39,6 +79,15 @@ class LoadScene extends Phaser.Scene{
     this.load.image('playAgain', 'assets/playAgain.png');
     this.load.image('houseIcon', 'assets/houseIcon.png');
   //  this.load.image('bluePanel', 'spaceUI/PNG/metalPanel_blue.png');
+    //theme song
+    this.load.audio('spaceTheme', 'assets/menuMusic.mp3');
+    //sound effects
+    this.load.audio('yeet', 'assets/maxyeet.m4a');
+    this.load.audio('datBei', 'assets/maxdatbei.m4a');
+    this.load.audio('playPlay', 'assets/play.wav');
+    this.load.audio('playSelect', 'assets/select.wav');
+    this.load.audio('playBack', 'assets/back.wav');
+    this.load.audio('spaceshipSound', 'assets/spaceship.wav');
       //background objects
     this.load.image('star', 'assets/star.png');
     this.load.image('smallMars', 'assets/smallMars.png');
@@ -64,29 +113,9 @@ class LoadScene extends Phaser.Scene{
     this.load.spritesheet('astronaut', 'assets/myAstronaut.png', { frameWidth: 36, frameHeight: 45 });
     this.load.spritesheet('astronautPadded', 'assets/astronautPadding.png', { frameWidth: 42, frameHeight: 51 });
         //theme music
-      this.load.audio('spaceTheme', 'assets/menuMusic.mp3');
-      //sound effects
-    this.load.audio('yeet', 'assets/maxyeet.m4a');
-    this.load.audio('datBei', 'assets/maxdatbei.m4a');
-    this.load.audio('playPlay', 'assets/play.wav');
-    this.load.audio('playSelect', 'assets/select.wav');
-    this.load.audio('playBack', 'assets/back.wav');
-    this.load.audio('spaceshipSound', 'assets/spaceship.wav');
 
-      //loading text
-    this.add.text(20, 20, "Loading Game...");
 
-      //loading bar
-    let loadingBar = this.add.graphics({
-      fillStyle: {
-        color: 0xffffff // white
-      }
-    })
 
-    this.load.on("progress", (percent)=>{
-    loadingBar.fillRect(0, 400, 800 * percent, 50);
-    console.log(percent);
-  })
 
 }
 
