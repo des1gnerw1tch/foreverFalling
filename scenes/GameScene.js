@@ -128,7 +128,7 @@ class GameScene extends Phaser.Scene{
         aStar.setVelocityY(-20);
       }
 
-      backgroundImages.create(700, 750, 'bigPlanet1').setScale(1).setVelocityY(-14).setDepth(-1);
+      backgroundImages.create(700, 750, 'bigPlanet1').setScale(1).setVelocityY(-20).setDepth(-1);
       //home button
       homeButton = this.add.image(750, 50, 'houseIcon');
       homeButton.setInteractive();
@@ -313,7 +313,7 @@ class GameScene extends Phaser.Scene{
     nextStone = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'stone');
     nextStone.setScale(2);
     nextStone.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
-    nextStone.setVelocityY(-300);
+    nextStone.setVelocityY(-230);
     nextStone.setAngularVelocity(Phaser.Math.FloatBetween(0,100));
 
   }
@@ -386,50 +386,55 @@ class GameScene extends Phaser.Scene{
     }
 
   placePlane()  {
-    var nextPlane;
-    var posY = Phaser.Math.Between(0, 600);
-    nextPlane = flyingObject.create(-100, posY, 'plane');
-    nextPlane.setVelocityX(Phaser.Math.Between(100, 500));
-    nextPlane.anims.play('aPlane', true);
-    nextPlane.setScale(.75);
-    /*ensures that there will be a chance of dodging when plane spawns.
-    When plane is spawned in the upper half, it will have a velocity that sends
-    the plane down, vice versa. Also sets plane angle corresponding to direction*/
-    if (posY > 300) {
-      var velY = Phaser.Math.Between(-300, 0);
-      nextPlane.setVelocityY(velY);
-      nextPlane.setAngle(velY/10);
-    } else if (posY < 300)  {
-      var velY = Phaser.Math.Between(0, 300);
-      nextPlane.setVelocityY(velY);
-      nextPlane.setAngle(velY/10);
-    }
+    if (counter > 250)  {
+      var nextPlane;
+      var posY = Phaser.Math.Between(0, 600);
+      nextPlane = flyingObject.create(-100, posY, 'plane');
+      nextPlane.setVelocityX(Phaser.Math.Between(100, 500));
+      nextPlane.anims.play('aPlane', true);
+      nextPlane.setScale(.75);
+      /*ensures that there will be a chance of dodging when plane spawns.
+      When plane is spawned in the upper half, it will have a velocity that sends
+      the plane down, vice versa. Also sets plane angle corresponding to direction*/
+      if (posY > 300) {
+        var velY = Phaser.Math.Between(-300, 0);
+        nextPlane.setVelocityY(velY);
+        nextPlane.setAngle(velY/10);
+      } else if (posY < 300)  {
+        var velY = Phaser.Math.Between(0, 300);
+        nextPlane.setVelocityY(velY);
+        nextPlane.setAngle(velY/10);
+      }
 
-    if (posY < 384 && posY > 216 && velY < 100) {
-      nextPlane.destroy();
-      console.log("Destroyed impossible plane");
+      if (posY < 384 && posY > 216 && velY < 100) {
+        nextPlane.destroy();
+        console.log("Destroyed impossible plane");
+        this.placePlane()
+      }
     }
-
 
   }
 
   placeBird()  {
-      var next;
-      next = birdGroup.create(0, Phaser.Math.Between(100, 500), 'bird');
-      next.setScale(1);
-      next.setVelocityX(100);
-      next.setAngle(0);
-      var rand = Phaser.Math.Between(1, 3);
-      switch (rand){
-        case 1:
-          next.anims.play('aBBird', true);
-          break;
-        case 2:
-          next.anims.play('aRBird', true);
-          break;
-        case 3:
-          next.anims.play('aYBird', true);
-          break;
+      var num = Phaser.Math.Between(1,2);
+      if (num == 1 && counter > 200) {
+        var next;
+        next = birdGroup.create(0, Phaser.Math.Between(100, 500), 'bird');
+        next.setScale(1);
+        next.setVelocityX(100);
+        next.setAngle(0);
+        var rand = Phaser.Math.Between(1, 3);
+        switch (rand){
+          case 1:
+            next.anims.play('aBBird', true);
+            break;
+          case 2:
+            next.anims.play('aRBird', true);
+            break;
+          case 3:
+            next.anims.play('aYBird', true);
+            break;
+        }
       }
 
 
@@ -501,8 +506,8 @@ class GameScene extends Phaser.Scene{
           }
         break;
       case 5:
-        if (counter <= 1300) {
-          hexColor = Phaser.Display.Color.Interpolate.ColorWithColor(cMeso, cStrato1, 1300, counter);
+        if (counter <= 600) {
+          hexColor = Phaser.Display.Color.Interpolate.ColorWithColor(cMeso, cStrato1, 600, counter);
           this.cameras.main.setBackgroundColor(hexColor);
           }
         else {
@@ -554,7 +559,7 @@ class GameScene extends Phaser.Scene{
         //starting new spawns
         timedEnergyBall = this.time.addEvent({delay: 200, callback: this.placeEnergyBall, callbackScope: this, loop: true});
         timedFairy = this.time.addEvent({delay: 6000, callback: this.placeFairy, callbackScope: this, loop: true});
-        backgroundImages.create(200, 750, 'pluto').setScale(1).setVelocityY(-18).setDepth(-1);
+        backgroundImages.create(200, 750, 'pluto').setScale(1).setVelocityY(-20).setDepth(-1);
         break;
         case 4:
           atmosphere = 'Mesosphere';
@@ -567,7 +572,7 @@ class GameScene extends Phaser.Scene{
           //starting new spawns
           timedSpaceship = this.time.addEvent({delay: 150, callback: this.placeSpaceship, callbackScope: this, loop: true});
           timedIceCloud = this.time.addEvent({delay: 5000, callback: this.placeIceCloud, callbackScope: this, loop: true});
-          backgroundImages.create(600, 900, 'mesosPlanet').setScale(1).setVelocityY(-18).setDepth(-1);
+          backgroundImages.create(600, 900, 'mesosPlanet').setScale(1).setVelocityY(-20).setDepth(-1);
           break;
         case 5:
           atmosphere = 'Stratosphere'
@@ -578,7 +583,7 @@ class GameScene extends Phaser.Scene{
           timedIceCloud.paused = true;
           //new objects
           timedPlane = this.time.addEvent({delay: 5000, callback: this.placePlane, callbackScope: this, loop: true});
-          timedBird = this.time.addEvent({delay: 1000, callback: this.placeBird, callbackScope: this, loop: true});
+          timedBird = this.time.addEvent({delay: 600, callback: this.placeBird, callbackScope: this, loop: true});
           break;
         case 6:
           timedPlane.paused = true;

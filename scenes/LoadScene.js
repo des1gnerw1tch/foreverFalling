@@ -1,4 +1,3 @@
-//import { CST } from "../CST";
 class LoadScene extends Phaser.Scene{
   constructor(){
   /*  super ({
