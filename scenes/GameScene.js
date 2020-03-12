@@ -1,6 +1,8 @@
 /* TO DO:
 Mesosphere and Stratosphere tweaks and changes
 spaceship scene art and background!
+Add rainbow to end scenes
+Completely redesign mesosphere, and stratosphere also.
 */
 var player;
 var platforms;
@@ -21,6 +23,7 @@ var timedSpaceship;
 var timedIceCloud;
 var timedPlane;
 var timedBird;
+var timedUFO;
 //input
 var keys;
 var cursors;
@@ -57,6 +60,8 @@ var showDebug = false;
 //obstacles
 var flyingObject;
 var birdGroup;
+var lavaMonGroup;
+var ufoGroup;
 var birdVelocity;
 var timeText;
 //particles (Not usable yet)
@@ -67,6 +72,8 @@ var isDead;
 //colliders
 var playerCollider1;
 var playerCollider2;
+var playerCollider3;
+var playerCollider4;
 
 class GameScene extends Phaser.Scene{
   constructor(){
@@ -95,6 +102,8 @@ class GameScene extends Phaser.Scene{
       //Flying Obstacles
     flyingObject = this.physics.add.group ();
     birdGroup = this.physics.add.group();
+    lavaMonGroup = this.physics.add.group();
+    ufoGroup = this.physics.add.group();
     //Bird group
 
       //Game background images
@@ -120,6 +129,8 @@ class GameScene extends Phaser.Scene{
 
     playerCollider1 = this.physics.add.overlap(player, flyingObject, this.hitObject, null, this);
     playerCollider2 = this.physics.add.overlap(player, birdGroup, this.hitObject, null, this);
+    playerCollider3 = this.physics.add.overlap(player, lavaMonGroup, this.hitObject, null, this);
+    playerCollider4 = this.physics.add.overlap(player, ufoGroup, this.hitObject, null, this);
 
         //Background images of stars/ planets
       for (var i = 0; i < 50; i++) {
@@ -165,7 +176,7 @@ class GameScene extends Phaser.Scene{
     aText.setText(atmosphere);
     birdVelocity = Math.sin(timedSwitch.getProgress() *20) * 300;
     //respawn after death with space bar
-    if (cursors.space.isDown && isDead) {
+    if (cursors.space.isDown && isDead && player.y < 0) {
       cursors.space.isDown = false;
       this.scene.stop("enterKill");
       this.scene.start("enterIntro");
@@ -217,10 +228,9 @@ class GameScene extends Phaser.Scene{
             return;
         if (child.y < -200)  {
             child.destroy();
-            console.log("Destroyed Flying Object");
           }
     })
-
+    //destroying background images
     backgroundImages.children.iterate(function (child) {
         //bit found in code that works, no idea what it does. ..
       if (child == undefined)
@@ -241,6 +251,55 @@ class GameScene extends Phaser.Scene{
       if (child.x > 850)  {
         child.destroy();
       }
+  })
+  /*smart living obstacles will move smart, chasing the player rather than just
+  going by. */
+  lavaMonGroup.children.iterate(function (child) {
+      //bit found in code that works, no idea what it does. ..
+      if (child == undefined) {
+          return;
+        }
+
+      if (child.y + 30 > player.y) {
+        if (child.x - player.x < 10)  {
+          child.setVelocityX(100);
+          child.setAngle(30);
+        } else if (child.x - player.x > 10)  {
+          child.setVelocityX(-100);
+          child.setAngle(-30);
+        } else {
+          child.setVelocityX(0);
+          child.setAngle(0);
+        }
+    }
+    if (child.y < -300) {
+      child.destroy();
+    }
+
+  })
+
+  ufoGroup.children.iterate(function (child) {
+      //bit found in code that works, no idea what it does. ..
+      if (child == undefined) {
+          return;
+        }
+
+
+      if (child.x - player.x < -20 && player.x > -10 && player.x < 810) {
+        child.setVelocityX(200);
+      } else if (child.x - player.x > 20 && player.x > -10 && player.x < 810)  {
+        child.setVelocityX(-200);
+      } else {
+        child.setVelocityX(0);
+      }
+
+      if (child.y < 500)  {
+        child.setAccelerationY(-600);
+      }
+      if (child.y < -300) {
+        child.destroy();
+      }
+
   })
 
   }
@@ -267,7 +326,6 @@ class GameScene extends Phaser.Scene{
     nextMeteor = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'meteor');
     //random meteor skin
     var num = Phaser.Math.Between(0, 2);
-    console.log(num);
     switch (num)  {
       case 0: nextMeteor.anims.play('m0', true);
       break;
@@ -321,7 +379,7 @@ class GameScene extends Phaser.Scene{
   placeFireball() {
     var nextFireball;
     if (counter> 100) {
-      nextFireball = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'fireball');
+      nextFireball = flyingObject.create(Phaser.Math.Between(0, 800), 650, 'fireball');
       nextFireball.setScale(.01);
       nextFireball.setVelocityX(Phaser.Math.FloatBetween(-100, 100));
       nextFireball.setVelocityY(-300);
@@ -333,12 +391,10 @@ class GameScene extends Phaser.Scene{
 
   placeLMonster() {
     var nextLMonster;
-    nextLMonster = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'lavaMonster');
+    nextLMonster = lavaMonGroup.create(Phaser.Math.FloatBetween(0, 800), 650, 'lavaMonster');
     nextLMonster.setScale(1);
-    nextLMonster.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
     nextLMonster.setVelocityY(-100);
     nextLMonster.anims.play('aLavaMonster', true);
-    nextLMonster.setAngularVelocity(Phaser.Math.FloatBetween(0,20));
   }
 
   placeEnergyBall() {
@@ -365,7 +421,7 @@ class GameScene extends Phaser.Scene{
   }
 
   placeSpaceship()  {
-    var num = Phaser.Math.Between(0, 2);
+    var num = Phaser.Math.Between(0, 7);
     if (num == 0 && counter > 400) {
       var nextSpaceship;
       nextSpaceship = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'spaceship');
@@ -380,13 +436,21 @@ class GameScene extends Phaser.Scene{
       var nextCloud;
       nextCloud = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 700, 'iceCloud');
       nextCloud.setScale(.5);
-      nextCloud.setVelocityY(-35);
+      nextCloud.setVelocityY(-70);
       nextCloud.setAngle(0);
       nextCloud.anims.play('aIceCloud', true);
     }
 
+  placeUFO()  {
+    var next;
+    next = ufoGroup.create(Phaser.Math.FloatBetween(0, 800), 700, 'ufo');
+    next.setScale(.5);
+    next.setVelocityY(-20);
+    next.anims.play('aUFO', true);
+  }
+
   placePlane()  {
-    if (counter > 250)  {
+    if (counter > 150)  {
       var nextPlane;
       var posY = Phaser.Math.Between(0, 600);
       nextPlane = flyingObject.create(-100, posY, 'plane');
@@ -408,7 +472,6 @@ class GameScene extends Phaser.Scene{
 
       if (posY < 384 && posY > 216 && velY < 100) {
         nextPlane.destroy();
-        console.log("Destroyed impossible plane");
         this.placePlane()
       }
     }
@@ -458,6 +521,8 @@ class GameScene extends Phaser.Scene{
       player.setVelocityY(-400);
       playerCollider1.destroy();
       playerCollider2.destroy();
+      playerCollider3.destroy();
+      playerCollider4.destroy();
       if (soundOn)
         soundBack.play();
       this.scene.launch("enterKill", atmosphere);
@@ -532,7 +597,6 @@ class GameScene extends Phaser.Scene{
         timedSatellite = this.time.addEvent({ delay: 5000, callback: this.placeSatellite, callbackScope: this, loop: true });
         timedStone = this.time.addEvent({ delay: 1000, callback: this.placeStone, callbackScope: this, loop: true });
         timedStar = this.time.addEvent({ delay: 500, callback: this.placebStar, callbackScope: this, loop: true });
-        console.log("Level 1 !");
         break;
       case 2:
         atmosphere = "Thermosphere";
@@ -541,10 +605,9 @@ class GameScene extends Phaser.Scene{
           //pausing old objects so that they don't spawn
         timedSatellite.paused = true;
         timedStone.paused = true;
-        console.log("Level 2 !");
         //starting new spawns
-        timedFireball = this.time.addEvent({ delay: 300, callback: this.placeFireball, callbackScope: this, loop: true });
-        timedLMonster = this.time.addEvent({ delay: 3000, callback: this.placeLMonster, callbackScope: this, loop: true });
+        timedFireball = this.time.addEvent({ delay: 600, callback: this.placeFireball, callbackScope: this, loop: true });
+        timedLMonster = this.time.addEvent({ delay: 5000, callback: this.placeLMonster, callbackScope: this, loop: true });
 
         break;
       case 3:
@@ -571,7 +634,8 @@ class GameScene extends Phaser.Scene{
 
           //starting new spawns
           timedSpaceship = this.time.addEvent({delay: 150, callback: this.placeSpaceship, callbackScope: this, loop: true});
-          timedIceCloud = this.time.addEvent({delay: 5000, callback: this.placeIceCloud, callbackScope: this, loop: true});
+          timedIceCloud = this.time.addEvent({delay: 6000, callback: this.placeIceCloud, callbackScope: this, loop: true});
+          timedUFO = this.time.addEvent({delay: 5000, callback: this.placeUFO, callbackScope: this, loop: true});
           backgroundImages.create(600, 900, 'mesosPlanet').setScale(1).setVelocityY(-20).setDepth(-1);
           break;
         case 5:
@@ -581,6 +645,7 @@ class GameScene extends Phaser.Scene{
             //paused old objects
           timedSpaceship.paused = true;
           timedIceCloud.paused = true;
+          timedUFO.paused = true;
           //new objects
           timedPlane = this.time.addEvent({delay: 5000, callback: this.placePlane, callbackScope: this, loop: true});
           timedBird = this.time.addEvent({delay: 600, callback: this.placeBird, callbackScope: this, loop: true});

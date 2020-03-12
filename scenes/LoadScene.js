@@ -61,6 +61,7 @@ class LoadScene extends Phaser.Scene{
     this.load.spritesheet('plane', 'assets/plane.png', {frameWidth: 192, frameHeight: 84});
     this.load.spritesheet('satellite', 'assets/satellite.png', {frameWidth: 180, frameHeight: 186});
     this.load.spritesheet('bird', 'assets/bird.png', {frameWidth: 42, frameHeight: 28});
+    this.load.spritesheet('ufo', 'assets/ufo.png', {frameWidth: 168, frameHeight: 84});
       //load UI.
     this.load.image('title', 'assets/title.png');
     this.load.image('mountains', 'assets/mountains2.png');
@@ -212,6 +213,14 @@ class LoadScene extends Phaser.Scene{
       key: 'aIceCloud',
       frames: this.anims.generateFrameNumbers('iceCloud', {start: 0, end: 2}),
       frameRate: 9,
+      repeat: -1
+    })
+
+    //UFO animation
+    this.anims.create({
+      key: 'aUFO',
+      frames: this.anims.generateFrameNumbers('ufo', {start: 0, end: 3}),
+      frameRate: 5,
       repeat: -1
     })
 
