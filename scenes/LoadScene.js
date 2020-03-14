@@ -61,6 +61,7 @@ class LoadScene extends Phaser.Scene{
     this.load.spritesheet('plane', 'assets/plane.png', {frameWidth: 192, frameHeight: 84});
     this.load.spritesheet('satellite', 'assets/satellite.png', {frameWidth: 180, frameHeight: 186});
     this.load.spritesheet('bird', 'assets/bird.png', {frameWidth: 42, frameHeight: 28});
+    this.load.spritesheet('birdFacingLeft', 'assets/birdFaceL.png', {frameWidth: 42, frameHeight: 28});
     this.load.spritesheet('ufo', 'assets/ufo.png', {frameWidth: 168, frameHeight: 84});
       //load UI.
     this.load.image('title', 'assets/title.png');
@@ -261,6 +262,29 @@ class LoadScene extends Phaser.Scene{
           frameRate: 10,
           repeat: -1
           });
+
+    //facing left birds
+    this.anims.create({
+        key: 'aBBirdLeft',
+        frames: this.anims.generateFrameNumbers('birdFacingLeft', { start: 0, end: 1 }),
+        frameRate: 10,
+        repeat: -1
+      });
+      //red bird
+    this.anims.create({
+        key: 'aRBirdLeft',
+        frames: this.anims.generateFrameNumbers('birdFacingLeft', { start: 2, end: 3 }),
+        frameRate: 10,
+        repeat: -1
+        });
+        //yellow bird
+    this.anims.create({
+          key: 'aYBirdLeft',
+          frames: this.anims.generateFrameNumbers('birdFacingLeft', { start: 4, end: 5 }),
+          frameRate: 10,
+          repeat: -1
+          });
+
       //start menu screen
     this.scene.start("startMenu");
   }

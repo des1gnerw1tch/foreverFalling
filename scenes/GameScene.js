@@ -24,6 +24,7 @@ var timedIceCloud;
 var timedPlane;
 var timedBird;
 var timedUFO;
+var timedTime;
 //input
 var keys;
 var cursors;
@@ -51,12 +52,16 @@ var starsDestroyed = 0;
 var music;
 var gameOver = false;
 var level = 0;
-
+//UI and Misc
 var atmosphere; // text holder for atmosphere player is in
-var aText;
+var atmosphereText;
 var children; // dont know why this has to be here
 var debug;
 var showDebug = false;
+var seconds;
+var acceleration;
+var altitude;
+var altitudeText;
 //obstacles
 var flyingObject;
 var birdGroup;
@@ -112,10 +117,17 @@ class GameScene extends Phaser.Scene{
       //keyboard input
     keys = this.input.keyboard.addKeys('W,S,A,D,Z');
     cursors = this.input.keyboard.createCursorKeys();
-      //levels
+      //levels and progression
     level = 0;
+    altitude = 750;
+    seconds = 0;
+    acceleration = 80/867;
+    timedTime = this.time.addEvent({ delay: 100, callback: this.changeTime, callbackScope: this, loop: true });
     debug = this.add.text(32, 32, '',  {fill: '#00ff00' });
-    aText = this.add.text(500, 50, '', {fontSize: 32}).setDepth(1);
+
+    atmosphereText = this.add.text(500, 50, '', {fontSize: 32}).setDepth(1);
+    altitudeText = this.add.text(500, 80, '', {fontSize: 16}).setDepth(1);
+
     this.switchLevel();
     timedSwitch = this.time.addEvent({ delay: 25500, callback: this.switchLevel, callbackScope: this, loop: true });
   //  timedSwitch = this.time.addEvent({ delay: 1000, callback: this.switchLevel, callbackScope: this, loop: true });
@@ -165,31 +177,39 @@ class GameScene extends Phaser.Scene{
         showDebug = true;
       }
     }
+
     if (showDebug)  {
       debug.setText('timedSwitch Progress: ' + timedSwitch.getProgress().toString().substr(0, 4) + '\n Level: ' + atmosphere + '\n counter ' + counter
       + '\n stars destroyed : ' + starsDestroyed + '\nLeft Down? : ' + keys.A.isDown + '\nRight Down? : ' + keys.D.isDown
-       + '\nbird velocity:' + birdVelocity + '\nIs Dead?' + isDead);
+       + '\nbird velocity:' + birdVelocity + '\nIs Dead?' + isDead
+     + '\ntime: ' + seconds + ' s' + '\naltitude: ' + altitude.toFixed(2) + ' km');
     } else {
       debug.setText('');
     }
+
+
+
     //level UI
-    aText.setText(atmosphere);
-    birdVelocity = Math.sin(timedSwitch.getProgress() *20) * 300;
+    atmosphereText.setText(atmosphere);
+    altitude = 760 - ((acceleration * Math.pow(seconds, 2)/2) );
+    altitudeText.setText('Altitude ' + altitude.toFixed(2) + ' km');
+
     //respawn after death with space bar
     if (cursors.space.isDown && isDead && player.y < 0) {
       cursors.space.isDown = false;
       this.scene.stop("enterKill");
-      this.scene.start("enterIntro");
+    //  this.scene.start("enterIntro");
+      this.scene.start("enterGame");
     }
 
     //Player movement
     if (wasdOn) {
       if (keys.A.isDown)  {
-        player.setAccelerationX(-500);
+        player.setAccelerationX(-700);
         player.anims.play('left', true);
       }
       else if (keys.D.isDown) {
-        player.setAccelerationX(500);
+        player.setAccelerationX(700);
         player.anims.play('right', true);
       } else {
         player.setAccelerationX(0);
@@ -242,13 +262,14 @@ class GameScene extends Phaser.Scene{
     })
   /*----------------------------------------------------------------------------------------*/
   //makes the birds move in a sinisouidel way
+  birdVelocity = Math.sin(timedSwitch.getProgress() *20) * 300;
   birdGroup.children.iterate(function (child) {
       //bit found in code that works, no idea what it does. ..
       if (child == undefined) {
           return;
         }
       child.setVelocityY(Math.sin(timedSwitch.getProgress() * 40) * 300);
-      if (child.x > 850)  {
+      if (child.x > 850 || child.x < -50)  {
         child.destroy();
       }
   })
@@ -261,7 +282,7 @@ class GameScene extends Phaser.Scene{
         }
 
       if (child.y + 30 > player.y) {
-        if (child.x - player.x < 10)  {
+        if (child.x - player.x < -10)  {
           child.setVelocityX(100);
           child.setAngle(30);
         } else if (child.x - player.x > 10)  {
@@ -312,9 +333,6 @@ class GameScene extends Phaser.Scene{
     nextStar.setDepth(-1);
     nextStar.setVelocityY(-20);
 //  nextStar.setVelocityY(Phaser.Math.Between(1, 3));
-
-
-
   }
 
 /*Hit objects spawn functions
@@ -479,7 +497,8 @@ class GameScene extends Phaser.Scene{
   }
 
   placeBird()  {
-      var num = Phaser.Math.Between(1,2);
+      var num = Phaser.Math.Between(1,4);
+      //Right facing birds
       if (num == 1 && counter > 200) {
         var next;
         next = birdGroup.create(0, Phaser.Math.Between(100, 500), 'bird');
@@ -499,9 +518,29 @@ class GameScene extends Phaser.Scene{
             break;
         }
       }
+        //left facing birds
+        if (num == 2 && counter > 200) {
+          var next;
+          next = birdGroup.create(800, Phaser.Math.Between(100, 500), 'birdFacingLeft');
+          next.setScale(1);
+          next.setVelocityX(-100);
+          next.setAngle(0);
+          var rand = Phaser.Math.Between(1, 3);
+          switch (rand){
+            case 1:
+              next.anims.play('aBBirdLeft', true);
+              break;
+            case 2:
+              next.anims.play('aRBirdLeft', true);
+              break;
+            case 3:
+              next.anims.play('aYBirdLeft', true);
+              break;
+          }
+      }
+}
 
 
-    }
 
 
   //------------------------------------------------------------------
@@ -517,6 +556,7 @@ class GameScene extends Phaser.Scene{
       keys.A.isDown = false;
       keys.D.isDown = false;
       timedSwitch.paused = true;
+      timedTime.paused = true;
       player.body.collideWorldBounds = false;
       player.setVelocityY(-400);
       playerCollider1.destroy();
@@ -531,6 +571,10 @@ class GameScene extends Phaser.Scene{
 
   moveBackground() {
     player.angle += 5;
+  }
+
+  changeTime()  {
+    seconds += .1;
   }
     //temporary fix to movement glitch. resets the keys 100 ms after scene starts
   resetKeys() {
