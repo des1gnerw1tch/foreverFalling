@@ -33,7 +33,6 @@ class LoadScene extends Phaser.Scene{
   this.load.on("progress", (percent)=>{
   loadingBar.fillRect(250, 300, 300 * percent, 30);
   loadingText.setText('Loading Game... ' + Math.trunc(percent* 100)  + "%")
-  console.log(percent);
   })
   //asset loading text
   var fileText = this.add.text(300, 340);

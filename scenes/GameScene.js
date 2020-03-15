@@ -398,11 +398,19 @@ class GameScene extends Phaser.Scene{
     var nextFireball;
     if (counter> 100) {
       nextFireball = flyingObject.create(Phaser.Math.Between(0, 800), 650, 'fireball');
-      nextFireball.setScale(.01);
-      nextFireball.setVelocityX(Phaser.Math.FloatBetween(-100, 100));
-      nextFireball.setVelocityY(-300);
-      nextFireball.setAngle(120);
-      nextFireball.setAngularVelocity(Phaser.Math.FloatBetween(0,20));
+    //  nextFireball.setScale(1);
+      var velocityX = Phaser.Math.FloatBetween(-100, 100);
+      var velocityY = -300;
+      nextFireball.setVelocityX(velocityX);
+      nextFireball.setVelocityY(velocityY);
+      //makes sure velocity vector and angle is correct lined up
+      if (velocityX > 0)  {
+        var angle = 90 - (Phaser.Math.RAD_TO_DEG * Math.atan(300 / velocityX));
+      } else if (velocityX < 0) {
+        var angle = 90- (180 + Phaser.Math.RAD_TO_DEG * Math.atan(300 / velocityX));
+      }
+      nextFireball.setAngle(angle);
+    //  nextFireball.setAngularVelocity(Phaser.Math.FloatBetween(0,20));
   }
 
   }
@@ -454,21 +462,23 @@ class GameScene extends Phaser.Scene{
       var nextCloud;
       nextCloud = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 700, 'iceCloud');
       nextCloud.setScale(.5);
-      nextCloud.setVelocityY(-70);
+      nextCloud.setVelocityY(-100);
       nextCloud.setAngle(0);
       nextCloud.anims.play('aIceCloud', true);
     }
 
   placeUFO()  {
-    var next;
-    next = ufoGroup.create(Phaser.Math.FloatBetween(0, 800), 700, 'ufo');
-    next.setScale(.5);
-    next.setVelocityY(-20);
-    next.anims.play('aUFO', true);
+    if (timedSwitch.getProgress() < .70)  {
+      var next;
+      next = ufoGroup.create(Phaser.Math.FloatBetween(0, 800), 700, 'ufo');
+      next.setScale(.5);
+      next.setVelocityY(-40);
+      next.anims.play('aUFO', true);
+  }
   }
 
   placePlane()  {
-    if (counter > 150)  {
+    if (counter > 0)  {
       var nextPlane;
       var posY = Phaser.Math.Between(0, 600);
       nextPlane = flyingObject.create(-100, posY, 'plane');
@@ -497,13 +507,13 @@ class GameScene extends Phaser.Scene{
   }
 
   placeBird()  {
-      var num = Phaser.Math.Between(1,4);
+      var num = Phaser.Math.Between(1,2);
       //Right facing birds
-      if (num == 1 && counter > 200) {
+      if (num == 1 && counter > 100) {
         var next;
         next = birdGroup.create(0, Phaser.Math.Between(100, 500), 'bird');
         next.setScale(1);
-        next.setVelocityX(100);
+        next.setVelocityX(200);
         next.setAngle(0);
         var rand = Phaser.Math.Between(1, 3);
         switch (rand){
@@ -523,7 +533,7 @@ class GameScene extends Phaser.Scene{
           var next;
           next = birdGroup.create(800, Phaser.Math.Between(100, 500), 'birdFacingLeft');
           next.setScale(1);
-          next.setVelocityX(-100);
+          next.setVelocityX(-200);
           next.setAngle(0);
           var rand = Phaser.Math.Between(1, 3);
           switch (rand){
@@ -679,7 +689,7 @@ class GameScene extends Phaser.Scene{
           //starting new spawns
           timedSpaceship = this.time.addEvent({delay: 150, callback: this.placeSpaceship, callbackScope: this, loop: true});
           timedIceCloud = this.time.addEvent({delay: 6000, callback: this.placeIceCloud, callbackScope: this, loop: true});
-          timedUFO = this.time.addEvent({delay: 5000, callback: this.placeUFO, callbackScope: this, loop: true});
+          timedUFO = this.time.addEvent({delay: 4000, callback: this.placeUFO, callbackScope: this, loop: true});
           backgroundImages.create(600, 900, 'mesosPlanet').setScale(1).setVelocityY(-20).setDepth(-1);
           break;
         case 5:
