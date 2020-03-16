@@ -23,12 +23,15 @@ class EndScene extends Phaser.Scene{
     }
     //welcome home image
     this.add.image(400, 200, 'welcomeHome').setScale(.4);
+    //hills backdrop
+    var hills = this.add.sprite(400, 450, 'greenMountain').setDepth(-1);
+    hills.anims.play('steam', true);
     //trees and foliage
     this.add.image(100, 470, 'foliage', 0).setDepth(-1);
     this.add.image(700, 470, 'foliage', 1).setDepth(-1);
     this.add.image(660, 518, 'foliage', 2).setDepth(-1).setScale(.5);
     //house
-    this.add.image(300, 420, 'house').setScale(1);
+    this.add.image(530, 470, 'house').setScale(.6);
     //background color
     cStrato1 = new Phaser.Display.Color(69, 179, 224);
     this.cameras.main.setBackgroundColor(cStrato1);

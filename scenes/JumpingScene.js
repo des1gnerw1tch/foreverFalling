@@ -35,11 +35,9 @@ class JumpingScene extends Phaser.Scene{
       //silver platforms
     for (var i = 1; i <=4; i++) {
 
-    //  var y = 330 + (30*i);
     var y = 330 + (48*i);
-      for (var x = 320 + (/*40*/48*i); x <= 800; x+=/*40*/48) {
-    //  platforms.create(x, y, 'block1').setScale(.5).refreshBody();
-      platforms.create(x, y, 'spaceBlock', 0);
+      for (var x = 320 + (48*i); x <= 800; x+=48) {
+      platforms.create(x, y, 'spaceBlock', 0).setScale(1);
       }
     }
       //caution platforms
@@ -48,18 +46,18 @@ class JumpingScene extends Phaser.Scene{
     platforms.create(464, 378, 'spaceBlock', 1);
     platforms.create(512, 378, 'spaceBlock', 1);
       //barrels!
-    platforms.create(720, 330, 'spaceBlock', 2);
-    platforms.create(768, 330, 'spaceBlock', 2);
-  //  platforms.create(768, 282, 'spaceBlock', 2);
-    platforms.create(640, 330, 'spaceBlock', 2);
+      /*  platforms.create(640, 330, 'spaceBlock', 2);*/
+
+      //spacecraft
+    var playerSpacecraft = platforms.create(690, 230, 'abandonedSpacecraft').setDepth(-1);
+    playerSpacecraft.anims.play('shipSmoke', true);
       //player!
-    player = this.physics.add.sprite(700, 200, 'astronautPadded').setScale(.9);
+    player = this.physics.add.sprite(500, 200, 'astronautPadded').setScale(.9);
       //gravity
     player.body.gravity.y = 800;
 
     //colliders
     this.physics.add.collider(player, platforms);
-
     //home button
     homeButton = this.add.image(750, 50, 'houseIcon');
     homeButton.setInteractive();

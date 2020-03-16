@@ -99,6 +99,9 @@ class LoadScene extends Phaser.Scene{
     this.load.spritesheet('foliage', 'assets/foliage.png', {frameWidth: 200, frameHeight: 200});
     this.load.image('welcomeHome', 'assets/welcomeHome.png');
     this.load.image('house', 'assets/house.png');
+    this.load.image('swanNebula', 'assets/swanNebula.png');
+    this.load.spritesheet('greenMountains', 'assets/greenMountains.png', {frameWidth: 800, frameHeight: 250});
+    this.load.spritesheet('abandonedSpacecraft', 'assets/abandonedSpacecraft.png', {frameWidth: 256, frameHeight: 256});
       //blocks
     this.load.image('block1', 'assets/block1.png');
     this.load.image('block2', 'assets/block2.png');
@@ -278,11 +281,28 @@ class LoadScene extends Phaser.Scene{
         });
         //yellow bird
     this.anims.create({
-          key: 'aYBirdLeft',
-          frames: this.anims.generateFrameNumbers('birdFacingLeft', { start: 4, end: 5 }),
-          frameRate: 10,
-          repeat: -1
-          });
+        key: 'aYBirdLeft',
+        frames: this.anims.generateFrameNumbers('birdFacingLeft', { start: 4, end: 5 }),
+        frameRate: 10,
+        repeat: -1
+    });
+    //green mountains animation
+    this.anims.create({
+      key: 'steam',
+      frames: this.anims.generateFrameNumbers('greenMountains', {start: 0, end: 4}),
+      frameRate: 4,
+      repeat: -1
+    })
+
+    //abanonded spacecraft animation
+    this.anims.create({
+      key: 'shipSmoke',
+      frames: this.anims.generateFrameNumbers('abandonedSpacecraft', {start: 0, end: 3}),
+      frameRate: 7,
+      repeat: -1
+    })
+
+
 
       //start menu screen
     this.scene.start("startMenu");

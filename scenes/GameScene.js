@@ -153,7 +153,7 @@ class GameScene extends Phaser.Scene{
 
       backgroundImages.create(700, 750, 'bigPlanet1').setScale(1).setVelocityY(-20).setDepth(-1);
       //home button
-      homeButton = this.add.image(750, 50, 'houseIcon');
+      homeButton = this.add.image(750, 50, 'houseIcon').setDepth(1);
       homeButton.setInteractive();
 
       homeButton.on("pointerup", ()=>  {
@@ -255,10 +255,15 @@ class GameScene extends Phaser.Scene{
         //bit found in code that works, no idea what it does. ..
       if (child == undefined)
           return;
+      if (level == 6) {
+          child.setVelocityY(0);
+      }
       if (child.y < -300)  {
           child.destroy();
           starsDestroyed++;
         }
+
+
     })
   /*----------------------------------------------------------------------------------------*/
   //makes the birds move in a sinisouidel way
@@ -662,7 +667,7 @@ class GameScene extends Phaser.Scene{
         //starting new spawns
         timedFireball = this.time.addEvent({ delay: 600, callback: this.placeFireball, callbackScope: this, loop: true });
         timedLMonster = this.time.addEvent({ delay: 5000, callback: this.placeLMonster, callbackScope: this, loop: true });
-
+        backgroundImages.create(600, 900, 'swanNebula').setVelocityY(-20).setDepth(-1).setAlpha(.8);
         break;
       case 3:
         atmosphere = "Ionosphere";
@@ -703,6 +708,8 @@ class GameScene extends Phaser.Scene{
           //new objects
           timedPlane = this.time.addEvent({delay: 5000, callback: this.placePlane, callbackScope: this, loop: true});
           timedBird = this.time.addEvent({delay: 600, callback: this.placeBird, callbackScope: this, loop: true});
+          var greenMountain = backgroundImages.create(400, 1000, 'greenMountains').setVelocityY(-20).setDepth(-1);
+          greenMountain.anims.play('steam', true);
           break;
         case 6:
           timedPlane.paused = true;
