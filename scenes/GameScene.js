@@ -48,8 +48,6 @@ var movingScreen;
 var backgroundImages;
 var starsDestroyed = 0;
 
-
-var music;
 var gameOver = false;
 var level = 0;
 //UI and Misc
@@ -90,7 +88,7 @@ class GameScene extends Phaser.Scene{
 
   create()  {
     if (soundOn)  {
-      music.play();
+      music1.play();
     }
       //sky colors and player rotation
     sky = new Phaser.Display.Color(120, 120, 255);
@@ -157,7 +155,8 @@ class GameScene extends Phaser.Scene{
       homeButton.setInteractive();
 
       homeButton.on("pointerup", ()=>  {
-        music.pause();
+        music1.pause();
+        music2.pause();
         this.scene.stop("enterKill");
         this.scene.start("startMenu");
       })
@@ -191,7 +190,7 @@ class GameScene extends Phaser.Scene{
 
     //level UI
     atmosphereText.setText(atmosphere);
-    altitude = 760 - ((acceleration * Math.pow(seconds, 2)/2) );
+    altitude = 820 - ((acceleration * Math.pow(seconds, 2)/2) );
     altitudeText.setText('Altitude ' + altitude.toFixed(2) + ' km');
 
     //respawn after death with space bar
@@ -345,6 +344,7 @@ class GameScene extends Phaser.Scene{
 */
   placeMeteor()  {
     //Meteor movement
+
     var nextMeteor;
     nextMeteor = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'meteor');
     //random meteor skin
@@ -368,10 +368,10 @@ class GameScene extends Phaser.Scene{
     if (level == 2 && counter >= 350)
       nextMeteor.setTint(0xff0000);
 
-    nextMeteor.setScale(.5);
+    nextMeteor.setScale(Phaser.Math.FloatBetween(.5, .7));
     nextMeteor.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
-    nextMeteor.setVelocityY(-100);
-    nextMeteor.setAngularVelocity(Phaser.Math.Between(-100, 100));
+    nextMeteor.setVelocityY(-200);
+    nextMeteor.setAngularVelocity(Phaser.Math.Between(-200, 200));
   //  nextMeteor.setAngularVelocity(Phaser.Math.FloatBetween(0,100));
 
   }
@@ -382,7 +382,7 @@ class GameScene extends Phaser.Scene{
     nextSatellite = flyingObject.create(Phaser.Math.FloatBetween(0, 800), 650, 'satellite');
     nextSatellite.setScale(.5);
     nextSatellite.setVelocityX(Phaser.Math.FloatBetween(-10, 10));
-    nextSatellite.setVelocityY(-50);
+    nextSatellite.setVelocityY(-100);
     nextSatellite.setAngularVelocity(Phaser.Math.FloatBetween(10,50));
     nextSatellite.anims.play('aSatellite', true);
 
@@ -404,8 +404,8 @@ class GameScene extends Phaser.Scene{
     if (counter> 100) {
       nextFireball = flyingObject.create(Phaser.Math.Between(0, 800), 650, 'fireball');
     //  nextFireball.setScale(1);
-      var velocityX = Phaser.Math.FloatBetween(-100, 100);
-      var velocityY = -300;
+      var velocityX = Phaser.Math.FloatBetween(-50, 50);
+      var velocityY = -380;
       nextFireball.setVelocityX(velocityX);
       nextFireball.setVelocityY(velocityY);
       //makes sure velocity vector and angle is correct lined up
@@ -514,7 +514,7 @@ class GameScene extends Phaser.Scene{
   placeBird()  {
       var num = Phaser.Math.Between(1,2);
       //Right facing birds
-      if (num == 1 && counter > 100) {
+      if (num == 1 && counter > 50) {
         var next;
         next = birdGroup.create(0, Phaser.Math.Between(100, 500), 'bird');
         next.setScale(1);
@@ -598,6 +598,10 @@ class GameScene extends Phaser.Scene{
     cursors.left.isDown = false;
     cursors.right.isDown = false;
   }
+//will fade a sound out
+  fadeSound()  {
+    music1.setVolume(.3);
+  }
     /*this function switches the background color with a counter and interpolate.
     Is called multiple times until paused. the Switch is used so that the right colors
     are switched for each level.
@@ -625,6 +629,8 @@ class GameScene extends Phaser.Scene{
         if (counter <= 600) {
           hexColor = Phaser.Display.Color.Interpolate.ColorWithColor(cIon, cMeso, 600, counter);
           this.cameras.main.setBackgroundColor(hexColor);
+          music1.setVolume(1 - (counter/600));
+          music2.setVolume(counter/600);
           } else {
             timedBackground.paused = true;
           }
@@ -665,7 +671,7 @@ class GameScene extends Phaser.Scene{
         timedSatellite.paused = true;
         timedStone.paused = true;
         //starting new spawns
-        timedFireball = this.time.addEvent({ delay: 600, callback: this.placeFireball, callbackScope: this, loop: true });
+        timedFireball = this.time.addEvent({ delay: 400, callback: this.placeFireball, callbackScope: this, loop: true });
         timedLMonster = this.time.addEvent({ delay: 5000, callback: this.placeLMonster, callbackScope: this, loop: true });
         backgroundImages.create(600, 900, 'swanNebula').setVelocityY(-20).setDepth(-1).setAlpha(.8);
         break;
@@ -687,6 +693,8 @@ class GameScene extends Phaser.Scene{
           atmosphere = 'Mesosphere';
           counter = 0;
           timedBackground = this.time.addEvent({ delay: 20, callback: this.switchBackgroundColor, callbackScope: this, loop: true });
+          timedSwitch.destroy();
+          timedSwitch = this.time.addEvent({ delay: 30000, callback: this.switchLevel, callbackScope: this, loop: true });
           //pausing old hitobjects
           timedEnergyBall.paused = true;
           timedFairy.paused = true;
@@ -696,11 +704,16 @@ class GameScene extends Phaser.Scene{
           timedIceCloud = this.time.addEvent({delay: 6000, callback: this.placeIceCloud, callbackScope: this, loop: true});
           timedUFO = this.time.addEvent({delay: 4000, callback: this.placeUFO, callbackScope: this, loop: true});
           backgroundImages.create(600, 900, 'mesosPlanet').setScale(1).setVelocityY(-20).setDepth(-1);
+
+          //new music
+          music2.play();
           break;
         case 5:
           atmosphere = 'Stratosphere'
           counter = 0;
           timedBackground = this.time.addEvent({ delay: 20, callback: this.switchBackgroundColor, callbackScope: this, loop: true });
+          timedSwitch.destroy();
+          timedSwitch = this.time.addEvent({ delay: 25500, callback: this.switchLevel, callbackScope: this, loop: true });
             //paused old objects
           timedSpaceship.paused = true;
           timedIceCloud.paused = true;

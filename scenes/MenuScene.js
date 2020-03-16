@@ -6,6 +6,9 @@ var soundDatBei;
 var soundPlay;
 var soundSelect;
 var soundBack;
+var music1;
+var music2;
+var menuMusic;
 class MenuScene extends Phaser.Scene{
   constructor(){
 
@@ -19,10 +22,18 @@ class MenuScene extends Phaser.Scene{
 
   create() {
     //music
-      music = this.sound.add('spaceTheme');
-      music.setLoop(true);
+    menuMusic = this.sound.add('menuMusic');
+    menuMusic.setLoop(true);
+    music1 = this.sound.add('spaceTheme1');
+    music1.setLoop(false);
+    music2 = this.sound.add('spaceTheme2');
+    music2.setLoop(false);
 
-      //sound effects
+    if (soundOn)
+      menuMusic.play();
+
+
+    //sound effects
     soundYeet = this.sound.add('yeet');
     soundDatBei = this.sound.add('datBei');
     soundPlay = this.sound.add('playPlay');

@@ -21,8 +21,9 @@ class TitleScene extends Phaser.Scene{
     playButton.on("pointerup", ()=>  {
     if (soundOn)
       soundPlay.play();
-    this.scene.stop("startMenu");
-    this.scene.start("enterIntro");
+      menuMusic.pause();
+      this.scene.stop("startMenu");
+      this.scene.start("enterIntro");
 
     })
 

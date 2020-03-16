@@ -30,8 +30,10 @@ class OptionsScene extends Phaser.Scene{
     volumeButton.on("pointerup", ()=>  {
       if (soundOn)  {
         soundOn = false;
+        menuMusic.pause();
       } else {
         soundOn = true;
+        menuMusic.play();
       }
     })
 

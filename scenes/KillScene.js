@@ -14,7 +14,8 @@ class KillScene extends Phaser.Scene{
     playerScore = score;
   }
   create()  {
-    music.pause();
+    music1.pause();
+    music2.pause();
     alpha = 0;
     //makes game over screen delay before popping up
     this.time.addEvent({delay: 700, callback: this.placeKillText, callbackScope: this, loop: false});

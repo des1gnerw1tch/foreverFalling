@@ -5,7 +5,8 @@ class EndScene extends Phaser.Scene{
   }
   create()  {
     //pause old music
-    music.pause();
+    music1.pause();
+    music2.pause();
     //platforms
     var platforms = this.physics.add.staticGroup();
     platforms.create(400, 590, 'ground').setDepth(0);

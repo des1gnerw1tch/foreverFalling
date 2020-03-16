@@ -79,8 +79,10 @@ class LoadScene extends Phaser.Scene{
     this.load.image('playAgain', 'assets/playAgain.png');
     this.load.image('houseIcon', 'assets/houseIcon.png');
   //  this.load.image('bluePanel', 'spaceUI/PNG/metalPanel_blue.png');
-    //theme song
-    this.load.audio('spaceTheme', 'assets/menuMusic.mp3');
+    //songs
+    this.load.audio('spaceTheme1', 'assets/spaceTheme1.mp3');
+    this.load.audio('spaceTheme2', 'assets/spaceTheme2.m4a');
+    this.load.audio('menuMusic', 'assets/titleMusic.m4a');
     //sound effects
     this.load.audio('yeet', 'assets/maxyeet.m4a');
     this.load.audio('datBei', 'assets/maxdatbei.m4a');
