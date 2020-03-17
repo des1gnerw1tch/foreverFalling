@@ -403,9 +403,10 @@ class GameScene extends Phaser.Scene{
     var nextFireball;
     if (counter> 100) {
       nextFireball = flyingObject.create(Phaser.Math.Between(0, 800), 650, 'fireball');
+      nextFireball.setScale(.7);
     //  nextFireball.setScale(1);
       var velocityX = Phaser.Math.FloatBetween(-50, 50);
-      var velocityY = -380;
+      var velocityY = -300;
       nextFireball.setVelocityX(velocityX);
       nextFireball.setVelocityY(velocityY);
       //makes sure velocity vector and angle is correct lined up

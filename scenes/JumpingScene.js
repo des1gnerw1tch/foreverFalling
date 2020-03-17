@@ -15,6 +15,9 @@ class JumpingScene extends Phaser.Scene{
     keys = this.input.keyboard.addKeys('W,S,A,D,');
     cursors = this.input.keyboard.createCursorKeys();
     timedKeyCatch = this.time.addEvent({ delay: 100, callback: this.resetKeys, callbackScope: this, loop: false });
+    //background objects sounds
+    spaceshipSound = this.sound.add('spaceshipSound');
+    spaceshipSound.setVolume(.1);
       //Background
       for (var i = 0; i < 100; i++) {
         var aStar = this.add.image(Phaser.Math.FloatBetween(0, 800), Phaser.Math.FloatBetween(0, 600), 'star').setScale(1);
@@ -22,13 +25,9 @@ class JumpingScene extends Phaser.Scene{
       }
       //background objects
       introObjects = this.physics.add.group();
-      this.placeBSpaceship();
       timedBSpaceship = this.time.addEvent({ delay: 10000, callback: this.placeBSpaceship, callbackScope: this, loop: true});
-
+      this.placeBSpaceship();
       this.add.image(700, 100, 'saturn').setScale(1);
-      //background objects sounds
-      spaceshipSound = this.sound.add('spaceshipSound');
-
 
       //creating platforms
       var platforms = this.physics.add.staticGroup();
@@ -49,7 +48,7 @@ class JumpingScene extends Phaser.Scene{
       /*  platforms.create(640, 330, 'spaceBlock', 2);*/
 
       //spacecraft
-    var playerSpacecraft = platforms.create(690, 230, 'abandonedSpacecraft').setDepth(-1);
+    var playerSpacecraft = platforms.create(690, 175, 'abandonedSpacecraft').setDepth(-1);
     playerSpacecraft.anims.play('shipSmoke', true);
       //player!
     player = this.physics.add.sprite(500, 200, 'astronautPadded').setScale(.9);
@@ -65,7 +64,6 @@ class JumpingScene extends Phaser.Scene{
     homeButton.on("pointerup", ()=>  {
       this.scene.start("startMenu");
     })
-
 
   }
   update()  {

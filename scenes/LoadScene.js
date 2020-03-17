@@ -103,7 +103,7 @@ class LoadScene extends Phaser.Scene{
     this.load.image('house', 'assets/house.png');
     this.load.image('swanNebula', 'assets/swanNebula.png');
     this.load.spritesheet('greenMountains', 'assets/greenMountains.png', {frameWidth: 800, frameHeight: 250});
-    this.load.spritesheet('abandonedSpacecraft', 'assets/abandonedSpacecraft.png', {frameWidth: 256, frameHeight: 256});
+    this.load.spritesheet('abandonedSpacecraft', 'assets/abandonedSpacecraft.png', {frameWidth: 168, frameHeight: 360});
       //blocks
     this.load.image('block1', 'assets/block1.png');
     this.load.image('block2', 'assets/block2.png');
@@ -300,7 +300,7 @@ class LoadScene extends Phaser.Scene{
     this.anims.create({
       key: 'shipSmoke',
       frames: this.anims.generateFrameNumbers('abandonedSpacecraft', {start: 0, end: 3}),
-      frameRate: 7,
+      frameRate: 6,
       repeat: -1
     })
 

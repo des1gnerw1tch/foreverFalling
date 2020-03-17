@@ -22,15 +22,16 @@ class MenuScene extends Phaser.Scene{
 
   create() {
     //music
-    menuMusic = this.sound.add('menuMusic');
+    menuMusic = this.sound.add('menuMusic', {volume: .1});
     menuMusic.setLoop(true);
     music1 = this.sound.add('spaceTheme1');
     music1.setLoop(false);
     music2 = this.sound.add('spaceTheme2');
     music2.setLoop(false);
 
-    if (soundOn)
+    if (soundOn)  {
       menuMusic.play();
+    }
 
 
     //sound effects
@@ -49,9 +50,9 @@ class MenuScene extends Phaser.Scene{
 
     this.add.image(100, 450, 'lavaMonster').setScale(.75).setAngle(-30);
     var easterEgg1 = this.add.image(90, 485, 'lavaMonster').setScale(.75).setAngle(-30);
-    this.add.image(90, 425, 'fireball').setScale(.005).setAngle(80);
-    this.add.image(70, 425, 'fireball').setScale(.005).setAngle(80);
-    this.add.image(60, 470, 'fireball').setScale(.005).setAngle(80);
+    this.add.image(90, 425, 'fireball').setScale(.4).setAngle(-30);
+    this.add.image(70, 425, 'fireball').setScale(.4).setAngle(-30);
+    this.add.image(60, 470, 'fireball').setScale(.4).setAngle(-30);
 
 
     this.add.image(550, 120, 'satellite').setScale(.25).setAngle(-20);
@@ -59,6 +60,9 @@ class MenuScene extends Phaser.Scene{
 
     this.add.image(500, 400, 'spaceship').setScale(.3);
     this.add.image(550, 450, 'spaceship').setScale(.3);
+
+    this.add.image(400, 150, 'ufo', 1).setScale(.3).setAngle(-20);
+    this.add.image(600, 270, 'ufo', 3).setScale(.2).setAngle(0);
     //meteor chunk!
     this.add.sprite(250, 50, 'meteor').setScale(.3).anims.play('m1', true).setAngle(5);
     this.add.sprite(200, 100, 'meteor').setScale(.6).setAngle(40);
