@@ -110,6 +110,7 @@ class LoadScene extends Phaser.Scene{
     this.load.image('block3', 'assets/block3.png');
     this.load.image('block4', 'assets/block4.png');
     this.load.image('ground', 'assets/ground.png');
+    this.load.image('asteroidGround', 'assets/asteroidGround.png');
     this.load.spritesheet('spaceBlock', 'assets/spaceBlock.png', {frameWidth: 48, frameHeight: 48});
       //Sprites
     this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });

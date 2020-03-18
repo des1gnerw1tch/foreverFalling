@@ -31,7 +31,7 @@ class JumpingScene extends Phaser.Scene{
 
       //creating platforms
       var platforms = this.physics.add.staticGroup();
-      //silver platforms
+  /*    //silver platforms
     for (var i = 1; i <=4; i++) {
 
     var y = 330 + (48*i);
@@ -47,6 +47,9 @@ class JumpingScene extends Phaser.Scene{
       //barrels!
       /*  platforms.create(640, 330, 'spaceBlock', 2);*/
 
+
+    //asteroid ground
+    platforms.create(500, 520, 'asteroidGround');
       //spacecraft
     var playerSpacecraft = platforms.create(690, 175, 'abandonedSpacecraft').setDepth(-1);
     playerSpacecraft.anims.play('shipSmoke', true);

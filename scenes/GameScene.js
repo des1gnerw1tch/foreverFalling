@@ -77,6 +77,8 @@ var playerCollider1;
 var playerCollider2;
 var playerCollider3;
 var playerCollider4;
+//green mountains
+var greenMountain;
 
 class GameScene extends Phaser.Scene{
   constructor(){
@@ -89,6 +91,8 @@ class GameScene extends Phaser.Scene{
   create()  {
     if (soundOn)  {
       music1.play();
+      music1.setVolume(1);
+      music2.setVolume(1);
     }
       //sky colors and player rotation
     sky = new Phaser.Display.Color(120, 120, 255);
@@ -215,11 +219,11 @@ class GameScene extends Phaser.Scene{
       }
     } else {
       if (cursors.left.isDown)  {
-        player.setAccelerationX(-500);
+        player.setAccelerationX(-700);
         player.anims.play('left', true);
       }
       else if (cursors.right.isDown) {
-        player.setAccelerationX(500);
+        player.setAccelerationX(700);
         player.anims.play('right', true);
       } else {
         player.setAccelerationX(0);
@@ -254,8 +258,13 @@ class GameScene extends Phaser.Scene{
         //bit found in code that works, no idea what it does. ..
       if (child == undefined)
           return;
+      //background images pause when win
       if (level == 6) {
           child.setVelocityY(0);
+      }
+      //on last level, background images will pause, will not keep scrolling by
+      if (level == 5 && isDead) {
+        child.setVelocityY(0);
       }
       if (child.y < -300)  {
           child.destroy();
@@ -579,6 +588,9 @@ class GameScene extends Phaser.Scene{
       playerCollider2.destroy();
       playerCollider3.destroy();
       playerCollider4.destroy();
+      if (level == 5) {
+        greenMountain.setVelocityY(0);
+      }
       if (soundOn)
         soundBack.play();
       this.scene.launch("enterKill", atmosphere);
@@ -722,7 +734,7 @@ class GameScene extends Phaser.Scene{
           //new objects
           timedPlane = this.time.addEvent({delay: 5000, callback: this.placePlane, callbackScope: this, loop: true});
           timedBird = this.time.addEvent({delay: 600, callback: this.placeBird, callbackScope: this, loop: true});
-          var greenMountain = backgroundImages.create(400, 1000, 'greenMountains').setVelocityY(-20).setDepth(-1);
+          greenMountain = backgroundImages.create(400, 1000, 'greenMountains').setVelocityY(-20).setDepth(-1);
           greenMountain.anims.play('steam', true);
           break;
         case 6:
