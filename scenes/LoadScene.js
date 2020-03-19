@@ -8,7 +8,6 @@ class LoadScene extends Phaser.Scene{
 
   preload() {
 
-
     //loading text
     var loadingText = this.make.text({
       x: 300,
@@ -104,16 +103,11 @@ class LoadScene extends Phaser.Scene{
     this.load.image('swanNebula', 'assets/swanNebula.png');
     this.load.spritesheet('greenMountains', 'assets/greenMountains.png', {frameWidth: 800, frameHeight: 250});
     this.load.spritesheet('abandonedSpacecraft', 'assets/abandonedSpacecraft.png', {frameWidth: 168, frameHeight: 360});
-      //blocks
-    this.load.image('block1', 'assets/block1.png');
-    this.load.image('block2', 'assets/block2.png');
-    this.load.image('block3', 'assets/block3.png');
-    this.load.image('block4', 'assets/block4.png');
+      //terrain and ground
     this.load.image('ground', 'assets/ground.png');
     this.load.image('asteroidGround', 'assets/asteroidGround.png');
     this.load.spritesheet('spaceBlock', 'assets/spaceBlock.png', {frameWidth: 48, frameHeight: 48});
       //Sprites
-    this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
     /* without padding, hitboxes are better but there is some pixel bleeding
     when animating*/
     this.load.spritesheet('astronaut', 'assets/myAstronaut.png', { frameWidth: 36, frameHeight: 45 });

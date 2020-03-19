@@ -432,7 +432,7 @@ class GameScene extends Phaser.Scene{
 
   placeLMonster() {
     var nextLMonster;
-    nextLMonster = lavaMonGroup.create(Phaser.Math.FloatBetween(0, 800), 650, 'lavaMonster');
+    nextLMonster = lavaMonGroup.create(Phaser.Math.FloatBetween(200, 600), 650, 'lavaMonster');
     nextLMonster.setScale(1);
     nextLMonster.setVelocityY(-100);
     nextLMonster.anims.play('aLavaMonster', true);
@@ -684,7 +684,7 @@ class GameScene extends Phaser.Scene{
         timedSatellite.paused = true;
         timedStone.paused = true;
         //starting new spawns
-        timedFireball = this.time.addEvent({ delay: 400, callback: this.placeFireball, callbackScope: this, loop: true });
+        timedFireball = this.time.addEvent({ delay: 600, callback: this.placeFireball, callbackScope: this, loop: true });
         timedLMonster = this.time.addEvent({ delay: 5000, callback: this.placeLMonster, callbackScope: this, loop: true });
         backgroundImages.create(600, 900, 'swanNebula').setVelocityY(-20).setDepth(-1).setAlpha(.8);
         break;
