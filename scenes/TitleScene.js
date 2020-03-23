@@ -46,7 +46,8 @@ class TitleScene extends Phaser.Scene{
       this.scene.start("optionsScene");
     })
 
-    //extras button
+    //extras button (Portal to end screen. )
+    /*
   let extrasButton = this.add.image(23, 350, 'extrasButton').setScale(.3).setOrigin(0,0);
     extrasButton.setInteractive();
 
@@ -63,6 +64,7 @@ class TitleScene extends Phaser.Scene{
     if (soundOn)
       soundSelect.play();
     this.scene.start("enterEnd");
-  })
+  })*/
+
   }
 }

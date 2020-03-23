@@ -1,6 +1,6 @@
 //import { CST } from "../CST";
 var soundOn = true;
-var wasdOn = true;
+var wasdOn = false;
 var soundYeet;
 var soundDatBei;
 var soundPlay;

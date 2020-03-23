@@ -1,8 +1,4 @@
-/* TO DO:
-Mesosphere and Stratosphere tweaks and changes
-spaceship scene art and background!
-Add rainbow to end scenes
-Completely redesign mesosphere, and stratosphere also.
+/* Puny Lab Games 
 */
 var player;
 var platforms;
@@ -415,7 +411,7 @@ class GameScene extends Phaser.Scene{
       nextFireball.setScale(.7);
     //  nextFireball.setScale(1);
       var velocityX = Phaser.Math.FloatBetween(-50, 50);
-      var velocityY = -300;
+      var velocityY = -320;
       nextFireball.setVelocityX(velocityX);
       nextFireball.setVelocityY(velocityY);
       //makes sure velocity vector and angle is correct lined up
@@ -642,8 +638,10 @@ class GameScene extends Phaser.Scene{
         if (counter <= 600) {
           hexColor = Phaser.Display.Color.Interpolate.ColorWithColor(cIon, cMeso, 600, counter);
           this.cameras.main.setBackgroundColor(hexColor);
-          music1.setVolume(1 - (counter/600));
-          music2.setVolume(counter/600);
+          if (soundOn)  {
+            music1.setVolume(1 - (counter/600));
+            music2.setVolume(counter/600);
+          }
           } else {
             timedBackground.paused = true;
           }
@@ -719,7 +717,8 @@ class GameScene extends Phaser.Scene{
           backgroundImages.create(600, 900, 'mesosPlanet').setScale(1).setVelocityY(-20).setDepth(-1);
 
           //new music
-          music2.play();
+          if (soundOn)
+            music2.play();
           break;
         case 5:
           atmosphere = 'Stratosphere'

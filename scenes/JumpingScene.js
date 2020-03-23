@@ -133,7 +133,8 @@ class JumpingScene extends Phaser.Scene{
       ship.anims.play('aSpaceship', true);
       ship.setVelocityX(100);
       ship.setAccelerationX(500);
-      spaceshipSound.play();
+      if (soundOn)
+        spaceshipSound.play();
     }
   }
 
